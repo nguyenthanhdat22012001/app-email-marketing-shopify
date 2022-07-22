@@ -22,3 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## CSS library
+Using TailwindCSS
+
+Defined Global Components name using VMyComponent
