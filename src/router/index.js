@@ -6,19 +6,21 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: "/auth",
-    component: () => import(/* webpackChunkName: "about" */ "@/modules/auth/views/layout.vue"),
-    children: [
+    component: () => import(/* webpackChunkName: "about" */ "@/modules/auth/views/AuthLogin.vue"),
+    meta:{
+      layout:'auth'
+    }
+  },
+  {
+    path: "/customer",
+    component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/Layout.vue"),
+    children:[
       {
-        path: "login",
-        name: "Login",
-        meta: {
-          layout: 'auth',
-          // middleware: [NoLogin]
-        },
-        component: () =>
-          import(/* webpackChunkName: "dashboard" */ "@/modules/auth/views/login.vue"),
-      },
-    ],
+        path:'',
+        name:'customer',
+        component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/CustomerHome.vue"),
+      }
+    ]
   },
 ]
 

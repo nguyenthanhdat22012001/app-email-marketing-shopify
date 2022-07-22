@@ -1,17 +1,26 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <vue-extend-layouts />
   </div>
 </template>
 
+<script>
+import VueExtendLayouts from "vue-extend-layout";
+export default {
+  name: "App",
+  components: { VueExtendLayouts },
+};
+</script>
 <style lang="scss">
-#app{
-  nav{
-    color:red
-  }
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
 }
 </style>
