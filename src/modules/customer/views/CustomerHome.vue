@@ -6,15 +6,19 @@
       prop_input_value="nam"
       v-model="name"
     ></v-checkbox> -->
+  <!-- <v-avatar prop_string_name="nguyen dat"></v-avatar>
+  <v-avatar prop_string_name="dat"></v-avatar> -->
+  <v-select></v-select>
   </div>
 </template>
 
 <script>
-import VCheckbox from "@/components/VCheckbox.vue";
+// import VAvatar from "@/components/VAvatar.vue";
+import VSelect from "@/components/VSelect.vue";
 
 export default {
   components: {
-    VCheckbox,
+    VSelect
   },
   data() {
     return {
