@@ -1,6 +1,5 @@
 <template>
-  <button @click="$emit('click')" class="px-4 py-2 rounded" :style="cssProps">
-    <slot name="icon"></slot>
+  <button @click="$emit('click')" class="px-4 py-2 rounded flex gap-[5px] items-center" :style="cssProps">
     <slot>Button</slot>
   </button>
 </template>
