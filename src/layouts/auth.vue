@@ -1,5 +1,5 @@
 <template>
-    <div class="auth-layout relative max-w-[1400px] my-0 mx-auto">
+    <div class="auth-layout relative max-w-[1400px] h-[900px] overflow-hidden my-0 mx-auto bg-gray-light">
         <img src="@/assets/images/bg-auth.png" class="absolute top-0 right-0" alt="">
         <img src="@/assets/icons/logo-auth.svg" class="absolute top-8 left-8" alt="">
         <img src="@/assets/icons/art-work.svg" class="absolute top-[188px] right-[125px]" alt="">
