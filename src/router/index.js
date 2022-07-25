@@ -5,6 +5,10 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: "/",
+    redirect: "/customer",
+  },
+  {
     path: "/auth",
     component: () => import(/* webpackChunkName: "about" */ "@/modules/auth/views/AuthLogin.vue"),
     meta:{
@@ -19,7 +23,18 @@ const routes = [
         path:'',
         name:'customer',
         component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/CustomerHome.vue"),
-      }
+      },
+    ]
+  },
+  {
+    path: "/campaign",
+    component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/Layout.vue"),
+    children:[
+      {
+        path:'',
+        name:'campaign',
+        component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/CampaignHome.vue"),
+      },
     ]
   },
 ]

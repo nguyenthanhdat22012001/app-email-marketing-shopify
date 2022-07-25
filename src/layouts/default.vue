@@ -1,5 +1,5 @@
 <template>
-  <div class="default-layout">
+  <div class="default-layout flex pl-[230px]">
     <vue-side-bar></vue-side-bar>
     <vue-block>
       <router-view></router-view>
@@ -17,4 +17,5 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

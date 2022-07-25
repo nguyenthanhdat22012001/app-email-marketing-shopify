@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="customer-layout">
     <h2>Default layout Customer</h2>
     <router-view></router-view>
   </div>
@@ -9,4 +9,8 @@
 export default {};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.customer-layout{
+  padding:50px;
+}
+</style>

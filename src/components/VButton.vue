@@ -1,6 +1,7 @@
 <template>
-  <button :class="{'bg-primary': variant === 'primary' }" :style="cssProps">
-    <slot></slot>
+  <button @click="$emit('click')" class="px-4 py-2 rounded" :style="cssProps">
+    <slot name="icon"></slot>
+    <slot>Button</slot>
   </button>
 </template>
 
@@ -15,13 +16,49 @@ export default {
         return ["primary", "secondary"].includes(value);
       },
     },
+    click: Function,
   },
-  mounted(){
-    console.log(this.variant)
-  }
+  created(){
+    console.log(this.$props)
+  },
+  data() {
+    return {
+      background: {
+        primary: {
+          main: "#003084",
+          hover: "#034ac7",
+        },
+        secondary: {
+          main: "#ffffff",
+          hover: "#ebebeb",
+        },
+      },
+      color: {
+        primary: "#ffffff",
+        secondary: "#555770",
+      },
+    };
+  },
+  computed: {
+    cssProps() {
+      return {
+        "--bg-color": this.background[this.variant].main,
+        "--text-color": this.color[this.variant],
+        "--border": this.variant == "secondary" ? "1px solid #EBEBF0" : "",
+        "--bg-color-hover": this.background[this.variant].hover,
+      };
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-
+button {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: var(--border);
+  &:hover {
+    background: var(--bg-color-hover);
+  }
+}
 </style>
