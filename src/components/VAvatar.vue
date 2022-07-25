@@ -1,16 +1,16 @@
 <!--  EX
-<v-avatar prop_string_name="nguyen dat"></v-avatar>
+<v-avatar name="nguyen dat"></v-avatar>
     -->
 
 <template>
   <div class="inline-flex w-8 h-8 items-center justify-center rounded-full bg-gray-light text-[13px] font-medium text-muted">
-    {{stringAvatar(prop_string_name)}}
+    {{stringAvatar(name)}}
   </div>
 </template>
 <script>
 export default {
   props: {
-    prop_string_name: {
+    name: {
       type: String,
       default: "",
     },

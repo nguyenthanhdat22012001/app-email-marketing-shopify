@@ -7,6 +7,7 @@ module.exports = {
       'red': '#FF3B3B',
       'black': '#000',
       'dark': '#28293D',
+      'dark-gray': '#252627',
       'muted': '#555770',
       'primary': '#3E7BFA',
       'white': '#ffffff',
@@ -25,6 +26,9 @@ module.exports = {
       'secondary': "#ffffff",
       'sapphire-gradient': "linear-gradient(45deg,#003084,#0294D7)",
       'gray-light': "#F2F2F5",
+    },
+    boxShadow: {
+      'sm': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',
     },
     extend: {},
   },
