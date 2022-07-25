@@ -3,7 +3,7 @@
     class="vue-sidebar w-[230px] h-screen text-white bg-gradient-to-br from-bg-primary to-bg-primary-light fixed top-0 left-0 flex flex-col gap-[22px]"
   >
     <img src="@/assets/images/Logo.png" alt="" class="pt-[20px] px-[20px]" />
-    <nav class="menu flex flex-col">
+    <nav class="menu flex flex-col mb-auto">
       <router-link :to="{ name: 'customer' }">
         <img src="@/assets/icons/Union.svg" />
         Customer</router-link
@@ -13,6 +13,10 @@
         Campaign</router-link
       >
     </nav>
+    <div class="footer-sidebar opacity-50 text-white flex gap-[10px] py-3 px-5">
+      <img src="@/assets/icons/help-center.svg" alt="" />
+      Help center
+    </div>
   </div>
 </template>
 
@@ -42,7 +46,7 @@ export default {
       height: 100%;
     }
   }
-  &:hover::after ,
+  &:hover::after,
   &.router-link-active::after {
     position: absolute;
     content: "";

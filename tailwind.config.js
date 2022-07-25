@@ -17,7 +17,8 @@ module.exports = {
       'black-light': '#1C1C28',
       'sapphire': '#003084',
       'bg-primary': '#003085',
-      "bg-primary-light": '#0294D7'
+      "bg-primary-light": '#0294D7',
+      "light": '#EBEBF0'
 
     },
     backgroundColor: {
@@ -26,11 +27,14 @@ module.exports = {
       'secondary': "#ffffff",
       'sapphire-gradient': "linear-gradient(45deg,#003084,#0294D7)",
       'gray-light': "#F2F2F5",
-      'white':'#ffffff'
+      'white': '#ffffff'
     },
     boxShadow: {
       'sm': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',
       'sm-light': '0px -3px 8px rgba(40, 41, 61, 0.04), -5px 16px 24px rgba(96, 97, 112, 0.16);'
+    },
+    translate: {
+      'full-180deg': '-100%',
     },
     boxShadow: {
       'sm': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',
