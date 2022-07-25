@@ -18,9 +18,7 @@ export default {
     },
     click: Function,
   },
-  created(){
-    console.log(this.$props)
-  },
+
   data() {
     return {
       background: {

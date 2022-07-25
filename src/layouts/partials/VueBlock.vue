@@ -1,15 +1,17 @@
 <template>
-    <div>
-        <slot></slot>
-    </div>
+  <div>
+    <vue-head-block />
+    <slot></slot>
+  </div>
 </template>
 
 <script>
-    export default {
-        
-    }
+import VueHeadBlock from "./VueHeadBlock.vue";
+export default {
+  components: {
+    VueHeadBlock,
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
