@@ -3,6 +3,8 @@
     :type="type"
     :value="value"
     @input="$emit('input', $event.target.value)"
+    :placeholder="placeholder"
+    class="border-none outline-none"
   />
 </template>
 
@@ -18,6 +20,7 @@ export default {
         return ["text", "number"].includes(value);
       },
     },
+    placeholder: String,
   },
 };
 </script>

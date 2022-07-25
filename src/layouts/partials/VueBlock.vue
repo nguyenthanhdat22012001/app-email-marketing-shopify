@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-1">
+  <div class="flex-1 min-h-screen flex flex-col">
     <vue-head-block />
-    <slot></slot>
+    <slot ></slot>
   </div>
 </template>
 
