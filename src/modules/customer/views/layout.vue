@@ -1,16 +1,33 @@
 <template>
-  <div class="customer-layout">
-    <h2>Default layout Customer</h2>
+  <div class="customer-layout flex flex-col px-[55px] py-[35px] gap-5">
+    <div class="flex justify-between w-full items-center">
+      <h1 class="font-extrabold text-xl lead-6 ">Customer</h1>
+      <div class="flex gap-[10px]">
+        <v-button variant="secondary">
+          <img src="@/assets/icons/download.svg" />
+          Export CSV
+        </v-button>
+        <v-button variant="primary">
+          <img src="@/assets/icons/async.svg" />
+          Manual sync
+        </v-button>
+      </div>
+    </div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {};
+import VButton from "@/components/VButton.vue";
+export default {
+  components: {
+    VButton,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.customer-layout{
-  padding:50px;
+.customer-layout {
+  padding: 50px;
 }
 </style>
