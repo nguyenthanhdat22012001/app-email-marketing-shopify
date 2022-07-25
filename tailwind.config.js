@@ -19,8 +19,10 @@ module.exports = {
     },
     backgroundColor:{
       'primary':'#003084',
+      'blues': '#3E7BFA',
       'secondary': "#ffffff",
       'sapphire-gradient': "linear-gradient(45deg,#003084,#0294D7)",
+      'gray-light': "#F2F2F5",
     },
     extend: {},
   },

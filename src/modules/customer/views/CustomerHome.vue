@@ -1,19 +1,32 @@
 <template>
-    <div>
-        <v-button variant="primary">Button</v-button>
-    </div>
+  <div>
+    <!-- <v-checkbox prop_input_value="dat" v-model="name"></v-checkbox>
+    <v-checkbox
+      prop_is_checkbox_custom
+      prop_input_value="nam"
+      v-model="name"
+    ></v-checkbox> -->
+  </div>
 </template>
 
 <script>
-import VButton from '@/components/VButton.vue'
+import VCheckbox from "@/components/VCheckbox.vue";
 
-    export default {
-        components:{
-            VButton
-        }
-    }
+export default {
+  components: {
+    VCheckbox,
+  },
+  data() {
+    return {
+      name: [],
+    };
+  },
+  watch: {
+    name(newValue, oldValue) {
+      console.log(this.name);
+    },
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
