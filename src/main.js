@@ -5,17 +5,17 @@ import store from './store'
 import './index.css'
 
 // Vue.directive('click-outside', {
-//   bind: function (el, binding, vnode) {
-//     console.log(el)
-//     // this.event = function (event) {
+//   bind: function (el, binding, vnode,event) {
+//     console.log(el,event)
+//     event = function (event) {
 //      if (!(el == event.target || el.contains(event.target) || event.target.className === "select2-selection__choice__remove" || event.target.className === "select2-search__field" )) {
 //         vnode.context[binding.expression](event);
 //       }
-//     // };
-//     document.body.addEventListener('click', this.event)
+//     };
+//     document.body.addEventListener('click', event)
 //   },
 //   unbind: function (el) {
-//     document.body.removeEventListener('click', this.event)
+//     document.body.removeEventListener('click', event)
 //   },
 // });
 

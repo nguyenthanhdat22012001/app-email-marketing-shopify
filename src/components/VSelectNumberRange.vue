@@ -1,36 +1,38 @@
+<!--  EX
+ <v-select-number-range prop_label="Total spent1" @emitVSelectNumberRange="updateInputRange" />
+-->
+
 <template>
-  <div
-    @click.self="isOpen = !isOpen"
-    class="VSelectNumberRange inline-flex justify-center gap-x-2.5 cursor-pointer py-2 px-3.5 border border-[#EBEBF0] bg-secondary font-medium text-muted"
-  >
-    <span class="VSelectNumberRange__title" @click.self="isOpen = !isOpen"
-      >Total spent</span
-    >
-    <img
-      class="VSelectNumberRange__img"
-      @click.self="isOpen = !isOpen"
-      src="@/assets/icons/caret-down.svg"
-      alt=""
-    />
+  <div class="relative">
     <div
-      :class="{ isActive: isOpen }"
-      class="VSelectNumberRange__drop-down w-[244px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary"
+      @click="is_open = !is_open"
+      class="z-0 inline-flex justify-center gap-x-2.5 cursor-pointer py-2 px-3.5 border border-[#EBEBF0] bg-secondary font-medium text-muted"
+    >
+      <span>{{ prop_label }}</span>
+      <img src="@/assets/icons/caret-down.svg" alt="" />
+    </div>
+    <div
+      v-show="is_open"
+      id="dropdown"
+      class="z-10 absolute left-0 top-full w-[244px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary"
     >
       <div class="flex gap-2">
         <input
           type="number"
           placeholder="From"
+          v-model="data_input.from"
           class="VSelectNumberRange__input w-[104px] px-2.5 py-2 border border-[#EBEBF0] rounded focus:outline-0"
         />
         <input
           type="number"
+          v-model="data_input.to"
           placeholder="To"
           class="VSelectNumberRange__input w-[104px] px-2.5 py-2 border border-[#EBEBF0] rounded focus:outline-0"
         />
       </div>
       <div class="flex justify-between items-center pt-2.5">
-        <v-button variant="primary">Ok</v-button>
-        <a class="cursor-pointer text-primary">Clear</a>
+        <v-button variant="primary" @click="handEmitDataChange()">Ok</v-button>
+        <a class="cursor-pointer text-primary" @click="onClearInputs()">Clear</a>
       </div>
     </div>
   </div>
@@ -38,59 +40,56 @@
 
 <script>
 import VButton from "@/components/VButton.vue";
+import { stringify } from "postcss";
 
 export default {
   components: {
     VButton,
   },
   props: {
-    id: {
+    prop_label: {
       type: String,
-      required: true,
+      default: "",
     },
   },
   data() {
     return {
-      isOpen: false,
+      is_open: false,
+      data_input: {
+        from: "",
+        to: "",
+      },
     };
   },
   methods: {
-    show: function () {
-      this.isOpen = true;
+    onClose() {
+      this.is_open = false;
     },
-    hide: function () {
-      console.log("hide");
-      this.isOpen = false;
+    handEmitDataChange() {
+      this.$emit("emitVSelectNumberRange", this.data_input);
+      this.onClose();
+    },
+    onClearInputs() {
+      this.data_input = {
+        from: "",
+        to: "",
+      };
+      this.$emit("emitVSelectNumberRange", this.data_input);
     },
   },
-  created() {
-    console.log("created");
-    window.addEventListener("click", this.checkClickOn);
-  },
-  beforeDestroy() {
-    console.log("beforeDestroy");
-    window.removeEventListener("click", this.checkClickOn);
+  computed: {},
+  created: function () {
+    let self = this;
+    window.addEventListener("click", function (e) {
+      if (!self.$el.contains(e.target)) {
+        self.is_open = false;
+      }
+    });
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.VSelectNumberRange {
-  position: relative;
-  z-index: 1;
-  &__drop-down {
-    position: absolute;
-    content: "";
-    z-index: 2;
-    top: 110%;
-    left: 0;
-    display: none;
-  }
-}
-.isActive {
-  display: block;
-}
-
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
