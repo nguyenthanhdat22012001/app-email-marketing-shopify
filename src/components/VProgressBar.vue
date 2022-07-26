@@ -44,7 +44,6 @@ export default {
       };
     },
     numberSuccess() {
-      console.log(this.prop_number / this.prop_total);
       return (this.prop_number / this.prop_total) * 100;
     },
   },
