@@ -1,5 +1,12 @@
+<!--  EXAMPLE
+<v-button @click="event click" variant="primary | secondary">{{label}}</v-button>
+    -->
 <template>
-  <button @click="$emit('click')" class="px-4 py-2 rounded flex gap-[5px] items-center" :style="cssProps">
+  <button
+    @click="$emit('click')"
+    class="px-4 py-2 rounded flex gap-[5px] items-center"
+    :style="cssProps"
+  >
     <slot>Button</slot>
   </button>
 </template>

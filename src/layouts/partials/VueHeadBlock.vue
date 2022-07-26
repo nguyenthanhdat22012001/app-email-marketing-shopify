@@ -1,6 +1,8 @@
 <template>
   <div class="w-100 bg-white flex justify-between shadow-sm relative">
-    <button><img src="@/assets/icons/bars.svg" alt="" class="px-6" /></button>
+    <button @click="toggle">
+      <img src="@/assets/icons/bars.svg" alt="" class="px-6" />
+    </button>
     <div
       class="user flex gap-1 items-center pl-[22px] py-5 px-6 cursor-pointer"
       ref="hoverUser"
@@ -19,6 +21,7 @@
 
 <script>
 import VueDropDownUser from "./VueDropDownUser.vue";
+import {mapMutations} from "vuex";
 export default {
   components: {
     VueDropDownUser,
@@ -43,6 +46,7 @@ export default {
         this.isShowDropDown = false;
       }
     },
+    ...mapMutations(["toggle"]),
   },
 };
 </script>
@@ -55,6 +59,4 @@ export default {
   height: 100%;
   transform: translateX(-22px);
 }
-
-
 </style>

@@ -1,8 +1,8 @@
 <!--  EX
 <v-checkbox
       prop_is_checkbox_custom
-      prop_input_value="nam"
       v-model="name"
+      prop_input_value="nam"
     ></v-checkbox> 
     -->
 
@@ -18,7 +18,7 @@
       :value="prop_input_value"
       v-model="checkbox"
     />
-    <label for="checkbox">asdsa</label>
+    <label for="checkbox"></label>
   </div>
 </template>
 <script>

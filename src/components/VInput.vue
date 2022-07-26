@@ -4,7 +4,7 @@
     :value="value"
     @input="$emit('input', $event.target.value)"
     :placeholder="placeholder"
-    class="border-none outline-none"
+    class="border-none outline-none placeholder:text-gray-light"
   />
 </template>
 

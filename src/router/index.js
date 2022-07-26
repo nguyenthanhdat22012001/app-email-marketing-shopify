@@ -35,6 +35,11 @@ const routes = [
         name:'campaign',
         component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/CampaignHome.vue"),
       },
+      {
+        path:'create',
+        name:'create campaign',
+        component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/CampaignCreate.vue"),
+      }
     ]
   },
 ]
