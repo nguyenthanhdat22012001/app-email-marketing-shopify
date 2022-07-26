@@ -1,25 +1,26 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
-import customerStore from './customerStore';
+Vue.use(Vuex);
+import customerStore from "./customerStore";
+import notifyStore from "./notifyStore";
 export default new Vuex.Store({
   state: {
-    isToggle: false
+    isToggle: false,
   },
   getters: {
     getToggle(state) {
-      return state.isToggle
-    }
+      return state.isToggle;
+    },
   },
   mutations: {
     toggle(state) {
       state.isToggle = !state.isToggle;
-    }
+    },
   },
-  actions: {
-  },
+  actions: {},
   modules: {
-    customerStore
-  }
-})
+    customerStore,
+    notifyStore,
+  },
+});

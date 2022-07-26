@@ -1,14 +1,16 @@
 <template>
   <div id="app">
+    <v-notify></v-notify>
     <vue-extend-layouts />
   </div>
 </template>
 
 <script>
 import VueExtendLayouts from "vue-extend-layout";
+import VNotify from "@/components/VNotify.vue";
 export default {
   name: "App",
-  components: { VueExtendLayouts },
+  components: { VueExtendLayouts,VNotify },
 };
 </script>
 <style lang="scss">
