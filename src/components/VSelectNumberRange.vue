@@ -1,5 +1,5 @@
 <!--  EX
- <v-select-number-range prop_label="Total spent1" @emitVSelectNumberRange="updateInputRange" />
+ <v-select-number-range prop_label="Total spent1" @emitVSelectNumberRange="(payload) => objData = payload" />
 -->
 
 <template>
@@ -40,7 +40,6 @@
 
 <script>
 import VButton from "@/components/VButton.vue";
-import { stringify } from "postcss";
 
 export default {
   components: {
