@@ -1,15 +1,70 @@
 <template>
-  <div>
-    Campaign Content
+  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
+    <div :class="{ progressing: progress <= 100 }">
+      <v-progress
+        class="translate-y-full-180deg"
+        v-model="progress"
+        label="Syncing customers from Shopify"
+        v-if="progress <= 100"
+      />
+      <div class="flex justify-between w-full items-center">
+        <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
+        <div class="flex gap-[10px]">
+          <v-button variant="primary">
+            <img src="@/assets/icons/plus.svg" />
+            Create new campaign
+          </v-button>
+        </div>
+      </div>
+      <div
+        class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5"
+      >
+        <campaign-filter />
+        <div class="pl-5">
+          <campaign-table />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-
+import VButton from "@/components/VButton.vue";
+import VProgress from "@/components/VProgress.vue";
+import CampaignFilter from "../components/CampaignFilter.vue";
+import CampaignTable from "../components/CampaignTable.vue";
 export default {
-
-
+  components: {
+    VButton,
+    VProgress,
+    CampaignFilter,
+    CampaignTable,
+  },
+  data() {
+    return {
+      progress: 101,
+      increaseProgress: null,
+    };
+  },
+  mounted() {
+    this.increaseProgress = setInterval(() => {
+      this.progress++;
+    }, 50);
+  },
+  watch: {
+    progress(value) {
+      if (value > 100) {
+        clearInterval(this.increaseProgress);
+      }
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.progressing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

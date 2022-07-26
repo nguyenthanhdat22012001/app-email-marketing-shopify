@@ -1,12 +1,15 @@
 <template>
-  <div class="campaign-layout">
-    <h2>Campaign</h2>
-    <router-view></router-view>
-  </div>
+  <router-view class="flex-1"></router-view>
 </template>
 
 <script>
-export default {};
+export default {
+  components: {},
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.customer-layout {
+  padding: 50px;
+}
+</style>

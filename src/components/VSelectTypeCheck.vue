@@ -5,6 +5,7 @@
       @emitClearForm="check_list = []"
     >
       <v-checkbox
+        prop_label="Completed"
         prop_input_value="Completed"
         v-model="check_list"
       ></v-checkbox>
@@ -40,7 +41,7 @@
     <div
       v-show="is_open"
       id="dropdown"
-      class="z-10 absolute left-0 top-full w-[244px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary"
+      class="z-10 absolute right-0 top-full w-[244px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary"
     >
       <div class="flex flex-col gap-y-3.5">
         <slot></slot>
@@ -88,16 +89,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-// /* Chrome, Safari, Edge, Opera */
-// input::-webkit-outer-spin-button,
-// input::-webkit-inner-spin-button {
-//   -webkit-appearance: none;
-//   margin: 0;
-// }
-
-// /* Firefox */
-// input[type="number"] {
-//   -moz-appearance: textfield;
-// }
-</style>
+<style lang="scss" scoped></style>

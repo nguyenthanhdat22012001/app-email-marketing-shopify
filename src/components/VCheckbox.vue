@@ -17,6 +17,7 @@
       ]"
       :value="prop_input_value"
       v-model="checkbox"
+      :checked="checked"
     />
     <label :for="prop_input_value">{{prop_label}}</label>
   </div>
@@ -39,6 +40,10 @@ export default {
       default: "",
     },
     prop_is_checkbox_custom: {
+      type: Boolean,
+      default: false,
+    },
+     checked: {
       type: Boolean,
       default: false,
     },
