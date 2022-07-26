@@ -1,40 +1,51 @@
 <template>
   <div :class="{ progressing: progress <= 100 }">
-    <v-progress
+    <v-progress-loading
       class="translate-y-full-180deg"
       v-model="progress"
       label="Syncing customers from Shopify"
       v-if="progress <= 100"
     />
-    <div class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6">
-      <customer-filter />
-      <customer-content />
+    <div
+      class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 shadow-content"
+      v-show="progress > 100"
+    >
+      <customer-filter/>
+      <customer-content/>
       <div class="customer-content--body"></div>
     </div>
   </div>
 </template>
 
 <script>
-import VProgress from "@/components/VProgress.vue";
+import VProgressLoading from "@/components/VProgressLoading.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
 import CustomerContent from "../components/CustomerContent.vue";
+import { mapActions } from "vuex";
 export default {
   components: {
-    VProgress,
+    VProgressLoading,
     CustomerFilter,
     CustomerContent,
   },
   data() {
     return {
-      progress: 101,
+      progress: 0,
       increaseProgress: null,
-      
     };
+  },
+  created() {
+    this.fetchCustomer();
   },
   mounted() {
     this.increaseProgress = setInterval(() => {
-      this.progress++;
+      this.progress += 2;
     }, 50);
+  },
+  methods:{
+    ...mapActions({
+      fetchCustomer:'customerStore/fetchCustomer'
+    })
   },
   watch: {
     progress(value) {
