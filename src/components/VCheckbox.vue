@@ -18,14 +18,14 @@
       :value="prop_input_value"
       v-model="checkbox"
     />
-    <label :for="prop_input_value">{{prop_label}}</label>
+    <label :for="prop_input_value" v-if="prop_label">{{ prop_label }}</label>
   </div>
 </template>
 <script>
 export default {
   props: {
     value: {
-      type: Array,
+      type: [Array, Boolean],
       default(rawProps) {
         return [];
       },

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+import customerStore from './customerStore';
 export default new Vuex.Store({
   state: {
     isToggle: false
@@ -20,5 +20,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    customerStore
   }
 })

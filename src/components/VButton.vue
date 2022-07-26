@@ -48,7 +48,7 @@ export default {
       return {
         "--bg-color": this.background[this.variant].main,
         "--text-color": this.color[this.variant],
-        "--border": this.variant == "secondary" ? "1px solid #EBEBF0" : "",
+        "--border": this.variant == "secondary" ? "1px solid #EBEBF0" : "1px solid #003084",
         "--bg-color-hover": this.background[this.variant].hover,
       };
     },

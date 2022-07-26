@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
     <div :class="{ progressing: progress <= 100 }">
-      <v-progress
+      <v-progress-loading
         class="translate-y-full-180deg"
         v-model="progress"
         label="Syncing customers from Shopify"
@@ -30,13 +30,13 @@
 
 <script>
 import VButton from "@/components/VButton.vue";
-import VProgress from "@/components/VProgress.vue";
+import VProgressLoading from "@/components/VProgressLoading.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
 export default {
   components: {
     VButton,
-    VProgress,
+    VProgressLoading,
     CampaignFilter,
     CampaignTable,
   },

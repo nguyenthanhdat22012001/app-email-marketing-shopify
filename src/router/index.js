@@ -24,6 +24,7 @@ const routes = [
         name:'customer',
         component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/CustomerHome.vue"),
       },
+     
     ]
   },
   {
