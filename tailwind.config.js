@@ -27,7 +27,7 @@ module.exports = {
       'secondary': "#ffffff",
       'sapphire-gradient': "linear-gradient(45deg,#003084,#0294D7)",
       'gray-light': "#F2F2F5",
-      'white': '#ffffff'
+      'white': '#ffffff',
     },
     boxShadow: {
       'sm': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',

@@ -9,7 +9,7 @@
 <template>
   <div class="inline-flex items-center gap-1">
     <input
-      id="checkbox"
+      :id="prop_input_value"
       type="checkbox"
       class="VCheckbox w-4 h-4 bg-inherit rounded-sm border border-[#C7C9D9]"
       :class="[
@@ -18,7 +18,7 @@
       :value="prop_input_value"
       v-model="checkbox"
     />
-    <label for="checkbox"></label>
+    <label :for="prop_input_value">{{prop_label}}</label>
   </div>
 </template>
 <script>
@@ -31,6 +31,10 @@ export default {
       },
     },
     prop_input_value: {
+      type: String,
+      default: "",
+    },
+    prop_label: {
       type: String,
       default: "",
     },
