@@ -1,6 +1,6 @@
 <template>
   <div class="campaign--create-page ">
-    <div class="campaign-create-page--head flex justify-between py-4 px-8">
+    <div class="campaign-create-page--head flex justify-between py-4 px-8GILL">
       <div class="head--left flex items-center gap-[10px]">
         <v-button variant="secondary"
           ><img src="@/assets/icons/icon-back.svg" alt=""

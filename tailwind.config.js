@@ -38,7 +38,8 @@ module.exports = {
     },
     boxShadow: {
       'sm': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',
-      'content': 'box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16);'
+      'content': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',
+      'notify': '0px 2px 16px rgba(0, 0, 0, 0.25)'
     },
     extend: {},
   },

@@ -25,9 +25,12 @@ const mutations = {
   },
 };
 const actions = {
-  // addNotify({ commit }, state) {
-  //     commit('setNotify', )
-  // }
+  addNotify({ state, commit }, data) {
+    commit('setNotify', [data, ...state.notifies_store])
+  },
+  removeNotify({ state, commit }, id) {
+    commit('setNotify', state.notifies_store.filter(notify => notify.id != id))
+  }
 };
 
 export default {

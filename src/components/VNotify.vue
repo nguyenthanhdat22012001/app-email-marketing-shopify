@@ -4,9 +4,12 @@
       <div
         v-for="getNotify in getNotifies"
         :key="getNotify.id"
-        class="relative w-[301px] bg-white pb-7 px-6 mb-2.5"
+        class="relative w-[301px] bg-white pb-7 px-6 mb-2.5 pt-4 rounded shadow-notify"
       >
-        <a class="notify-close flex justify-end pt-4 cursor-pointer">
+        <a
+          class="notify-close flex justify-end cursor-pointer"
+          @click="handleClose(getNotify.id)"
+        >
           <img src="@/assets/icons/close.svg" alt="" />
         </a>
         <div class="flex gap-2 font-semibold">
@@ -19,14 +22,17 @@
   </transition>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
+  mounted() {
+    console.log(this.getNotifies);
+  },
   methods: {
     onBeforeEnter(el) {
       let element_close = el.querySelector(".notify-close");
       console.log("onBeforeEnter", element_close);
-      element_close.addEventListener("çlick", function () {
-        console.log("çlose");
+      element_close.addEventListener("click", function () {
+        console.log("close");
       });
     },
 
@@ -37,7 +43,11 @@ export default {
 
       done();
     },
+    ...mapActions({
+      handleClose: "notifyStore/removeNotify",
+    }),
   },
+
   computed: {
     ...mapGetters("notifyStore", ["getNotifies"]),
   },
