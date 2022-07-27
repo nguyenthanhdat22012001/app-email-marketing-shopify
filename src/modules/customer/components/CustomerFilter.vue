@@ -12,6 +12,10 @@
     </div>
     <div class="filter flex gap-[10px] items-center">
       <div class="flex">
+        <v-date-range
+          prop_label="Create date"
+          @emitVDateRangeRange="(payload) => (filter_date = payload)"
+        />
         <v-select-number-range
           prop_label="Total spent"
           @emitVSelectNumberRange="(payload) => (filterSpent = payload)"
@@ -47,6 +51,7 @@ import VInput from "@/components/VInput.vue";
 import VInputRadio from "@/components/VInputRadio.vue";
 import VSelectTypeCheck from "@/components/VSelectTypeCheck.vue";
 import VSelectNumberRange from "@/components/VSelectNumberRange.vue";
+import VDateRange from "@/components/VDateRange.vue";
 
 export default {
   components: {
@@ -54,6 +59,7 @@ export default {
     VInputRadio,
     VSelectTypeCheck,
     VSelectNumberRange,
+    VDateRange,
   },
   data() {
     return {
@@ -62,6 +68,7 @@ export default {
       filterSort: "",
       filterOrder: { from: "", to: "" },
       filterSpent: { from: "", to: "" },
+      filter_date: { start: "", end: "" },
     };
   },
 };

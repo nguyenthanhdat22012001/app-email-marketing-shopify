@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
-    <campaign-modal-send-mail visible></campaign-modal-send-mail>
+    <campaign-modal-send-mail v-model="visible"></campaign-modal-send-mail>
     <div :class="{ progressing: progress <= 100 }">
       <v-progress-loading
         class="translate-y-full-180deg"
@@ -47,6 +47,7 @@ export default {
     return {
       progress: 101,
       increaseProgress: null,
+      visible: true
     };
   },
   mounted() {
