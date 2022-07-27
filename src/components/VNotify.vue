@@ -24,9 +24,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  mounted() {
-    console.log(this.getNotifies);
-  },
+ 
   methods: {
     onBeforeEnter(el) {
       let element_close = el.querySelector(".notify-close");

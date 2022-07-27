@@ -10,7 +10,7 @@
       <div class="flex justify-between w-full items-center">
         <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
         <div class="flex gap-[10px]">
-          <v-button variant="primary">
+          <v-button variant="primary" @click="$router.push({name:'campaign/create'})">
             <img src="@/assets/icons/plus.svg" />
             Create new campaign
           </v-button>

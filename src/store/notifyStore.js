@@ -1,17 +1,17 @@
 const state = {
   notifies_store: [
-    {
-      id: 1,
-      status: "success",
-      title: "Success",
-      message: "Create campaign successfully",
-    },
-    {
-      id: 2,
-      status: "success",
-      title: "Success",
-      message: "Create home successfully",
-    },
+    // {
+    //   id: 1,
+    //   status: "success",
+    //   title: "Success",
+    //   message: "Create campaign successfully",
+    // },
+    // {
+    //   id: 2,
+    //   status: "success",
+    //   title: "Success",
+    //   message: "Create home successfully",
+    // },
   ],
 };
 const getters = {
