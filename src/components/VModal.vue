@@ -1,13 +1,13 @@
 <template>
-  <div class="modal" v-show="visible">
+  <div class="modal fixed top-[20%] left-[50%] rounded-2xl" v-show="visible">
     <div class="modal--header">
-      <slot class="">Modal Header</slot>
+      <slot name="modal--header" class="">Modal Header</slot>
     </div>
     <div class="modal--body">
-      <slot class="">Modal Body</slot>
+      <slot name="modal--body" class="">Modal Body</slot>
     </div>
     <div class="modal--footer">
-      <slot class="">Modal Footer</slot>
+      <slot name="modal--footer" class="">Modal Footer</slot>
     </div>
   </div>
 </template>

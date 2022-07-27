@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
+    <campaign-modal-send-mail visible></campaign-modal-send-mail>
     <div :class="{ progressing: progress <= 100 }">
       <v-progress-loading
         class="translate-y-full-180deg"
@@ -33,12 +34,14 @@ import VButton from "@/components/VButton.vue";
 import VProgressLoading from "@/components/VProgressLoading.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
+import CampaignModalSendMail from "../components/CampaignModalSendMail.vue";
 export default {
   components: {
     VButton,
     VProgressLoading,
     CampaignFilter,
     CampaignTable,
+    CampaignModalSendMail,
   },
   data() {
     return {
