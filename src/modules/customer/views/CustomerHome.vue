@@ -39,12 +39,12 @@ export default {
   },
   created() {
     this.fetchCustomer();
-    // this.subscribe()
+    this.subscribe()
   },
   mounted() {
-    this.increaseProgress = setInterval(() => {
-      this.progress += 2;
-    }, 50);
+    // this.increaseProgress = setInterval(() => {
+    //   this.progress += 2;
+    // }, 50);
   },
   methods:{
     ...mapActions({
@@ -55,7 +55,7 @@ export default {
       pusher.subscribe('my-channel')
       pusher.bind('my-event', data => {
         console.log(data)
-        this.progress = data.message
+        this.progress = Number(data.message)
         if(data.message == 100){
           pusher.unsubscribe('my-channel')
         }
