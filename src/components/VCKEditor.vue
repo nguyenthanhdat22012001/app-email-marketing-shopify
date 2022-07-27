@@ -14,8 +14,9 @@ export default {
       editor: ClassicEditor,
       editorConfig: {
         toolbar: {
-            items: [ 'bold', 'italic', 'underline', 'strikethrough', 'code','subscript', 'superscript'  ]
-        }
+            items: [ 'heading','|','bold', 'italic', 'underline', 'strikethrough', 'code','subscript', 'superscript'  ]
+        },
+        min_height:200
       },
     };
   },
