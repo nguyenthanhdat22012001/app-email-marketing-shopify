@@ -3,11 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './index.css'
+import CKEditor from '@ckeditor/ckeditor5-vue2';
 
 
 Vue.config.productionTip = false
 
-
+Vue.use(CKEditor);
 
 
 new Vue({
