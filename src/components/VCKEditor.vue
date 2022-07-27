@@ -1,26 +1,23 @@
 <template>
-  <ckeditor :editor="editor" :value="value" :config="editorConfig"></ckeditor>
+  <ckeditor  :value="value" :config="editorConfig"></ckeditor>
 </template>
 
 <script>
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
+// import ClassicEditor from "@ckeditor/ckeditor5-custom";
+// import EditorCustom from "ckeditor-custom";
 export default {
   props: {
     value: String,
   },
   data() {
     return {
-      editor: ClassicEditor,
       editorConfig: {
-        toolbar: {
-            items: [ 'heading','|','bold', 'italic', 'underline', 'strikethrough', 'code','subscript', 'superscript'  ]
-        },
-        min_height:200
+        
       },
     };
   },
   mounted() {
+    // console.log(EditorCustom)
   },
 };
 </script>

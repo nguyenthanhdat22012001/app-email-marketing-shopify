@@ -4,8 +4,8 @@
 <template>
   <button
     @click="$emit('click')"
-    :class="cssProps"
-    class="px-4 py-2 rounded flex gap-[5px] items-center border border-solid rounded"
+    class="px-4 py-2 rounded flex gap-[5px] items-center"
+    :style="cssProps"
   >
     <slot>Button</slot>
   </button>
@@ -41,40 +41,28 @@ export default {
         primary: "#ffffff",
         secondary: "#555770",
       },
-      border: {
-        primary: "primary",
-        secondary: "light",
-      },
     };
   },
   computed: {
     cssProps() {
-      return `bg-${this.variant} hover:bg-[${
-        this.background[this.variant].hover
-      }] text-[${this.color[this.variant]}] border-${
-        this.border[this.variant]
-      }`;
+      return {
+        "--bg-color": this.background[this.variant].main,
+        "--text-color": this.color[this.variant],
+        "--border": this.variant == "secondary" ? "1px solid #EBEBF0" : "1px solid #003084",
+        "--bg-color-hover": this.background[this.variant].hover,
+      };
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-/* button {
+button {
   background: var(--bg-color);
   color: var(--text-color);
   border: var(--border);
   &:hover {
     background: var(--bg-color-hover);
   }
-} */
-
-/* .primary{
-   background: #003084;
-  color: var(--text-color);
-  border: var(--border);
-  &:hover {
-    background: var(--bg-color-hover);
-  }
-} */
+}
 </style>
