@@ -25,12 +25,31 @@ const mutations = {
   },
 };
 const actions = {
-  addNotify({ state, commit }, data) {
-    commit('setNotify', [data, ...state.notifies_store])
+  addNotify({ state, commit, dispatch }, payload) {
+    let data = {
+      id: Math.floor(Math.random() * 1000),
+      ...payload,
+    };
+    commit("setNotify", [data, ...state.notifies_store]);
+    dispatch("autoRemove", { time: 3000 });
   },
   removeNotify({ state, commit }, id) {
-    commit('setNotify', state.notifies_store.filter(notify => notify.id != id))
-  }
+    commit(
+      "setNotify",
+      state.notifies_store.filter((notify) => notify.id != id)
+    );
+  },
+  autoRemove({ state }, payload) {
+    let { time } = payload;
+    console.log("autoRemove", time);
+    let remove_notify = setInterval(function () {
+      if (state.notifies_store.length <= 0) {
+        clearInterval(remove_notify);
+      }
+
+      state.notifies_store.pop();
+    }, time);
+  },
 };
 
 export default {

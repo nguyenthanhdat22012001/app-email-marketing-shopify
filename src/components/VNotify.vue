@@ -1,6 +1,6 @@
 <template>
-  <transition name="slide-fade" @before-enter="onBeforeEnter" @enter="onEnter">
-    <div class="fixed top-5 right-5 z-50">
+  <div class="fixed top-5 right-5 z-50">
+    <TransitionGroup name="list-notify">
       <div
         v-for="getNotify in getNotifies"
         :key="getNotify.id"
@@ -13,60 +13,51 @@
           <img src="@/assets/icons/close.svg" alt="" />
         </a>
         <div class="flex gap-2 font-semibold">
-          <img src="@/assets/icons/check-circle.svg" alt="" />
-          <span class="text-success">Success</span>
+          <template v-if="getNotify.status == 'success'">
+            <img src="@/assets/icons/check-circle.svg" alt="" />
+          </template>
+          <span :class="classStatusText(getNotify.status)">{{
+            getNotify.title
+          }}</span>
         </div>
-        <div class="mt-2">Create campaign successfully</div>
+        <div class="mt-2">{{ getNotify.message }}</div>
       </div>
-    </div>
-  </transition>
+    </TransitionGroup>
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
- 
   methods: {
-    onBeforeEnter(el) {
-      let element_close = el.querySelector(".notify-close");
-      console.log("onBeforeEnter", element_close);
-      element_close.addEventListener("click", function () {
-        console.log("close");
-      });
-    },
-
-    onEnter(el, done) {
-      // call the done callback to indicate transition end
-      // optional if used in combination with CSS
-      console.log("onEnter", el);
-
-      done();
-    },
     ...mapActions({
       handleClose: "notifyStore/removeNotify",
     }),
+    classStatusText(status) {
+      let data = "text-success";
+      switch (status) {
+        case "success":
+          data = "text-success";
+          break;
+        case "error":
+          data = "text-red";
+          break;
+      }
+      return data;
+    },
   },
-
   computed: {
     ...mapGetters("notifyStore", ["getNotifies"]),
   },
 };
 </script>
 <style>
-/*
-  Enter and leave animations can use different
-  durations and timing functions.
-*/
-.slide-fade-enter-active {
-  transition: all 0.8s ease-out;
+.list-notify-enter-active,
+.list-notify-leave-active {
+  transition: all 0.5s ease-out;
 }
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
+.list-notify-enter-from,
+.list-notify-leave-to {
   opacity: 0;
+  transform: translateX(30px);
 }
 </style>
