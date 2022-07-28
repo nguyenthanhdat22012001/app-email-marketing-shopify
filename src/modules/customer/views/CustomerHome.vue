@@ -39,25 +39,25 @@ export default {
   },
   created() {
     this.fetchCustomer();
-    // this.subscribe()
+    this.subscribe()
   },
   mounted() {
-    this.increaseProgress = setInterval(() => {
-      this.progress += 2;
-    }, 50);
+    // this.increaseProgress = setInterval(() => {
+    //   this.progress += 2;
+    // }, 50);
   },
   methods: {
     ...mapActions({
       fetchCustomer: "customerStore/fetchCustomer",
     }),
-    subscribe() {
-      let pusher = new Pusher("daaf37d32accfb90ac37", { cluster: "ap1" });
-      pusher.subscribe("my-channel");
-      pusher.bind("my-event", (data) => {
-        console.log(data);
-        this.progress = data.message;
-        if (data.message == 100) {
-          pusher.unsubscribe("my-channel");
+    subscribe () {
+      let pusher = new Pusher('daaf37d32accfb90ac37', { cluster: 'ap1' })
+      pusher.subscribe('my-channel')
+      pusher.bind('my-event', data => {
+        console.log(data)
+        this.progress = Number(data.message)
+        if(data.message == 100){
+          pusher.unsubscribe('my-channel')
         }
       });
     },

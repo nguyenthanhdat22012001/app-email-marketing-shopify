@@ -4,48 +4,44 @@
       <img src="@/assets/icons/bars.svg" alt="" class="px-6" />
     </button>
     <div
-      class="user flex gap-1 items-center pl-[22px] py-5 px-6 cursor-pointer"
-      ref="hoverUser"
+      class="user flex gap-1 items-center pl-[22px] py-5 px-6 cursor-pointer relative"
       @click="toggleDropdownUser"
     >
       <img src="@/assets/icons/avatar-shop.png" />
       <p class="text-dark-gray leading-4 font-semibold">BaobaoStore</p>
+      <v-dropdown
+        v-model="isShowDropDown"
+        class="absolute bottom-1 right-2 translate-y-full"
+        id="dropdown-user"
+      >
+        <a href="#" class="text-dark"
+          ><img src="@/assets/icons/shopify.svg" alt="" />Back to Shopify</a
+        >
+        <a href="#" class="text-red"
+          ><img src="@/assets/icons/logout.svg" alt="" />Logout</a
+        >
+      </v-dropdown>
     </div>
-    <vue-drop-down-user
-      v-show="isShowDropDown"
-      class="absolute bottom-1 right-2 translate-y-full"
-      id="dropdown-user"
-    />
   </div>
 </template>
 
 <script>
-import VueDropDownUser from "./VueDropDownUser.vue";
-import {mapMutations} from "vuex";
+import VDropdown from "@/components/VDropDown.vue";
+import { mapMutations } from "vuex";
 export default {
   components: {
-    VueDropDownUser,
+    VDropdown,
   },
   data() {
     return {
       isShowDropDown: false,
     };
   },
-  created() {
-    window.addEventListener("click", this.checkClickOn);
-  },
-  beforeDestroy() {
-    window.removeEventListener("click", this.checkClickOn);
-  },
   methods: {
-    toggleDropdownUser(value) {
-      this.isShowDropDown = value;
+    toggleDropdownUser() {
+      this.isShowDropDown = !this.isShowDropDown;
     },
-    checkClickOn(event) {
-      if (!this.$refs.hoverUser.contains(event.target)) {
-        this.isShowDropDown = false;
-      }
-    },
+
     ...mapMutations(["toggle"]),
   },
 };
@@ -58,5 +54,14 @@ export default {
   content: "";
   height: 100%;
   transform: translateX(-22px);
+}
+#dropdown-user {
+  a {
+    font-weight: 500;
+    line-height: 24px;
+    display: flex;
+    gap: 8px;
+    padding: 8px 14px;
+  }
 }
 </style>
