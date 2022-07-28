@@ -11,41 +11,64 @@
       />
     </div>
     <div class="filter flex gap-[10px] items-center">
-      <div>
-        <v-select-input v-model="filterCreate">
-          <option value="">Create date</option>
-        </v-select-input>
-        <v-select-input v-model="filterSpent">
-          <option value="">Total spent</option>
-        </v-select-input>
-        <v-select-input v-model="filterOrder">
-          <option value="">Total order</option>
-        </v-select-input>
+      <div class="flex">
+        <v-date-range
+          prop_label="Create date"
+          @emitVDateRangeRange="(payload) => (filter_date = payload)"
+        />
+        <v-select-number-range
+          prop_label="Total spent"
+          @emitVSelectNumberRange="(payload) => (filterSpent = payload)"
+        />
+        <v-select-number-range
+          prop_label="Total order"
+          @emitVSelectNumberRange="(payload) => (filterSpent = payload)"
+        />
       </div>
-      <v-select-sort v-model="filterSort">
-        <option value="">Sort</option>
-      </v-select-sort>
+      <!-- select sort  -->
+      <v-select-type-check
+        prop_icon="sort"
+        prop_label="Sort"
+        @emitClearForm="filterSort = ''"
+      >
+        <v-input-radio
+          prop_label="Last created"
+          prop_input_value="Last created"
+          v-model="filterSort"
+        ></v-input-radio>
+        <v-input-radio
+          prop_label="First created"
+          prop_input_value="First created"
+          v-model="filterSort"
+        ></v-input-radio>
+      </v-select-type-check>
     </div>
   </div>
 </template>
 
 <script>
 import VInput from "@/components/VInput.vue";
-import VSelectInput from "@/components/VSelectInput.vue";
-import VSelectSort from "@/components/VSelectSort.vue";
+import VInputRadio from "@/components/VInputRadio.vue";
+import VSelectTypeCheck from "@/components/VSelectTypeCheck.vue";
+import VSelectNumberRange from "@/components/VSelectNumberRange.vue";
+import VDateRange from "@/components/VDateRange.vue";
+
 export default {
   components: {
     VInput,
-    VSelectInput,
-    VSelectSort,
+    VInputRadio,
+    VSelectTypeCheck,
+    VSelectNumberRange,
+    VDateRange,
   },
   data() {
     return {
       searchText: "",
       filterCreate: "",
       filterSort: "",
-      filterOrder: "",
-      filterSpent: "",
+      filterOrder: { from: "", to: "" },
+      filterSpent: { from: "", to: "" },
+      filter_date: { start: "", end: "" },
     };
   },
 };
