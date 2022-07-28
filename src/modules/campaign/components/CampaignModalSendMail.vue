@@ -1,3 +1,11 @@
+<!--  EX
+    <campaign-modal-send-mail
+      v-model="visible"
+      @emitCloseModal="handleCloseModal"
+    ></campaign-modal-send-mail>
+
+-->
+
 <template>
   <v-modal v-model="visible">
     <div class="w-[486px] pt-7 pr-6 pb-6 pl-[44px]">
@@ -16,7 +24,7 @@
         ></v-input>
       </div>
       <div class="mt-[59px] mb-[18px] flex justify-end gap-4">
-        <v-button class="py-[8px] px-9 text-3 font-medium">No, Cancel</v-button>
+        <v-button variant="secondary" class="py-[8px] px-9 text-3 font-medium" @click="$emit('emitCloseModal')">No, Cancel</v-button>
         <v-button variant="primary" class="py-[8px] px-9 text-3 font-medium"
           >Send</v-button
         >

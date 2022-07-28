@@ -62,6 +62,7 @@
             + Add variant
           </button>
         </campaign-input>
+        <campaign-customize-email></campaign-customize-email>
       </div>
       <div class="content--right flex-1 flex flex-col">
         <h1>Preview</h1>
@@ -79,12 +80,14 @@ import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import VCkeditor from "@/components/VCKEditor.vue";
 import CampaignInput from "../components/CampaignInput.vue";
+import CampaignCustomizeEmail from "../components/CampaignCustomizeEmail.vue";
 export default {
   components: {
     VButton,
     VInput,
     CampaignInput,
     VCkeditor,
+    CampaignCustomizeEmail,
   },
   data() {
     return {

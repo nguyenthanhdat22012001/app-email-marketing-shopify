@@ -1,6 +1,14 @@
 <template>
-  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
-    <campaign-modal-send-mail v-model="visible"></campaign-modal-send-mail>
+  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gra(y-light">
+    <!-- <campaign-modal-send-mail
+      v-model="visible"
+      @emitCloseModal="handleCloseModal"
+    ></campaign-modal-send-mail> -->
+      <campaign-modal-select-customer
+      v-model="visible"
+      @emitCloseModal="handleCloseModal"
+    >
+    </campaign-modal-select-customer>
     <div :class="{ progressing: progress <= 100 }">
       <v-progress-loading
         class="translate-y-full-180deg"
@@ -11,7 +19,10 @@
       <div class="flex justify-between w-full items-center">
         <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
         <div class="flex gap-[10px]">
-          <v-button variant="primary" @click="$router.push({name:'campaign/create'})">
+          <v-button
+            variant="primary"
+            @click="$router.push({ name: 'campaign/create' })"
+          >
             <img src="@/assets/icons/plus.svg" />
             Create new campaign
           </v-button>
@@ -34,21 +45,29 @@ import VButton from "@/components/VButton.vue";
 import VProgressLoading from "@/components/VProgressLoading.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
-import CampaignModalSendMail from "../components/CampaignModalSendMail.vue";
+// import CampaignModalSendMail from "../components/CampaignModalSendMail.vue";
+import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
+
 export default {
   components: {
     VButton,
     VProgressLoading,
     CampaignFilter,
     CampaignTable,
-    CampaignModalSendMail,
+    // CampaignModalSendMail,
+    CampaignModalSelectCustomer
   },
   data() {
     return {
       progress: 101,
       increaseProgress: null,
-      visible: true
+      visible: true,
     };
+  },
+  methods: {
+    handleCloseModal() {
+      this.visible = false;
+    },
   },
   mounted() {
     this.increaseProgress = setInterval(() => {

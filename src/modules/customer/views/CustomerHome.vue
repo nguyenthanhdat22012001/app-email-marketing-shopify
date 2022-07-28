@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Pusher from 'pusher-js'
+import Pusher from "pusher-js";
 
 import VProgressLoading from "@/components/VProgressLoading.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
@@ -46,21 +46,21 @@ export default {
       this.progress += 2;
     }, 50);
   },
-  methods:{
+  methods: {
     ...mapActions({
-      fetchCustomer:'customerStore/fetchCustomer'
+      fetchCustomer: "customerStore/fetchCustomer",
     }),
-    subscribe () {
-      let pusher = new Pusher('daaf37d32accfb90ac37', { cluster: 'ap1' })
-      pusher.subscribe('my-channel')
-      pusher.bind('my-event', data => {
-        console.log(data)
-        this.progress = data.message
-        if(data.message == 100){
-          pusher.unsubscribe('my-channel')
+    subscribe() {
+      let pusher = new Pusher("daaf37d32accfb90ac37", { cluster: "ap1" });
+      pusher.subscribe("my-channel");
+      pusher.bind("my-event", (data) => {
+        console.log(data);
+        this.progress = data.message;
+        if (data.message == 100) {
+          pusher.unsubscribe("my-channel");
         }
-      })
-    }
+      });
+    },
   },
   watch: {
     progress(value) {
