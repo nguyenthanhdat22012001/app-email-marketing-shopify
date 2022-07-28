@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="w-[200px] py-1 bg-white border border-solid rounded border-[#EBEBF0] shadow-sm-light"
+    class="w-[200px] bg-white border border-solid rounded border-[#EBEBF0] shadow-sm-light"
     v-if="isVisible"
     ref="dropdown"
   >
@@ -44,7 +44,6 @@ export default {
 nav {
   &::before {
     position: absolute;
-    content: "";
     width: 10px;
     height: 10px;
     background: #ffffff;
