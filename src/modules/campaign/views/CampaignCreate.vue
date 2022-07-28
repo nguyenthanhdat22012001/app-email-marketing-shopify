@@ -56,7 +56,11 @@
           <v-ckeditor v-model="emailFooter"></v-ckeditor>
           <campaign-variants></campaign-variants>
         </campaign-input>
-        <campaign-customize-email></campaign-customize-email>
+        <campaign-customize-email>
+          <campaign-banner-cover />
+          <campaign-background-customize-email />
+          <campaign-button-customize-email/>
+        </campaign-customize-email>
       </div>
       <div class="content--right flex-1">
         <campaign-preview
@@ -83,6 +87,10 @@ import CampaignInput from "../components/CampaignInput.vue";
 import CampaignCustomizeEmail from "../components/CampaignCustomizeEmail.vue";
 import CampaignVariants from "../components/CampaignVariants.vue";
 import CampaignPreview from "../components/CampaignPreview.vue";
+import CampaignBackgroundCustomizeEmail from "../components/CampaignBackgroundCustomizeEmail.vue";
+import CampaignBannerCover from "../components/CampaignBannerCover.vue";
+import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeEmail.vue";
+
 export default {
   components: {
     VButton,
@@ -92,6 +100,9 @@ export default {
     CampaignVariants,
     CampaignPreview,
     CampaignCustomizeEmail,
+    CampaignBackgroundCustomizeEmail,
+    CampaignBannerCover,
+    CampaignButtonCustomizeEmail,
   },
   data() {
     return {

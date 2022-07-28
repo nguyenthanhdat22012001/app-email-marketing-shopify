@@ -5,7 +5,7 @@
         <img src="@/assets/icons/color.svg" alt="" />
         <h4>Customize email</h4>
       </div>
-      <a>
+      <a @click="ontoggle()" class="cursor-pointer">
         <svg
           width="14"
           height="8"
@@ -21,6 +21,7 @@
       </a>
     </div>
 
+<<<<<<< HEAD
     <div class="accordion-body mt-[25px] flex gap-5 flex-col">
       <div class="accordion-content bg-[#F2F2F5] pt-4 pb-5 px-5 rounded">
         <h5 class="font-bold text-dark mb-[15px]">Banner cover</h5>
@@ -70,17 +71,27 @@
           </div>
         </div>
       </div>
+=======
+    <div
+      class="accordion-body flex gap-5 flex-col overflow-hidden h-0"
+      :class="is_open ? 'active mt-[25px]' : ''"
+    >
+      <slot></slot>
+>>>>>>> 370466d5b1750cd0831fe7ee923de6e74ec4be04
     </div>
   </div>
 </template>
 <script>
-import VButton from "@/components/VButton.vue";
-import VInput from "@/components/VInput.vue";
-
 export default {
-  components: {
-    VButton,
-    VInput,
+  data() {
+    return {
+      is_open: false,
+    };
+  },
+  methods: {
+    ontoggle() {
+      this.is_open = !this.is_open;
+    },
   },
   data(){
     return{
@@ -89,4 +100,11 @@ export default {
   }
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.accordion-body {
+  transition: height 0.5s ease;
+}
+.active {
+  height: 100%;
+}
+</style>
