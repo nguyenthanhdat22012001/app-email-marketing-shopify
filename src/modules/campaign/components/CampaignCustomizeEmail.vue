@@ -49,12 +49,12 @@
           <div class="flex-1">
             <span>Background color</span>
             <div class="flex items-center bg-white my-5">
-              <v-input
-                class="flex-1 border-0 py-4 px-[19px]"
-                type="text"
-                placeholder="FFFFFF"
-              ></v-input>
-              <span class="pr-[19px]">100%</span>
+              <input
+                type="color"
+                
+                v-model="backgroundColor"
+              />
+              <span class="pr-[19px]">{{backgroundColor}}</span>
             </div>
           </div>
           <div class="flex-1">
@@ -82,6 +82,11 @@ export default {
     VButton,
     VInput,
   },
+  data(){
+    return{
+      backgroundColor:'#FFFFFF'
+    }
+  }
 };
 </script>
 <style></style>

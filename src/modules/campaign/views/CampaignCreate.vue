@@ -44,7 +44,7 @@
         <campaign-input title="Subject">
           <v-input
             class="variant w-full p-3 text-black-light border border-light border-solid rounded"
-            v-model="subjectEmail"
+            v-model="emailSubject"
           />
           <campaign-variants></campaign-variants>
         </campaign-input>
@@ -53,13 +53,17 @@
           <campaign-variants></campaign-variants>
         </campaign-input>
         <campaign-input title="Email footer">
-          <v-ckeditor v-model="emailContentFooter"></v-ckeditor>
+          <v-ckeditor v-model="emailFooter"></v-ckeditor>
           <campaign-variants></campaign-variants>
         </campaign-input>
         <campaign-customize-email></campaign-customize-email>
       </div>
       <div class="content--right flex-1">
-        <campaign-preview></campaign-preview>
+        <campaign-preview
+          :email-content="emailContent"
+          :email-footer="emailFooter"
+          :email-subject="emailSubject"
+        ></campaign-preview>
       </div>
     </div>
     <div
@@ -95,15 +99,15 @@ export default {
       emailContent: `Hi ${this.createVariantText(
         "Customer_Last_name"
       )},Fed up with hopping around between Socialwidget and Shopify admin dashboard? Well, that ends now since we've just switched Socialwidget into an embedded app, allowing you to get access to and use it right in your admin panel.This is to ensure that we can provide you with the best in-app experience!`,
-      emailContentFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
+      emailFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
       isShowVariants: false,
-      subjectEmail: "We are giving away 5 months FREE to use the app",
+      emailSubject: "We are giving away 5 months FREE to use the app",
     };
   },
 
   methods: {
     createVariantText(text) {
-      return `<span style="background:#003084;color:#ffffff" class="variant">${text}</span>`;
+      return `<span style="border-radius:4px;padding:2px;background:#003084;color:#ffffff" class="variant">${text}</span>`;
     },
     showVariants() {
       this.isShowVariants = !this.isShowVariants;

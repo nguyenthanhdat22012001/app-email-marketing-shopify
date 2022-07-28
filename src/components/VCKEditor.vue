@@ -4,7 +4,8 @@
     :config="configEditor"
     :editor="editor"
     @ready="onReady"
-    class="-mt-[10px] "
+    @input="onEditorInput"
+    class="-mt-[10px]"
   ></ckeditor>
 </template>
 
@@ -35,28 +36,14 @@ export default {
           ],
         },
         resize_enabled: true,
-        allowedContent: {
-          "p h1": {
-            styles: "text-align",
-          },
-          a: {
-            attributes: "!href",
-          },
-          "strong em": true,
-          p: {
-            classes: "tip",
-          },
-          span: {
-            classes: "variant",
-          },
-        },
+        
       },
     };
   },
-
+  mounted() {},
   methods: {
     onReady(editor) {
-      // Insert the toolbar before the editable area.
+    
       const parent = editor.ui.getEditableElement().parentElement;
       if (!parent.querySelector(".ck-toolbar")) {
         editor.ui
@@ -67,13 +54,20 @@ export default {
           );
       }
     },
+    onEditorInput(data){
+      this.$emit("input",data)
+    }
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 .ck-editor__editable {
   min-height: 100px;
   border: 1px solid #ebebf0;
+}
+.ck-editor__editable span{
+  padding:2px;
+  border-radius:4px;
 }
 </style>

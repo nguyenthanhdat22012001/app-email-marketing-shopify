@@ -30,7 +30,7 @@ $time: .8s;
   transition: all $time;
   .vue-sidebar {
     width: 230px;
-    transition: all $time;
+    transition: width $time;
     .logo-text,
     .nav-text {
       opacity: 1;
@@ -46,10 +46,9 @@ $time: .8s;
   padding-left: 66px;
   overflow: hidden;
   transition: all $time;
-
   .vue-sidebar {
     width: 66px;
-    transition: all $time;
+    transition: width $time;
     .logo-text,
     .nav-text {
       opacity: 0;
@@ -60,4 +59,5 @@ $time: .8s;
     }
   }
 }
+
 </style>

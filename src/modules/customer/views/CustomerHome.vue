@@ -8,7 +8,7 @@
     />
     <div
       class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 shadow-content"
-      v-show="progress >= 100"
+      v-else
     >
       <customer-filter />
       <customer-content />
