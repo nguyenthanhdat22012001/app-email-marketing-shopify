@@ -49,21 +49,23 @@
           >
             {{ item }}
           </div>
-          <button
-            class="w-fit bg-white border border-solid border-light py-2 px-4 rounded hover:bg-[#ebebeb] font-medium text-sm text-muted"
-          >
-            + Add variant
-          </button>
+          <campaign-variants></campaign-variants>
         </campaign-input>
         <campaign-input title="Email Content">
           <v-ckeditor v-model="emailContent"></v-ckeditor>
-
-          <button
-            class="w-fit bg-white border border-solid border-light py-2 px-4 rounded hover:bg-[#ebebeb] font-medium text-sm text-muted"
-          >
-            + Add variant
-          </button>
+          <campaign-variants></campaign-variants>
         </campaign-input>
+        <campaign-input title="Email footer">
+          <v-ckeditor v-model="emailContentFooter"></v-ckeditor>
+          <campaign-variants></campaign-variants>
+        </campaign-input>
+        <div class="flex bg-white px-6 py-5 justify-between">
+          <div class="left text-sapphire flex gap-2 font-medium text-base">
+            <img src="@/assets/icons/palette.svg" alt="" />
+            Customize email
+          </div>
+          <img src="@/assets/icons/angle-right.svg" alt="" />
+        </div>
       </div>
       <div class="content--right flex flex-col w-3/5">
         <h1>Preview</h1>
@@ -83,28 +85,42 @@ import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import VCkeditor from "@/components/VCKEditor.vue";
 import CampaignInput from "../components/CampaignInput.vue";
+import CampaignVariants from "../components/CampaignVariants.vue";
 export default {
   components: {
     VButton,
     VInput,
     CampaignInput,
     VCkeditor,
+    CampaignVariants,
   },
   data() {
     return {
       campaignName: "",
       emailContent: `Hi ${this.createVariantText(
-        "customerName"
-      )},Fed up with hopping around between Socialwidget and Shopify admin dashboard? Well, that ends now since we’ve just switched Socialwidget into an embedded app, allowing you to get access to and use it right in your admin panel.This is to ensure that we can provide you with the best in-app experience!`,
+        "Customer_Last_name"
+      )},Fed up with hopping around between Socialwidget and Shopify admin dashboard? Well, that ends now since we've just switched Socialwidget into an embedded app, allowing you to get access to and use it right in your admin panel.This is to ensure that we can provide you with the best in-app experience!`,
+      emailContentFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
       variant: ["We are giving away 5 months FREE to use the app"],
+      isShowVariants: false,
     };
   },
+
   methods: {
     createVariantText(text) {
-      return `<span style="background:#003084;border-radius:3px;color:#ffffff;font-weight: 700;line-height: 12px;font-size: 10px;letter-spacing: 0.4px;">${text}</span>`;
+      return `<span style="background:#003084;color:#ffffff" class="variant">${text}</span>`;
+    },
+    showVariants() {
+      this.isShowVariants = !this.isShowVariants;
+      console.log(this.isShowVariants);
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ck-content span {
+  background: #003084;
+  color: #ffffff;
+}
+</style>

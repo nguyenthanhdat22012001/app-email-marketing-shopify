@@ -3,6 +3,7 @@
     class="vue-modal"
     :class="{ 'is-active': visible }"
     @click.self="onClickBackdrop"
+    @closeModal="onClickBackdrop"
   >
     <div class=" top-0 inline-block align-middle  bg-white text-left rounded-2xl">
       <slot> </slot>
@@ -64,6 +65,7 @@ export default {
   mounted() {
     let body = document.querySelector("body");
     body.appendChild(this.$el);
+    
   },
   beforeDestroy() {
     this.$el.remove();
