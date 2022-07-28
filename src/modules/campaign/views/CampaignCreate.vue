@@ -42,13 +42,10 @@
           </button>
         </campaign-input>
         <campaign-input title="Subject">
-          <div
+          <v-input
             class="variant w-full p-3 text-black-light border border-light border-solid rounded"
-            v-for="(item, index) in variant"
-            :key="index"
-          >
-            {{ item }}
-          </div>
+            v-model="subjectEmail"
+          />
           <campaign-variants></campaign-variants>
         </campaign-input>
         <campaign-input title="Email Content">
@@ -61,12 +58,12 @@
         </campaign-input>
         <campaign-customize-email></campaign-customize-email>
       </div>
-      <div class="content--right flex flex-col w-[55%]">
-        <h1>Preview</h1>
+      <div class="content--right flex-1">
+        <campaign-preview></campaign-preview>
       </div>
     </div>
     <div
-      class="campaign-create-page--footer flex justify-end border-t border-t-light border-t-solid pt-5 mx-5 items-end"
+      class="campaign-create-page--footer flex justify-end gap-4 border-t border-t-light border-t-solid pt-5 mx-5 items-end"
     >
       <v-button variant="secondary" class="py-1 px-5">Cancel</v-button>
       <v-button variant="primary" class="py-1 px-7">Save</v-button>
@@ -81,6 +78,7 @@ import VCkeditor from "@/components/VCKEditor.vue";
 import CampaignInput from "../components/CampaignInput.vue";
 import CampaignCustomizeEmail from "../components/CampaignCustomizeEmail.vue";
 import CampaignVariants from "../components/CampaignVariants.vue";
+import CampaignPreview from "../components/CampaignPreview.vue";
 export default {
   components: {
     VButton,
@@ -88,6 +86,7 @@ export default {
     CampaignInput,
     VCkeditor,
     CampaignVariants,
+    CampaignPreview,
     CampaignCustomizeEmail,
   },
   data() {
@@ -97,8 +96,8 @@ export default {
         "Customer_Last_name"
       )},Fed up with hopping around between Socialwidget and Shopify admin dashboard? Well, that ends now since we've just switched Socialwidget into an embedded app, allowing you to get access to and use it right in your admin panel.This is to ensure that we can provide you with the best in-app experience!`,
       emailContentFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
-      variant: ["We are giving away 5 months FREE to use the app"],
       isShowVariants: false,
+      subjectEmail: "We are giving away 5 months FREE to use the app",
     };
   },
 
@@ -108,7 +107,6 @@ export default {
     },
     showVariants() {
       this.isShowVariants = !this.isShowVariants;
-      console.log(this.isShowVariants);
     },
   },
 };

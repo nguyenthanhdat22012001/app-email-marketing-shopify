@@ -11,7 +11,7 @@
       <p class="text-dark-gray leading-4 font-semibold">BaobaoStore</p>
       <v-dropdown
         v-model="isShowDropDown"
-        class="absolute bottom-1 right-2 translate-y-full"
+        class="absolute before:content-[''] bottom-1 right-2 translate-y-full"
         id="dropdown-user"
       >
         <a href="#" class="text-dark"
@@ -47,7 +47,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped VueDropDownUser>
+<style lang="scss" scoped >
 .user::before {
   position: absolute;
   border: 1px solid #ebebf0;
