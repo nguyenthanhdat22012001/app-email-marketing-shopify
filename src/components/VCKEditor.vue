@@ -40,7 +40,7 @@ export default {
       uiColor: "#333",
     };
   },
-  mounted() {},
+
   methods: {
     onReady(editor) {
       const parent = editor.ui.getEditableElement().parentElement;
@@ -48,6 +48,11 @@ export default {
       toolbarStyle.backgroundColor = "#F7F7F9";
       toolbarStyle.border = "1px solid #EBEBF0";
 
+      const node = document.createElement('span');
+      node.innerText="hello"
+      node.style.color = 'red'
+      editor.ui.getEditableElement().appendChild(node)
+      console.log(node)
       if (!parent.querySelector(".ck-toolbar")) {
         editor.ui
           .getEditableElement()

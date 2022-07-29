@@ -44,7 +44,6 @@
         <td>
           <v-checkbox
             scope="col"
-            v-model="selectedCustomer"
             :prop_input_value="customer.id"
             class="py-[22px] pl-[30px] translate-y-2/4"
             @input="handleSelect"
@@ -65,43 +64,58 @@
 import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   components: {
     VTable,
     VCheckbox,
     VAvatar,
   },
+  props: {
+    value: Array,
+  },
   data() {
     return {
-      selectedCustomer: [],
       selectedAll: false,
     };
   },
-
+  mounted() {
+    this.fetchCustomer();
+  },
   methods: {
     handleSelectAll() {
       if (this.selectedAll) {
-        this.selectedCustomer = this.customerList.map((item) => item.id);
+        this.setCustomersSelected((state) => {
+          state.customersSelected = this.customerList.map((item) => item.id);
+        });
       } else {
-        this.selectedCustomer = [];
+        this.setCustomersSelected((state) => {
+          state.customersSelected = [];
+        });
       }
     },
-    handleSelect() {
-      if (this.selectedCustomer.length) {
+    handleSelect(id) {
+      if (this.customersSelected.length) {
         this.selectedAll = true;
       } else {
         this.selectedAll = false;
       }
     },
+    ...mapMutations({
+      setCustomersSelected: "campaignStore/setCustomersSelected",
+    }),
+    ...mapActions({
+      fetchCustomer: "customerStore/fetchCustomer",
+    }),
   },
   computed: {
     ...mapGetters({
       customerList: "customerStore/getCustomer",
+      customersSelected: "campaignStore/getCustomersSelected",
     }),
     countSelectedCustomer: {
       get() {
-        return this.selectedCustomer.length;
+        return this.customersSelected.length;
       },
     },
   },

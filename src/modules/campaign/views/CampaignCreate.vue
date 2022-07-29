@@ -37,6 +37,7 @@
         <campaign-input title="Send to customer?">
           <button
             class="w-full flex justify-center items-center border border-dashed border-light bg-[#FAFAFC] text-primary text-sm py-[13px]"
+            @click="visibleCustomerEmailModal = true"
           >
             + Add customer
           </button>
@@ -79,6 +80,11 @@
       <v-button variant="secondary" class="py-1 px-5">Cancel</v-button>
       <v-button variant="primary" class="py-1 px-7">Save</v-button>
     </div>
+    <campaign-modal-select-customer
+      v-model="visibleCustomerEmailModal"
+      @emitCloseModal="handleCloseModal"
+    >
+    </campaign-modal-select-customer>
   </div>
 </template>
 
@@ -93,6 +99,7 @@ import CampaignPreview from "../components/CampaignPreview.vue";
 import CampaignBackgroundCustomizeEmail from "../components/CampaignBackgroundCustomizeEmail.vue";
 import CampaignBannerCover from "../components/CampaignBannerCover.vue";
 import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeEmail.vue";
+import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 export default {
   components: {
@@ -106,11 +113,12 @@ export default {
     CampaignBackgroundCustomizeEmail,
     CampaignBannerCover,
     CampaignButtonCustomizeEmail,
+    CampaignModalSelectCustomer,
   },
   data() {
     return {
       campaignName: "",
-      emailContent: `Hi ${this.createVariantText(
+      emailContent: `Hi em ${this.createVariantText(
         "Customer_Last_name"
       )},Fed up with hopping around between Socialwidget and Shopify admin dashboard? Well, that ends now since we've just switched Socialwidget into an embedded app, allowing you to get access to and use it right in your admin panel.This is to ensure that we can provide you with the best in-app experience!`,
       emailFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
@@ -130,6 +138,7 @@ export default {
         radius: 4,
         label: "TRY FREE NOW",
       },
+      visibleCustomerEmailModal: false,
     };
   },
 
@@ -139,6 +148,9 @@ export default {
     },
     showVariants() {
       this.isShowVariants = !this.isShowVariants;
+    },
+    handleCloseModal() {
+      this.visibleCustomerEmailModal = false;
     },
   },
 };
