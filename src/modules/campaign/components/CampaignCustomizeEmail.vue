@@ -1,11 +1,11 @@
 <template>
   <div class="accordion w-[100%] bg-white py-[19px] px-[25px]">
-    <div class="accordion-header flex justify-between items-center font-medium">
+    <div class="accordion-header cursor-pointer flex justify-between items-center font-medium" @click="ontoggle()">
       <div class="flex gap-2 items-center text-sapphire">
         <img src="@/assets/icons/color.svg" alt="" />
         <h4>Customize email</h4>
       </div>
-      <a @click="ontoggle()" class="cursor-pointer">
+      <a>
         <svg
           width="14"
           height="8"
@@ -20,64 +20,11 @@
         </svg>
       </a>
     </div>
-
-<<<<<<< HEAD
-    <div class="accordion-body mt-[25px] flex gap-5 flex-col">
-      <div class="accordion-content bg-[#F2F2F5] pt-4 pb-5 px-5 rounded">
-        <h5 class="font-bold text-dark mb-[15px]">Banner cover</h5>
-        <div
-          class="flex justify-between items-center bg-white py-[10px] pl-[10px] pr-[18px] rounded"
-        >
-          <div class="flex gap-5 items-center">
-            <img
-              class="w-[89px] h-[60px] object-cover"
-              src="https://www.w3schools.com/w3css/img_lights.jpg"
-              alt=""
-            />
-            <span class="text-xs"
-              >Accept JPG, PNG, JPEG, GIF file with max size of 5MB</span
-            >
-          </div>
-          <v-button variant="primary" class="py-[9px] px-4 font-medium">
-            Change
-          </v-button>
-        </div>
-      </div>
-
-      <div class="accordion-content bg-[#F2F2F5] pt-4 pb-5 px-5 rounded">
-        <h5 class="font-bold text-dark mb-[15px]">Background</h5>
-        <div class="flex items-center gap-5 py-[10px] pl-[10px] pr-[18px]">
-          <div class="flex-1">
-            <span>Background color</span>
-            <div class="flex items-center bg-white my-5">
-              <input
-                type="color"
-                
-                v-model="backgroundColor"
-              />
-              <span class="pr-[19px]">{{backgroundColor}}</span>
-            </div>
-          </div>
-          <div class="flex-1">
-            <span>Background color</span>
-            <div class="flex items-center bg-white my-5">
-              <v-input
-                class="flex-1 border-0 py-4 px-4"
-                type="text"
-                placeholder="FFFFFF"
-              ></v-input>
-              <span class="pr-4 pl-[18px]">100%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-=======
     <div
       class="accordion-body flex gap-5 flex-col overflow-hidden h-0"
       :class="is_open ? 'active mt-[25px]' : ''"
     >
       <slot></slot>
->>>>>>> 370466d5b1750cd0831fe7ee923de6e74ec4be04
     </div>
   </div>
 </template>
@@ -86,6 +33,7 @@ export default {
   data() {
     return {
       is_open: false,
+      backgroundColor: "#FFFFFF",
     };
   },
   methods: {
@@ -93,11 +41,6 @@ export default {
       this.is_open = !this.is_open;
     },
   },
-  data(){
-    return{
-      backgroundColor:'#FFFFFF'
-    }
-  }
 };
 </script>
 <style lang="scss" scoped>

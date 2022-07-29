@@ -44,29 +44,34 @@
         <campaign-input title="Subject">
           <v-input
             class="variant w-full p-3 text-black-light border border-light border-solid rounded"
-            v-model="emailSubject"
+            v-model="email_subject"
           />
           <campaign-variants></campaign-variants>
         </campaign-input>
         <campaign-input title="Email Content">
-          <v-ckeditor v-model="emailContent"></v-ckeditor>
-          <campaign-variants></campaign-variants>
+          <v-tiptap-editor
+            prop_open_variant
+            :prop_email_content="email_content"
+            @emitUpdateEmailContent="(value) => (email_content = value)"
+          ></v-tiptap-editor>
         </campaign-input>
         <campaign-input title="Email footer">
-          <v-ckeditor v-model="emailFooter"></v-ckeditor>
-          <campaign-variants></campaign-variants>
+          <v-tiptap-editor
+            :prop_email_content="email_footer"
+            @emitUpdateEmailContent="(value) => (email_content = value)"
+          ></v-tiptap-editor>
         </campaign-input>
         <campaign-customize-email>
           <campaign-banner-cover />
           <campaign-background-customize-email />
-          <campaign-button-customize-email/>
+          <campaign-button-customize-email />
         </campaign-customize-email>
       </div>
       <div class="content--right flex-1">
         <campaign-preview
-          :email-content="emailContent"
-          :email-footer="emailFooter"
-          :email-subject="emailSubject"
+          :email-content="email_content"
+          :email-footer="email_footer"
+          :email-subject="email_subject"
         ></campaign-preview>
       </div>
     </div>
@@ -82,7 +87,7 @@
 <script>
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
-import VCkeditor from "@/components/VCKEditor.vue";
+import VTiptapEditor from "@/components/VTiptapEditor.vue";
 import CampaignInput from "../components/CampaignInput.vue";
 import CampaignCustomizeEmail from "../components/CampaignCustomizeEmail.vue";
 import CampaignVariants from "../components/CampaignVariants.vue";
@@ -96,7 +101,7 @@ export default {
     VButton,
     VInput,
     CampaignInput,
-    VCkeditor,
+    VTiptapEditor,
     CampaignVariants,
     CampaignPreview,
     CampaignCustomizeEmail,
@@ -107,12 +112,10 @@ export default {
   data() {
     return {
       campaignName: "",
-      emailContent: `Hi ${this.createVariantText(
-        "Customer_Last_name"
-      )},Fed up with hopping around between Socialwidget and Shopify admin dashboard? Well, that ends now since we've just switched Socialwidget into an embedded app, allowing you to get access to and use it right in your admin panel.This is to ensure that we can provide you with the best in-app experience!`,
-      emailFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
+      email_content: "ádasdsa",
+      email_footer: `Copyright 2010-2022 Firegroup, all rights reserved.`,
       isShowVariants: false,
-      emailSubject: "We are giving away 5 months FREE to use the app",
+      email_subject: "We are giving away 5 months FREE to use the app",
     };
   },
 

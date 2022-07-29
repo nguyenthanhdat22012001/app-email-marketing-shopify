@@ -27,17 +27,6 @@ export default {
   font-weight: 400;
   line-height: 24px;
 }
-<<<<<<< HEAD
-.ck .ck-button .ck-on {
-  background: #e2eaf4;
-  color: #3d56a6;
-}
-.ck-editor .ck-toolbar {
-  background: #f7f7f9;
-  border: 1px solid #ebebf0;
-  border-radius: 4px 4px 0px 0px;
-  display: none;
-=======
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -48,6 +37,5 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
->>>>>>> 370466d5b1750cd0831fe7ee923de6e74ec4be04
 }
 </style>
