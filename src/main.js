@@ -10,7 +10,6 @@ Vue.config.productionTip = false
 
 Vue.use(CKEditor);
 
-
 new Vue({
   router,
   store,

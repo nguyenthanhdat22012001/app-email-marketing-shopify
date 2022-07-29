@@ -8,8 +8,8 @@
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^34.2.0",
     "@ckeditor/ckeditor5-build-decoupled-document": "^34.2.0",
+    "@ckeditor/ckeditor5-html-support": "^34.2.0",
     "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "core-js": "^3.8.3",
     "pusher-js": "^7.3.0",

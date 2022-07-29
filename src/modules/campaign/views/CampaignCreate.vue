@@ -57,9 +57,9 @@
           <campaign-variants></campaign-variants>
         </campaign-input>
         <campaign-customize-email>
-          <campaign-banner-cover />
-          <campaign-background-customize-email />
-          <campaign-button-customize-email/>
+          <campaign-banner-cover v-model="emailBanner" />
+          <campaign-background-customize-email v-model="emailBackground" />
+          <campaign-button-customize-email v-model="emailButton" />
         </campaign-customize-email>
       </div>
       <div class="content--right flex-1">
@@ -67,6 +67,9 @@
           :email-content="emailContent"
           :email-footer="emailFooter"
           :email-subject="emailSubject"
+          :email-banner="emailBanner"
+          :email-background="emailBackground"
+          :email-button="emailButton"
         ></campaign-preview>
       </div>
     </div>
@@ -113,6 +116,20 @@ export default {
       emailFooter: `Copyright 2010-2022 Firegroup, all rights reserved.`,
       isShowVariants: false,
       emailSubject: "We are giving away 5 months FREE to use the app",
+      emailBanner: "",
+      emailBackground: {
+        color: "#ffffff",
+        opacity: 100,
+        radius: "3",
+      },
+      emailButton: {
+        backgroundColor: "#003084",
+        backgroundOpacity: 100,
+        textColor: "#ffffff",
+        textOpacity: 100,
+        radius: 4,
+        label: "TRY FREE NOW",
+      },
     };
   },
 

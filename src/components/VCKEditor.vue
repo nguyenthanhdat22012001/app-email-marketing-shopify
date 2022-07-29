@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document/build/ckeditor";
 export default {
   props: {
     value: String,
@@ -36,15 +36,18 @@ export default {
           ],
         },
         resize_enabled: true,
-        
       },
+      uiColor: "#333",
     };
   },
   mounted() {},
   methods: {
     onReady(editor) {
-    
       const parent = editor.ui.getEditableElement().parentElement;
+      const toolbarStyle = editor.ui.view.toolbar.element.style;
+      toolbarStyle.backgroundColor = "#F7F7F9";
+      toolbarStyle.border = "1px solid #EBEBF0";
+
       if (!parent.querySelector(".ck-toolbar")) {
         editor.ui
           .getEditableElement()
@@ -53,21 +56,27 @@ export default {
             editor.ui.getEditableElement()
           );
       }
+
     },
-    onEditorInput(data){
-      this.$emit("input",data)
-    }
+    onEditorInput(data) {
+      this.$emit("input", data);
+    },
   },
 };
 </script>
 
 <style lang="scss" scope>
-.ck-editor__editable {
+.ck.ck-editor__editable_inline {
   min-height: 100px;
   border: 1px solid #ebebf0;
+  border-top-left-radius: 0px;
 }
-.ck-editor__editable span{
-  padding:2px;
-  border-radius:4px;
+
+.ck-editor__editable span {
+  padding: 2px;
+  border-radius: 4px;
+}
+.ck-button {
+  color: red;
 }
 </style>

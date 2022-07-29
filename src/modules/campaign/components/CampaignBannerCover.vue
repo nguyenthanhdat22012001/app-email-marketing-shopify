@@ -37,12 +37,14 @@ export default {
   data() {
     return {
       url: null,
+      value: String,
     };
   },
   methods: {
     onFileChange(e) {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
+      this.$emit("input", this.url);
     },
   },
 };

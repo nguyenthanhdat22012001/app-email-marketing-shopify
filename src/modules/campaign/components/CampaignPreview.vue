@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-[25px] h-full ">
+  <div class="flex flex-col gap-[25px] h-full">
     <div class="preview-head flex justify-between items-center">
       <h1 class="font-bold text-lg lead-5">Preview</h1>
       <v-button class="flex gap-[5px]">
@@ -35,21 +35,20 @@
         </div>
       </div>
       <div class="sticky top-5 flex flex-col gap-5" ref="sticky">
-        <div class="preview-content rounded">
-          <img
-            src="@/assets/images/image-preview.png"
-            alt=""
-            class="w-full object-cover"
-          />
+        <div
+          class="preview-content overflow-hidden"
+          :style="'border-radius:' + emailBackground.radius + 'px'"
+        >
+          <img :src="emailBanner" alt="" class="w-full object-cover" />
           <div
             class="preview-email-content bg-white pt-7 pb-9 px-[30px] flex flex-col gap-[30px]"
+            :style="'background-color:' + backgroundColor"
           >
-            <p v-html="emailContent">
-              
-            </p>
+            <p class="email--content" v-html="emailContent"></p>
             <v-button
               class="w-full justify-center font-bold text-sm lead-[18px]"
-              >TRY FREE NOW</v-button
+              :style="styleButton()"
+              >{{ emailButton.label }}</v-button
             >
           </div>
         </div>
@@ -75,8 +74,53 @@ export default {
     emailSubject: String,
     emailContent: String,
     emailFooter: String,
+    emailBanner: String,
+    emailBackground: Object,
+    emailButton: Object,
+  },
+  methods: {
+    hexToRgbA: function (hex, alpha) {
+      let c;
+      const alphaParse = alpha / 100;
+      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split("");
+        if (c.length == 3) {
+          c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c = "0x" + c.join("");
+        return (
+          "rgba(" +
+          [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") +
+          "," +
+          alphaParse +
+          ")"
+        );
+      }
+    },
+    styleButton() {
+      return `background:${this.emailButton.backgroundColor};color:${this.emailButton.textColor};border-radius:${this.emailButton.radius}px`;
+    },
+  },
+  computed: {
+    backgroundColor() {
+      console.log(
+        this.hexToRgbA(this.emailBackground.color, this.emailBackground.opacity)
+      );
+      return this.hexToRgbA(
+        this.emailBackground.color,
+        this.emailBackground.opacity
+      );
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.email--content {
+  p {
+    color: red;
+    padding: 2px;
+    border-radius: 4px;
+  }
+}
+</style>
