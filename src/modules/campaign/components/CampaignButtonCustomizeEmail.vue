@@ -12,6 +12,7 @@
               type="text"
               placeholder="TRY FREE NOW"
               class="w-[100%] focus:outline-0 py-[1px]"
+              v-model="emailButton.label"
             />
           </div>
         </div>
@@ -23,7 +24,11 @@
           <div
             class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input type="number" class="w-[100%] focus:outline-0 py-[1px]" />
+            <input
+              type="number"
+              class="w-[100%] focus:outline-0 py-[1px]"
+              v-model="emailButton.radius"
+            />
           </div>
           <span class="w-[40px] text-center text-xs">Px</span>
         </div>
@@ -37,10 +42,25 @@
           <div
             class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input type="color" id="color" />
-            <label for="color" class="text-xs text-black-light">FFFFFF</label>
+            <input
+              type="color"
+              id="color"
+              v-model="emailButton.backgroundColor"
+            />
+            <input
+              class="text-xs text-black-light outline-none w-full uppercase"
+              v-model="emailButton.backgroundColor"
+            />
           </div>
-          <span class="w-[40px] text-center text-xs">100%</span>
+          <div class="w-[50px] flex justify-center">
+            <input
+              min="1"
+              max="100"
+              v-model="emailButton.backgroundOpacity"
+              type="number"
+              class="w-[24px] text-center text-xs outline-none"
+            />%
+          </div>
         </div>
       </div>
       <div class="inline-flex flex-1 flex-col gap-[10px]">
@@ -49,16 +69,41 @@
           <div
             class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input type="color" id="color" />
-            <label for="color" class="text-xs text-black-light">FFFFFF</label>
+            <input type="color" id="color" v-model="emailButton.textColor" />
+            <input
+              class="text-xs text-black-light outline-none w-full uppercase"
+              v-model="emailButton.textColor"
+            />
           </div>
-          <span class="w-[40px] text-center text-xs">100%</span>
+          <div class="w-[50px] flex justify-center">
+            <input
+              min="1"
+              max="100"
+              v-model="emailButton.textOpacity"
+              type="number"
+              class="w-[24px] text-center text-xs outline-none"
+            />%
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  props: {
+    value: Object,
+  },
+  computed: {
+    emailButton: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit("input", val);
+      },
+    },
+  },
+};
 </script>
 <style lang=""></style>

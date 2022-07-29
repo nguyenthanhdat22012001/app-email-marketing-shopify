@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scope>
-$time: .8s;
+$time: 0.8s;
 .no-toggle {
   padding-left: 230px;
   transition: all $time;

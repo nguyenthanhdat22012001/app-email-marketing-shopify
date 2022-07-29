@@ -4,6 +4,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 import customerStore from "./customerStore";
 import notifyStore from "./notifyStore";
+import campaignStore from "./campaignStore";
 export default new Vuex.Store({
   state: {
     isToggle: false,
@@ -21,6 +22,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     customerStore,
+    campaignStore,
     notifyStore,
   },
 });

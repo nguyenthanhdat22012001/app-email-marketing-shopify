@@ -7,11 +7,14 @@
 -->
 <template>
   <v-modal v-model="visible">
-    <div class="relative w-[960px] pt-[30px] pb-[18px] ">
+    <div class="relative w-[960px] pt-[30px] pb-[18px]">
       <h2 class="pr-[22px] pl-[30px] text-2xl font-semibold text-dark">
         Select customers to send email
       </h2>
-      <a class="absolute cursor-pointer top-0 right-0 pt-6 pr-[22px]"  @click="$emit('emitCloseModal')">
+      <a
+        class="absolute cursor-pointer top-0 right-0 pt-6 pr-[22px]"
+        @click="$emit('emitCloseModal')"
+      >
         <img src="@/assets/icons/close.svg" alt="" />
       </a>
       <div
@@ -24,10 +27,10 @@
         />
       </div>
       <div class="mt-[30px]">
-        <campaign-table-modal-select/>
+        <campaign-table-modal-select />
       </div>
       <div class="pr-[22px] pl-[30px] mt-6 flex justify-between items-center">
-        <div class="text-gray-light">Customers has been selected: 4</div>
+        <div class="text-gray-light">Customers has been selected: {{customersSelected.length}}</div>
         <div class="flex">
           <v-button
             variant="secondary"
@@ -62,6 +65,8 @@
   </v-modal>
 </template>
 <script>
+import { mapGetters } from "vuex";
+
 import VModal from "@/components/VModal.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
@@ -88,6 +93,9 @@ export default {
         this.$emit("input", value);
       },
     },
+    ...mapGetters({
+      customersSelected:'campaignStore/getCustomersSelected'
+    }),
   },
 };
 </script>
