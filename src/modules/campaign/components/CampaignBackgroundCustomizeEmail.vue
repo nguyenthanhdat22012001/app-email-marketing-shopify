@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="accordion-content bg-[#F2F2F5] pt-4 pb-5 px-5 rounded">
     <h5 class="font-bold text-dark mb-[15px]">Background</h5>
     <div class="flex gap-4">
@@ -25,19 +25,16 @@
         </div>
       </div>
       <div class="inline-flex flex-1 flex-col gap-[10px]">
-        <span class="text-dark">Radius</span>
-        <div class="bg-white flex items-center">
-          <div
-            class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
-          >
-            <input
-              type="number"
-              class="w-[100%] focus:outline-0 py-[1px]"
-              v-model="background.radius"
-            />
-          </div>
-          <span class="w-[40px] text-center text-xs">Px</span>
+        <div
+          class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
+        >
+          <input
+            type="number"
+            class="w-[100%] focus:outline-0 py-[1px]"
+            v-model="background.radius"
+          />
         </div>
+        <span class="w-[40px] text-center text-xs">Px</span>
       </div>
     </div>
   </div>
@@ -47,7 +44,6 @@ export default {
   props: {
     value: Object,
   },
-
   computed: {
     background: {
       get() {

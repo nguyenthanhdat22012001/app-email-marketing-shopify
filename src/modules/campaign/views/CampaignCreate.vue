@@ -59,13 +59,13 @@
         <campaign-input title="Email footer">
           <v-tiptap-editor
             :prop_email_content="email_footer"
-            @emitUpdateEmailContent="(value) => (email_content = value)"
+            @emitUpdateEmailContent="(value) => (email_footer = value)"
           ></v-tiptap-editor>
         </campaign-input>
         <campaign-customize-email>
-          <campaign-banner-cover />
-          <campaign-background-customize-email />
-          <campaign-button-customize-email />
+          <campaign-banner-cover v-model="emailBanner" />
+          <campaign-background-customize-email v-model="emailBackground" />
+          <campaign-button-customize-email v-model="emailButton" />
         </campaign-customize-email>
       </div>
       <div class="content--right flex-1">
@@ -73,6 +73,9 @@
           :email-content="email_content"
           :email-footer="email_footer"
           :email-subject="email_subject"
+          :email-banner="emailBanner"
+          :email-background="emailBackground"
+          :email-button="emailButton"
         ></campaign-preview>
       </div>
     </div>
@@ -125,6 +128,20 @@ export default {
       isShowVariants: false,
       email_subject: "We are giving away 5 months FREE to use the app",
       visibleCustomerEmailModal: false,
+      emailBanner: "",
+      emailBackground: {
+        color: "#ffffff",
+        opacity: 100,
+        radius: "3",
+      },
+      emailButton: {
+        backgroundColor: "#003084",
+        backgroundOpacity: 100,
+        textColor: "#ffffff",
+        textOpacity: 100,
+        radius: 4,
+        label: "TRY FREE NOW",
+      },
     };
   },
 
@@ -142,9 +159,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.ck-content span {
-  background: #003084;
-  color: #ffffff;
-}
-</style>
+<style lang="scss" scoped></style>
