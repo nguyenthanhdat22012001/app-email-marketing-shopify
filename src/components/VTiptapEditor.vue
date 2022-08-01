@@ -240,7 +240,8 @@
 import StarterKit from "@tiptap/starter-kit";
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import Underline from "@tiptap/extension-underline";
-import Heading from "@tiptap/extension-heading";
+// import Heading from "@tiptap/extension-heading";
+
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import BulletList from "@tiptap/extension-bullet-list";
@@ -249,6 +250,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import NodeView from "@/custom_extensions/variant/index";
 import FontSize from "@/custom_extensions/fontSize/index";
+import HeadingCustom from "@/custom_extensions/heading/index";
 import VDropdownVariant from "./VDropdownVariant.vue";
 import VSelectEditor from "./VSelectEditor.vue";
 
@@ -279,25 +281,17 @@ export default {
     onClickVariant(value) {
       this.editor.chain().focus().setVariant({ id: value }).run();
     },
-    setFontSizeHeading(tag_heading){
-      let arr_heading = [
-        {
-          level: 1,
-          font_size: 32
-        }
-      ]
-    }
   },
   watch: {
     select_heading(value) {
       if (value == "") {
         this.editor.chain().focus().setParagraph().run();
       } else {
+        console.log('select_heading')
         this.editor.chain().focus().toggleHeading({ level: value }).run();
       }
     },
     select_font_size(value) {
-      console.log("ádasd", value);
       this.editor.chain().focus().setFontSize(value).run();
     },
   },
@@ -305,7 +299,8 @@ export default {
     this.editor = new Editor({
       extensions: [
         StarterKit,
-        Heading,
+        // Heading,
+        HeadingCustom,
         Paragraph,
         Text,
         Underline,

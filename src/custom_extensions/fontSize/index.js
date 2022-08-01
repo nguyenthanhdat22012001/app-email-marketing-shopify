@@ -12,33 +12,7 @@ export default Extension.create({
       types: ["textStyle"],
     };
   },
-  addGlobalAttributes({ node }) {
-    let arr_heading = [
-      {
-        level: 1,
-        font_size: 32,
-      },
-      {
-        level: 2,
-        font_size: 24,
-      },
-      {
-        level: 3,
-        font_size: 18.72,
-      },
-      {
-        level: 4,
-        font_size: 16,
-      },
-      {
-        level: 5,
-        font_size: 13.28,
-      },
-      {
-        level: 6,
-        font_size: 10.72,
-      },
-    ];
+  addGlobalAttributes() {
     return [
       {
         types: this.options.types,
@@ -48,25 +22,12 @@ export default Extension.create({
             parseHTML: (element) =>
               element.style.fontSize.replace(/['"]+/g, ""),
             renderHTML: (attributes) => {
-              if (attributes.heading) {
-                return {
-                  style: `font-size: ${attributes.fontSize}`,
-                };
-              } else {
-                if (!attributes.fontSize) {
-                  return {};
-                }
-                return {
-                  style: `font-size: ${attributes.fontSize}`,
-                };
+              if (!attributes.fontSize) {
+                return {};
               }
-
-              // if (!attributes.fontSize) {
-              //   return {};
-              // }
-              // return {
-              //   style: `font-size: ${attributes.fontSize}`,
-              // };
+              return {
+                style: `font-size: ${attributes.fontSize}`,
+              };
             },
           },
         },
@@ -76,11 +37,10 @@ export default Extension.create({
   addCommands() {
     return {
       setFontSize:
-        (fontSize, heading = null) =>
+        (fontSize) =>
         ({ commands }) => {
           commands.setMark("textStyle", {
-            fontSize: fontSize ? fontSize + "px" : null,
-            heading: heading,
+            fontSize: fontSize + "px",
           });
         },
       unsetFontSize:
