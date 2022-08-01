@@ -8,16 +8,23 @@ import campaignStore from "./campaignStore";
 export default new Vuex.Store({
   state: {
     isToggle: false,
+    isLoading: false,
   },
   getters: {
     getToggle(state) {
       return state.isToggle;
     },
+    getLoading(state) {
+      return state.isLoading
+    }
   },
   mutations: {
     toggle(state) {
       state.isToggle = !state.isToggle;
     },
+    setLoading(state, payload) {
+      state.isLoading = payload
+    }
   },
   actions: {},
   modules: {

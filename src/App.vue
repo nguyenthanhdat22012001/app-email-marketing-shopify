@@ -1,16 +1,18 @@
 <template>
-  <div id="app">
+  <div id="app" class="relative">
     <v-notify></v-notify>
     <vue-extend-layouts />
+    <v-loading-app></v-loading-app>
   </div>
 </template>
 
 <script>
 import VueExtendLayouts from "vue-extend-layout";
 import VNotify from "@/components/VNotify.vue";
+import VLoadingApp from "@/components/VLoadingApp.vue";
 export default {
   name: "App",
-  components: { VueExtendLayouts,VNotify },
+  components: { VueExtendLayouts, VNotify, VLoadingApp },
 };
 </script>
 <style lang="scss">

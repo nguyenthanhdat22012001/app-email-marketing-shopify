@@ -2,7 +2,7 @@
   <v-table align="center">
     <template #table_head_tr>
       <th
-        :colspan="countSelectedCustomer ? 5 : 0"
+        :colspan="countSelectedCustomer ? 7 : 0"
         class="py-5 pl-[30px]"
         :class="{ 'py-[9px] pl-5': countSelectedCustomer }"
       >
@@ -53,13 +53,16 @@
           />
         </td>
         <td class="py-5 pr-3.5">
-          <v-avatar :name="customer.name" class="mr-3" />{{ customer.name }}
+          <v-avatar
+            :name="getFullName(customer.first_name,customer.last_name)"
+            class="mr-3"
+          />{{ getFullName(customer.first_name,customer.last_name) }}
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5">{{ customer.orders }}</td>
-        <td class="py-5 pr-3.5">{{ customer.spent }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.create }}</td>
+        <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
+        <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
+        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at.split(' ')[0] }}</td>
       </tr>
     </template>
   </v-table>
@@ -99,6 +102,9 @@ export default {
       } else {
         this.selectedAll = false;
       }
+    },
+    getFullName(firstName, lastName) {
+      return firstName + " " + lastName;
     },
   },
   computed: {

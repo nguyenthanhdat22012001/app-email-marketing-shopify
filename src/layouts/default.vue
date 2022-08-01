@@ -44,7 +44,6 @@ $time: 0.8s;
 }
 .toggle {
   padding-left: 66px;
-  overflow: hidden;
   transition: all $time;
   .vue-sidebar {
     width: 66px;

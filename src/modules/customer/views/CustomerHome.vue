@@ -33,29 +33,34 @@ export default {
   },
   data() {
     return {
-      progress: 100,
+      progress: 0,
       increaseProgress: null,
     };
   },
   created() {
-    this.fetchCustomer();
-    // this.subscribe();
+    this.fetchCustomer()
+      .then(() => {
+        this.progress = 100;
+      })
+      .catch(() => {
+        this.subscribe();
+      });
   },
-  mounted() {
-   
-  },
+  mounted() {},
   methods: {
     ...mapActions({
       fetchCustomer: "customerStore/fetchCustomer",
     }),
     subscribe() {
-      let pusher = new Pusher("daaf37d32accfb90ac37", { cluster: "ap1" });
-      pusher.subscribe("my-channel");
-      pusher.bind("my-event", (data) => {
+      let pusher = new Pusher(process.env.VUE_APP_PUSHER_APP_KEY, {
+        cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
+      });
+      pusher.subscribe("customers_syncing");
+      pusher.bind("syncing_customer", (data) => {
         console.log(data);
         this.progress = Number(data.message);
-        if (data.message == 100) {
-          pusher.unsubscribe("my-channel");
+        if (data.message >= 100) {
+          pusher.unsubscribe("syncing_customer");
         }
       });
     },

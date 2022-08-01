@@ -32,9 +32,9 @@ const api = {
     });
   },
 
-  put(url, data = {}) {},
+  put(url, data = {}) { },
 
-  delete(url, data = {}) {},
+  delete(url, data = {}) { },
 };
 
 export default {
@@ -46,15 +46,13 @@ export default {
   //  let { page = 1, sort = "A-Z", search = "name" } = payload;
   //  return api.get("/users", { page, sort, search });
   //},
-  AUTH :{
-    register(payload){
-      return api.post('/app/sign-up', payload )
-    },
-    login(payload){
-      return api.post('/app/sign-in', payload )
-    },
-    fetchUser(){
-      return api.get('/app/user')
-    }
+  AUTH: {
+    // login(payload){
+    //   return api.post('/app/sign-in', payload )
+    // },
+    
+  },
+  getCustomers() {
+    return api.get('/api/customer/sync')
   }
 };
