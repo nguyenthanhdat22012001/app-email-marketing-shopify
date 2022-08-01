@@ -92,7 +92,7 @@
           <campaign-button-customize-email v-model="emailButton" />
         </campaign-customize-email>
       </div>
-      <div class="content--right flex-1">
+      <div class="content--right flex-1 break-normal">
         <campaign-preview
           :email-content="email_content"
           :email-footer="email_footer"

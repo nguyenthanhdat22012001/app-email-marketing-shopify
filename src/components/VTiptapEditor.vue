@@ -26,7 +26,7 @@
         ></div>
         <v-select-editor v-model="select_font_size">
           <option
-            v-for="n in 28"
+            v-for="n in Array.from({length:56},(_,i)=>i+1).slice(10)"
             :key="n"
             :value="n"
             :class="{ 'is-active': editor.isActive('heading', { level: n }) }"
@@ -225,15 +225,6 @@
           </svg>
         </button>
       </div>
-      <!-- 
-      <button
-        @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-        :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
-      >
-        h1
-      </button>
-     
-   -->
     </div>
     <editor-content
       :editor="editor"
@@ -257,7 +248,7 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import NodeView from "@/custom_extensions/variant/index";
-// import FontSize from "@/custom_extensions/fontSize/index";
+import FontSize from "@/custom_extensions/fontSize/index";
 import VDropdownVariant from "./VDropdownVariant.vue";
 import VSelectEditor from "./VSelectEditor.vue";
 
@@ -288,6 +279,14 @@ export default {
     onClickVariant(value) {
       this.editor.chain().focus().setVariant({ id: value }).run();
     },
+    setFontSizeHeading(tag_heading){
+      let arr_heading = [
+        {
+          level: 1,
+          font_size: 32
+        }
+      ]
+    }
   },
   watch: {
     select_heading(value) {
@@ -299,10 +298,7 @@ export default {
     },
     select_font_size(value) {
       console.log("ádasd", value);
-      // this.editor
-      //   .chain()
-      //   .setFontSize(value + "px")
-      //   .run();
+      this.editor.chain().focus().setFontSize(value).run();
     },
   },
   mounted() {
@@ -314,7 +310,7 @@ export default {
         Text,
         Underline,
         TextStyle,
-        // FontSize,
+        FontSize,
         BulletList.configure({
           HTMLAttributes: {
             style: "display: block;list-style-type: disc;padding: 0 1rem;",
@@ -331,12 +327,6 @@ export default {
         NodeView,
       ],
       content: this.prop_email_content,
-      editorProps: {
-        attributes: {
-          class:
-            "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-5 focus:outline-none",
-        },
-      },
     });
 
     this.editor.on("update", ({ editor }) => {
@@ -352,10 +342,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .editor-field::v-deep(.ProseMirror) {
   outline: none;
   min-height: 112px;
   padding: 12px 5px;
+  line-break: anywhere;
 }
 
 button {
