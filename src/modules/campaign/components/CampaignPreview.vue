@@ -44,7 +44,7 @@
             class="preview-email-content bg-white pt-7 pb-9 px-[30px] flex flex-col gap-[30px]"
             :style="'background-color:' + backgroundColor"
           >
-            <p class="email--content" v-html="emailContent"></p>
+            <div class="email--content" v-html="emailContent"></div>
             <v-button
               class="w-full justify-center font-bold text-sm lead-[18px]"
               :style="styleButton()"
@@ -56,7 +56,7 @@
         <div
           class="preview--footer text-center font-small text-muted text-sm lead-[18px]"
         >
-          <p>{{ emailFooter }}</p>
+          <div v-html="emailFooter"></div>
           <a href="#" class="underline">Unsubscribe here</a>
         </div>
       </div>

@@ -23,7 +23,6 @@
         </svg>
       </a>
     </div>
-
     <div
       class="accordion-body flex gap-5 flex-col overflow-hidden h-0"
       :class="is_open ? 'active mt-[25px]' : ''"
