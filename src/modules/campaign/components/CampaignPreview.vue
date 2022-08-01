@@ -44,7 +44,11 @@
             class="preview-email-content bg-white pt-7 pb-9 px-[30px] flex flex-col gap-[30px]"
             :style="'background-color:' + backgroundColor"
           >
-            <div class="email--content" v-html="emailContent"></div>
+            <div
+              class="email--content"
+              style="line-break: anywhere"
+              v-html="emailContent"
+            ></div>
             <v-button
               class="w-full justify-center font-bold text-sm lead-[18px]"
               :style="styleButton()"
