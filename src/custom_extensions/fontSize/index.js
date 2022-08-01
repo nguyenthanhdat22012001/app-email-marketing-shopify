@@ -12,7 +12,7 @@ export default Extension.create({
       types: ["textStyle"],
     };
   },
-  addGlobalAttributes({ node }) {
+  addGlobalAttributes() {
     let arr_heading = [
       {
         level: 1,
