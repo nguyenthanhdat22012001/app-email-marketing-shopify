@@ -51,11 +51,11 @@
           />
         </td>
         <td class="py-5 pr-3.5">
-          <v-avatar :name="customer.name" class="mr-3" />{{ customer.name }}
+          <v-avatar :name="customer.first_name+' '+customer.last_name" class="mr-3" />{{ customer.first_name+' '+customer.last_name }}
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.create }}</td>
+        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at }}</td>
       </tr>
     </template>
   </v-table>

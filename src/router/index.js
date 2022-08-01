@@ -9,7 +9,7 @@ const routes = [
     redirect: "/customer",
   },
   {
-    path: "/auth",
+    path: "/login",
     component: () => import(/* webpackChunkName: "about" */ "@/modules/auth/views/AuthLogin.vue"),
     meta:{
       layout:'auth'

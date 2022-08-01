@@ -31,7 +31,7 @@ export default {
       },
     },
     prop_input_value: {
-      type: String,
+      type: [String, Number],
       default: "",
     },
     prop_label: {

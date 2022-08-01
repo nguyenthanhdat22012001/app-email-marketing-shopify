@@ -1,4 +1,5 @@
-import data from './data.js'
+import api from '@/plugins/api'
+
 const state = {
     customersList: []
 }
@@ -14,7 +15,21 @@ const mutations = {
 }
 const actions = {
     fetchCustomer({ commit }, state) {
-        commit('setCustomer', data)
+        return new Promise((resolve, reject) => {
+            api.getCustomers().then(res => {
+                if (res.data) {
+                    commit('setCustomer', res.data);
+                    resolve();
+                } else {
+                    reject()
+                }
+
+            }).catch(err => {
+                reject(err)
+            })
+        })
+
+        // commit('setCustomer', data)
     }
 }
 

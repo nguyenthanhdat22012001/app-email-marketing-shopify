@@ -41,6 +41,8 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
+            :disabled="page == 1"
+            @click="previousPage()"
           >
             <img src="@/assets/icons/arrow-left.svg" />
             Previous
@@ -48,9 +50,7 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
-            :class="{
-              disabled: page >= Math.floor(getCustomers.length / number),
-            }"
+            :disabled="page >= Math.floor(getCustomers.length / number)"
             @click="nextPage()"
           >
             Next
@@ -120,10 +120,6 @@ export default {
       );
     },
     nextPage() {
-      console.log(
-        this.page > Math.floor(this.getCustomers.length / this.number),
-        Math.floor(this.getCustomers.length / this.number)
-      );
       this.page++;
     },
     previousPage() {
