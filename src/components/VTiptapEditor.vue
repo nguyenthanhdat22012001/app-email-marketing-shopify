@@ -26,7 +26,7 @@
         ></div>
         <v-select-editor v-model="select_font_size">
           <option
-            v-for="n in Array.from({length:56},(_,i)=>i+1).slice(10)"
+            v-for="n in Array.from({ length: 56 }, (_, i) => i + 1).slice(10)"
             :key="n"
             :value="n"
             :class="{ 'is-active': editor.isActive('heading', { level: n }) }"
@@ -189,8 +189,8 @@
         </button>
         <button
           class="py-[5px] px-[7px] rounded font-medium text-gray-dark"
-          @click="editor.chain().focus().setTextAlign('right').run()"
-          :class="{ 'is-active': editor.isActive({ textAlign: 'right' }) }"
+          @click="editor.chain().focus().toggleTaskList().run()"
+          :class="{ 'is-active': editor.isActive('taskList') }"
         >
           <svg
             width="12"
@@ -240,14 +240,14 @@
 import StarterKit from "@tiptap/starter-kit";
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import Underline from "@tiptap/extension-underline";
-// import Heading from "@tiptap/extension-heading";
-
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
 import NodeView from "@/custom_extensions/variant/index";
 import FontSize from "@/custom_extensions/fontSize/index";
 import HeadingCustom from "@/custom_extensions/heading/index";
@@ -287,7 +287,6 @@ export default {
       if (value == "") {
         this.editor.chain().focus().setParagraph().run();
       } else {
-        console.log('select_heading')
         this.editor.chain().focus().toggleHeading({ level: value }).run();
       }
     },
@@ -299,13 +298,19 @@ export default {
     this.editor = new Editor({
       extensions: [
         StarterKit,
-        // Heading,
         HeadingCustom,
         Paragraph,
         Text,
         Underline,
         TextStyle,
         FontSize,
+        TaskList,
+        TaskItem.configure({
+          nested: true,
+          HTMLAttributes: {
+            style: "display: flex;gap:5px;align-items:flex-end",
+          },
+        }),
         BulletList.configure({
           HTMLAttributes: {
             style: "display: block;list-style-type: disc;padding: 0 1rem;",
@@ -337,12 +342,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .editor-field::v-deep(.ProseMirror) {
   outline: none;
   min-height: 112px;
   padding: 12px 5px;
   line-break: anywhere;
+}
+.ProseMirror [contenteditable="false"] {
+  white-space: normal;
 }
 
 button {

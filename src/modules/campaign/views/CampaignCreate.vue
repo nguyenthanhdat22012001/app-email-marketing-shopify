@@ -75,18 +75,17 @@
             </div>
           </campaign-input>
           <campaign-input title="Subject">
-            <v-input
-              class="variant w-full p-3 text-black-light border border-light border-solid rounded"
-              v-model="email_subject"
-            />
-            <campaign-variants></campaign-variants>
+            <v-tiptap-editor-not-menu
+              prop_open_variant
+              :prop_email_content="email_subject"
+              @emitUpdateEmailContent="(value) => (email_subject = value)"
+            ></v-tiptap-editor-not-menu>
           </campaign-input>
           <campaign-input title="Email Content">
             <v-tiptap-editor
               prop_open_variant
               :prop_email_content="email_content"
               @emitUpdateEmailContent="(value) => (email_content = value)"
-              style="line-break: anywhere"
             ></v-tiptap-editor>
           </campaign-input>
           <campaign-input title="Email footer">
@@ -131,11 +130,11 @@
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import VTiptapEditor from "@/components/VTiptapEditor.vue";
+import VTiptapEditorNotMenu from "@/components/VTiptapEditorNotMenu.vue";
 import VAvatar from "@/components/VAvatar.vue";
 
 import CampaignInput from "../components/CampaignInput.vue";
 import CampaignCustomizeEmail from "../components/CampaignCustomizeEmail.vue";
-import CampaignVariants from "../components/CampaignVariants.vue";
 import CampaignPreview from "../components/CampaignPreview.vue";
 import CampaignBackgroundCustomizeEmail from "../components/CampaignBackgroundCustomizeEmail.vue";
 import CampaignBannerCover from "../components/CampaignBannerCover.vue";
@@ -150,7 +149,7 @@ export default {
     VAvatar,
     CampaignInput,
     VTiptapEditor,
-    CampaignVariants,
+    VTiptapEditorNotMenu,
     CampaignPreview,
     CampaignCustomizeEmail,
     CampaignBackgroundCustomizeEmail,
@@ -212,22 +211,20 @@ export default {
 }
 
 /* we will explain what these classes do next! */
-.v-enter-active
- {
+.v-enter-active {
   /* transform: translateX(100%); */
-  animation:show 0.4s ease forwards;
+  animation: show 0.4s ease forwards;
   /* transition: transform 0.5s ease; */
 }
-.v-leave-active{
-  animation:show 0.4s ease forwards reverse;
+.v-leave-active {
+  animation: show 0.4s ease forwards reverse;
 }
 @keyframes show {
   0% {
     transform: translateX(100%);
   }
-  100%{
+  100% {
     transform: translateX(0);
-
   }
 }
 /* .v-enter-from,

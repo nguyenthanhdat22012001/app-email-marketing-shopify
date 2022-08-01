@@ -11,9 +11,9 @@
       <div
         class="preview-subject font-bold flex flex-col gap-[18px] text-sm text-dark px-5 py-5 pb-4 bg-white rounded shadow-content"
       >
-        <div class="subject--title">
+        <div class="subject--title flex gap-[5px]">
           <span class="text-muted text-sm">Subject: </span>
-          {{ emailSubject }}
+          <span v-html="emailSubject"></span>
         </div>
         <div class="flex gap-5">
           <img
