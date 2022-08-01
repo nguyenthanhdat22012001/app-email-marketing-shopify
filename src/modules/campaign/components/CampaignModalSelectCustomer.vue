@@ -6,8 +6,8 @@
     </campaign-modal-select-customer>
 -->
 <template>
-  <v-modal v-model="visible">
-    <div class="relative w-[960px] pt-[30px] pb-[18px]">
+  <v-modal v-model="visible" :backdrop="false">
+    <div class="relative w-[960px] pt-[30px] pb-[18px] h-[90vh] flex flex-col">
       <h2 class="pr-[22px] pl-[30px] text-2xl font-semibold text-dark">
         Select customers to send email
       </h2>
@@ -18,7 +18,7 @@
         <img src="@/assets/icons/close.svg" alt="" />
       </a>
       <div
-        class="search-bar mr-[22px] ml-[30px] flex gap-[10px] rounded border border-solid border-light p-[10px] flex-1 mt-7"
+        class="search-bar mr-[22px] ml-[30px] flex gap-[10px] rounded border border-solid border-light p-[10px] mt-7"
       >
         <img src="@/assets/icons/search.svg" alt="" />
         <v-input
@@ -26,11 +26,17 @@
           class="flex-1"
         />
       </div>
-      <div class="mt-[30px]">
-        <campaign-table-modal-select />
+      <div class="mt-[30px] overflow-auto flex-1">
+        <campaign-table-modal-select
+          v-model="customersSelected"
+          :page="page"
+          :number="number"
+        />
       </div>
       <div class="pr-[22px] pl-[30px] mt-6 flex justify-between items-center">
-        <div class="text-gray-light">Customers has been selected: {{customersSelected.length}}</div>
+        <div class="text-gray-light">
+          Customers has been selected: {{ customersSelected.length }}
+        </div>
         <div class="flex">
           <v-button
             variant="secondary"
@@ -42,6 +48,10 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
+            :class="{
+              disabled: page >= Math.floor(getCustomers.length / number),
+            }"
+            @click="nextPage()"
           >
             Next
             <img src="@/assets/icons/arrow-right.svg" />
@@ -51,12 +61,13 @@
           <v-button
             variant="secondary"
             class="py-[6px] px-[22px] text-sm font-medium"
-            @click="$emit('emitCloseModal')"
+            @click="handleClickCancel"
             >Cancel</v-button
           >
           <v-button
             variant="primary"
             class="py-[6px] px-[22px] text-sm font-medium"
+            @click="handleClickInsert"
             >Inserrt</v-button
           >
         </div>
@@ -65,7 +76,7 @@
   </v-modal>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 import VModal from "@/components/VModal.vue";
 import VInput from "@/components/VInput.vue";
@@ -79,9 +90,44 @@ export default {
     VButton,
     CampaignTableModalSelect,
   },
+  data() {
+    return {
+      customersSelected: [],
+      page: 1,
+      number: 10,
+    };
+  },
+  mounted() {
+    this.customersSelected = this.getCustomersSelected;
+  },
   props: {
     value: {
       type: [Boolean],
+    },
+  },
+  methods: {
+    ...mapMutations({
+      setCustomersSelected: "campaignStore/setCustomersSelected",
+    }),
+    handleClickCancel() {
+      this.$emit("emitCloseModal");
+      this.customersSelected = this.getCustomersSelected;
+    },
+    handleClickInsert() {
+      this.$emit("emitCloseModal");
+      this.setCustomersSelected(
+        (state) => (state.customersSelected = this.customersSelected)
+      );
+    },
+    nextPage() {
+      console.log(
+        this.page > Math.floor(this.getCustomers.length / this.number),
+        Math.floor(this.getCustomers.length / this.number)
+      );
+      this.page++;
+    },
+    previousPage() {
+      this.page--;
     },
   },
   computed: {
@@ -94,7 +140,8 @@ export default {
       },
     },
     ...mapGetters({
-      customersSelected:'campaignStore/getCustomersSelected'
+      getCustomersSelected: "campaignStore/getCustomersSelected",
+      getCustomers: "customerStore/getCustomers",
     }),
   },
 };

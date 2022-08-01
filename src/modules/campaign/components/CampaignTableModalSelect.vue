@@ -38,7 +38,7 @@
     <template #table_body>
       <tr
         class="bg-white border-t border-[#EBEBF0]"
-        v-for="customer in customerList"
+        v-for="customer in getCustomersPage(page, number)"
         :key="customer.id"
       >
         <td>
@@ -47,6 +47,7 @@
             :prop_input_value="customer.id"
             class="py-[22px] pl-[30px] translate-y-2/4"
             @input="handleSelect"
+            v-model="customersSelected"
           />
         </td>
         <td class="py-5 pr-3.5">
@@ -64,7 +65,7 @@
 import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     VTable,
@@ -73,6 +74,8 @@ export default {
   },
   props: {
     value: Array,
+    page: Number,
+    number: Number,
   },
   data() {
     return {
@@ -85,37 +88,42 @@ export default {
   methods: {
     handleSelectAll() {
       if (this.selectedAll) {
-        this.setCustomersSelected((state) => {
-          state.customersSelected = this.customerList.map((item) => item.id);
-        });
+        this.customersSelected = this.customerList.map((item) => item.id);
       } else {
-        this.setCustomersSelected((state) => {
-          state.customersSelected = [];
-        });
+        this.customersSelected = [];
       }
     },
-    handleSelect(id) {
+    handleSelect() {
       if (this.customersSelected.length) {
-        this.selectedAll = true;
+        this.setSelectedAll(true);
       } else {
-        this.selectedAll = false;
+        this.setSelectedAll(false);
       }
     },
-    ...mapMutations({
-      setCustomersSelected: "campaignStore/setCustomersSelected",
-    }),
+    setSelectedAll(value) {
+      this.selectedAll = value;
+    },
     ...mapActions({
       fetchCustomer: "customerStore/fetchCustomer",
     }),
+    getCustomersPage(page, number) {
+      return this.customerList.slice((page - 1) * number, page * 10 - 1);
+    },
   },
   computed: {
     ...mapGetters({
-      customerList: "customerStore/getCustomer",
-      customersSelected: "campaignStore/getCustomersSelected",
+      customerList: "customerStore/getCustomers",
     }),
-    countSelectedCustomer: {
+    countSelectedCustomer() {
+      this.setSelectedAll(Boolean(this.customersSelected.length));
+      return this.customersSelected.length;
+    },
+    customersSelected: {
       get() {
-        return this.customersSelected.length;
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
       },
     },
   },

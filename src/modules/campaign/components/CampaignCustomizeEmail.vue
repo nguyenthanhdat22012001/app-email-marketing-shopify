@@ -1,11 +1,14 @@
 <template>
   <div class="accordion w-[100%] bg-white py-[19px] px-[25px]">
-    <div class="accordion-header flex justify-between items-center font-medium cursor-pointer" @click="ontoggle()">
+    <div
+      class="accordion-header flex justify-between items-center font-medium cursor-pointer"
+      @click="ontoggle()"
+    >
       <div class="flex gap-2 items-center text-sapphire">
         <img src="@/assets/icons/color.svg" alt="" />
         <h4>Customize email</h4>
       </div>
-      <a >
+      <a>
         <svg
           width="14"
           height="8"
@@ -34,7 +37,6 @@ export default {
   data() {
     return {
       is_open: false,
-      
     };
   },
   methods: {

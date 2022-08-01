@@ -9,8 +9,8 @@ const getters = {
     }
 }
 const mutations = {
-    setCustomersSelected(state, payload) {
-        payload(state);
+    setCustomersSelected(state, callback) {
+        callback(state);
     }
 }
 const actions = {

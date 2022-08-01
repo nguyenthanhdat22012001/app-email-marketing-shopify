@@ -38,9 +38,33 @@
           <button
             class="w-full flex justify-center items-center border border-dashed border-light bg-[#FAFAFC] text-primary text-sm py-[13px]"
             @click="visibleCustomerEmailModal = true"
+            v-if="!customersSelected.length"
           >
             + Add customer
           </button>
+          <div
+            class="w-full flex justify-between items-center border border-dashed border-light bg-[#FAFAFC] text-primary text-sm px-3 py-[13px]"
+            v-else
+          >
+            <div class="customers--selected__display flex gap-[5px] items-center">
+              <div >
+                <v-avatar
+                  v-for="(id, index) in customersSelected.slice(0, 3)"
+                  :key="id"
+                  :name="customers.filter((item) => item.id == id)[0].name"
+                  class="avatar--selected bg-primary text-white z-[1]"
+                  :style="`z-index: ${index};--z-index:${index}`"
+                />
+              </div>
+              <span class="text-dark">+ {{ customersSelected.length }} customers</span>
+            </div>
+            <button
+              class="outline-none text-primary"
+              @click="visibleCustomerEmailModal = true"
+            >
+              Manage
+            </button>
+          </div>
         </campaign-input>
         <campaign-input title="Subject">
           <v-input
@@ -92,6 +116,8 @@
 import VButton from "@/components/VButton.vue";
 import VInput from "@/components/VInput.vue";
 import VCkeditor from "@/components/VCKEditor.vue";
+import VAvatar from "@/components/VAvatar.vue";
+
 import CampaignInput from "../components/CampaignInput.vue";
 import CampaignCustomizeEmail from "../components/CampaignCustomizeEmail.vue";
 import CampaignVariants from "../components/CampaignVariants.vue";
@@ -101,12 +127,14 @@ import CampaignBannerCover from "../components/CampaignBannerCover.vue";
 import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeEmail.vue";
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
+import { mapGetters } from "vuex";
 export default {
   components: {
     VButton,
     VInput,
     CampaignInput,
     VCkeditor,
+    VAvatar,
     CampaignVariants,
     CampaignPreview,
     CampaignCustomizeEmail,
@@ -153,6 +181,13 @@ export default {
       this.visibleCustomerEmailModal = false;
     },
   },
+
+  computed: {
+    ...mapGetters({
+      customersSelected: "campaignStore/getCustomersSelected",
+      customers: "customerStore/getCustomers",
+    }),
+  },
 };
 </script>
 
@@ -160,5 +195,10 @@ export default {
 .ck-content span {
   background: #003084;
   color: #ffffff;
+}
+.avatar--selected:not(:first-child) {
+  transform: translateX(calc(-5px * var(--z-index)));
+  border-left: 2px solid;
+  box-sizing: unset;
 }
 </style>

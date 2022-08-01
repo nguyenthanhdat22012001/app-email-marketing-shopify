@@ -32,7 +32,6 @@ export default {
             "|",
             "bulletedList",
             "numberedList",
-            "todoList",
           ],
         },
         resize_enabled: true,
@@ -52,7 +51,6 @@ export default {
       node.innerText="hello"
       node.style.color = 'red'
       editor.ui.getEditableElement().appendChild(node)
-      console.log(node)
       if (!parent.querySelector(".ck-toolbar")) {
         editor.ui
           .getEditableElement()

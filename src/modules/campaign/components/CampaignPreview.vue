@@ -103,9 +103,6 @@ export default {
   },
   computed: {
     backgroundColor() {
-      console.log(
-        this.hexToRgbA(this.emailBackground.color, this.emailBackground.opacity)
-      );
       return this.hexToRgbA(
         this.emailBackground.color,
         this.emailBackground.opacity

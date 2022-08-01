@@ -33,13 +33,13 @@ export default {
   },
   data() {
     return {
-      progress: 0,
+      progress: 100,
       increaseProgress: null,
     };
   },
   created() {
     this.fetchCustomer();
-    this.subscribe();
+    // this.subscribe();
   },
   mounted() {
    

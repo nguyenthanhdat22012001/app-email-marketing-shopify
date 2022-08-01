@@ -103,7 +103,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      customerList: "customerStore/getCustomer",
+      customerList: "customerStore/getCustomers",
     }),
     countSelectedCustomer: {
       get() {

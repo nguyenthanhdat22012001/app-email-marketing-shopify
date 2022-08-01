@@ -1,15 +1,15 @@
 import data from './data.js'
 const state = {
-    customerList: []
+    customersList: []
 }
 const getters = {
-    getCustomer(state) {
-        return state.customerList
+    getCustomers(state) {
+        return state.customersList
     }
 }
 const mutations = {
     setCustomer(state, payload) {
-        state.customerList = payload;
+        state.customersList = payload;
     }
 }
 const actions = {
