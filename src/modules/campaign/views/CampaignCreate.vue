@@ -46,8 +46,10 @@
             class="w-full flex justify-between items-center border border-dashed border-light bg-[#FAFAFC] text-primary text-sm px-3 py-[13px]"
             v-else
           >
-            <div class="customers--selected__display flex gap-[5px] items-center">
-              <div >
+            <div
+              class="customers--selected__display flex gap-[5px] items-center"
+            >
+              <div>
                 <v-avatar
                   v-for="(id, index) in customersSelected.slice(0, 3)"
                   :key="id"
@@ -56,7 +58,9 @@
                   :style="`z-index: ${index};--z-index:${index}`"
                 />
               </div>
-              <span class="text-dark">+ {{ customersSelected.length }} customers</span>
+              <span class="text-dark"
+                >+ {{ customersSelected.length }} customers</span
+              >
             </div>
             <button
               class="outline-none text-primary"
@@ -78,6 +82,7 @@
             prop_open_variant
             :prop_email_content="email_content"
             @emitUpdateEmailContent="(value) => (email_content = value)"
+            style="line-break: anywhere"
           ></v-tiptap-editor>
         </campaign-input>
         <campaign-input title="Email footer">

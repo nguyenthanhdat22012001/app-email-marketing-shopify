@@ -8,7 +8,7 @@
         <img src="@/assets/icons/color.svg" alt="" />
         <h4>Customize email</h4>
       </div>
-      <a>
+      <a class="rotate-90 transition-transform duration-500" :class="{ 'rotate-0': is_open }">
         <svg
           width="14"
           height="8"
@@ -24,8 +24,8 @@
       </a>
     </div>
     <div
-      class="accordion-body flex gap-5 flex-col overflow-hidden h-0"
-      :class="is_open ? 'active mt-[25px]' : ''"
+      class="accordion-body flex gap-5 flex-col overflow-hidden h-0 mt-[25px] "
+      :class="{'active':is_open}"
     >
       <slot></slot>
     </div>
