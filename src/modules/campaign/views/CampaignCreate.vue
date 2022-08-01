@@ -123,7 +123,7 @@ export default {
   data() {
     return {
       campaignName: "",
-      email_content: "ádasdsa",
+      email_content: "",
       email_footer: `Copyright 2010-2022 Firegroup, all rights reserved.`,
       isShowVariants: false,
       email_subject: "We are giving away 5 months FREE to use the app",
