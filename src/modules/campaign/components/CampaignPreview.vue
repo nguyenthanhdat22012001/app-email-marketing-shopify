@@ -47,6 +47,7 @@
             <div
               class="email--content"
               style="line-break: anywhere"
+              :style="'color:' + email_color"
               v-html="emailContent"
             ></div>
             <v-button
@@ -82,6 +83,11 @@ export default {
     emailBackground: Object,
     emailButton: Object,
   },
+  data() {
+    return {
+      email_color: "#28293D",
+    };
+  },
   methods: {
     hexToRgbA: function (hex, alpha) {
       let c;
@@ -104,13 +110,41 @@ export default {
     styleButton() {
       return `background:${this.emailButton.backgroundColor};color:${this.emailButton.textColor};border-radius:${this.emailButton.radius}px`;
     },
+    checkBackgroundLightDark(rgba) {
+      let string_lenght = rgba.length - 1;
+      let new_string = rgba.substring(5, string_lenght);
+      let rgba_arr = new_string.split(",");
+      if (
+        rgba_arr[0] * 0.2126 + rgba_arr[1] * 0.7152 + rgba_arr[2] * 0.0722 <
+        255 / 2
+      ) {
+        // dark color
+        if(rgba_arr[3] <= 0.3){
+          return true
+        }
+        return false;
+      } else {
+        // light color
+        return true;
+      }
+    },
+    handleChangeColorText(rgba) {
+      let is_bg_light = this.checkBackgroundLightDark(rgba);
+      if (!is_bg_light) {
+        this.email_color = "#ffffff";
+      } else {
+        this.email_color = "#28293D";
+      }
+    },
   },
   computed: {
     backgroundColor() {
-      return this.hexToRgbA(
+      let rgba = this.hexToRgbA(
         this.emailBackground.color,
         this.emailBackground.opacity
       );
+      this.handleChangeColorText(rgba);
+      return rgba;
     },
   },
 };
