@@ -25,7 +25,7 @@
             0px 0.5px 2px rgba(96, 97, 112, 0.16);
         "
       >
-        <div>
+        <div style="display:flex;gap:5px">
           <span style="color: #555770">Subject: </span>
           <span v-html="emailSubject" style="line-break: anywhere"></span>
         </div>

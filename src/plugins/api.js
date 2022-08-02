@@ -47,12 +47,14 @@ export default {
   //  return api.get("/users", { page, sort, search });
   //},
   AUTH: {
-    // login(payload){
-    //   return api.post('/app/sign-in', payload )
-    // },
-    
+    login({shopName}) {
+      return api.post('/api/login', {
+        "shop": shopName
+      })
+    },
+
   },
-  getCustomers( ) {
+  getCustomers() {
     return api.get('/api/customer/sync')
   }
 };

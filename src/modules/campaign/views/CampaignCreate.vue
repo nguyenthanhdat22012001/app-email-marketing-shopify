@@ -194,6 +194,12 @@ export default {
     handleCloseModal() {
       this.visibleCustomerEmailModal = false;
     },
+    checkValue(value) {
+      if (value > 100) {
+        return 100;
+      }
+      return Number(value);
+    },
   },
 
   computed: {
@@ -203,20 +209,14 @@ export default {
     }),
   },
   watch: {
-    "emailBackground.opacity": function (newVal, oldVal) {
-      if (newVal > 100) {
-        this.emailBackground.opacity = 100;
-      }
+    "emailBackground.opacity": function (newVal) {
+      this.emailBackground.opacity = this.checkValue(newVal);
     },
-    "emailButton.backgroundOpacity": function (newVal, oldVal) {
-      if (newVal > 100) {
-        this.emailButton.backgroundOpacity = 100;
-      }
+    "emailButton.backgroundOpacity": function (newVal) {
+      this.emailButton.backgroundOpacity = this.checkValue(newVal);
     },
-    "emailButton.textOpacity": function (newVal, oldVal) {
-      if (newVal > 100) {
-        this.emailButton.textOpacity = 100;
-      }
+    "emailButton.textOpacity": function (newVal) {
+      this.emailButton.textOpacity = this.checkValue(newVal);
     },
   },
 };
