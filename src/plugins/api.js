@@ -52,7 +52,7 @@ export default {
     // },
     
   },
-  getCustomers() {
+  getCustomers( ) {
     return api.get('/api/customer/sync')
   }
 };
