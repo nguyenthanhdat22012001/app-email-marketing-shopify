@@ -1,23 +1,51 @@
 <template>
   <div>
     <h2 class="text-[40px] text-black font-bold mb-2.5">Login</h2>
-    <p class="text-[16px] text-dark mt-2.5">Please enter your Shopify URL to login</p>
+    <p class="text-[16px] text-dark mt-2.5">
+      Please enter your Shopify URL to login
+    </p>
     <div class="flex items-center bg-white my-5">
-      <v-input class="flex-1 border-0 py-4 px-[19px]" type="text" placeholder="Store Name"></v-input>
+      <v-input
+        class="flex-1 border-0 py-4 px-[19px]"
+        v-model="shopName"
+        type="text"
+        placeholder="Store Name"
+      ></v-input>
       <span class="pr-[19px]">.myshopify.com</span>
     </div>
-    <v-button class="w-[100%] items-center justify-center py-3 mb-10 text-4 font-bold">Login</v-button>
-    <p>Don't have a <img class="inline-block" src="@/assets/icons/shopify-text.svg" alt=""> store yet? <a href="#" class="text-primary">Create Now!</a></p>
+    <v-button
+      class="w-[100%] items-center justify-center py-3 mb-10 text-4 font-bold"
+      @click="login"
+      >Login</v-button
+    >
+    <p>
+      Don't have a
+      <img class="inline-block" src="@/assets/icons/shopify-text.svg" alt="" />
+      store yet? <a href="#" class="text-primary">Create Now!</a>
+    </p>
   </div>
 </template>
 <script>
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
+import api from "@/plugins/api";
 
 export default {
   components: {
     VInput,
-    VButton
+    VButton,
+  },
+  data() {
+    return {
+      shopName: "",
+    };
+  },
+  methods: {
+    login() {
+      api.AUTH.login({
+        shopName: this.shopName,
+      }).then((res) => console.log(res));
+    },
   },
 };
 </script>

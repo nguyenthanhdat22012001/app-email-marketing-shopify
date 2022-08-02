@@ -67,19 +67,7 @@ export default {
 
     this.editor.on("update", ({ editor }) => {
       let newString = editor.getHTML();
-<<<<<<< HEAD
-      console.log(editor)
-=======
-      // let string_length = editor.getText().length;
-      // let max_tring = 78;
-      // if (string_length < max_tring) {
-      //   console.log('true',editor.getText())
-      //   this.$emit("emitUpdateEmailContent", newString);
-      // }else{
-      //    console.log('false',editor.getText())
-      //    this.$emit("emitUpdateEmailContent", this.prop_email_content);
-      // }
->>>>>>> 8b651830626cdcdfd4b63a5c62d9bc87eb98796a
+
       this.$emit("emitUpdateEmailContent", newString);
     });
   },
