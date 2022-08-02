@@ -24,7 +24,12 @@
         ></v-input>
       </div>
       <div class="mt-[59px] mb-[18px] flex justify-end gap-4">
-        <v-button variant="secondary" class="py-[8px] px-9 text-3 font-medium" @click="$emit('emitCloseModal')">No, Cancel</v-button>
+        <v-button
+          variant="secondary"
+          class="py-[8px] px-9 text-3 font-medium"
+          @click="visible = false"
+          >No, Cancel</v-button
+        >
         <v-button variant="primary" class="py-[8px] px-9 text-3 font-medium"
           >Send</v-button
         >

@@ -48,7 +48,10 @@ export default {
       return {
         "--bg-color": this.background[this.variant].main,
         "--text-color": this.color[this.variant],
-        "--border": this.variant == "secondary" ? "1px solid #EBEBF0" : "1px solid #003084",
+        "--border":
+          this.variant == "secondary"
+            ? "1px solid #EBEBF0"
+            : "1px solid #003084",
         "--bg-color-hover": this.background[this.variant].hover,
       };
     },
@@ -61,8 +64,15 @@ button {
   background: var(--bg-color);
   color: var(--text-color);
   border: var(--border);
-  &:hover {
+  &:hover:enabled {
     background: var(--bg-color-hover);
+  }
+  &:disabled {
+    color: #8f90a6;
+    & > img {
+      filter: invert(60%) sepia(25%) saturate(213%) hue-rotate(199deg)
+        brightness(91%) contrast(89%);
+    }
   }
 }
 </style>

@@ -30,11 +30,11 @@
                 placeholder="Enter your campaign name"
                 class="flex-1"
                 v-model="campaignName"
-                maxlength="150"
+                maxlength="255"
               ></v-input>
               <p class="text-light">|</p>
               <p class="text-gray-light w-[60px]">
-                {{ campaignName.length }}/150
+                {{ campaignName.length }}/255
               </p>
             </div>
           </campaign-input>
@@ -63,7 +63,7 @@
                   />
                 </div>
                 <span class="text-dark"
-                  >+ {{ customersSelected.length }} customers</span
+                  >+ {{ customersSelected.length - 3 }} customers</span
                 >
               </div>
               <button
@@ -79,6 +79,7 @@
               prop_open_variant
               :prop_email_content="email_subject"
               @emitUpdateEmailContent="(value) => (email_subject = value)"
+              maxlength="78"
             ></v-tiptap-editor-not-menu>
           </campaign-input>
           <campaign-input title="Email Content">
@@ -122,6 +123,7 @@
         @emitCloseModal="handleCloseModal"
       >
       </campaign-modal-select-customer>
+      <!-- <div>{{ opacity }}</div> -->
     </div>
   </Transition>
 </template>
@@ -199,6 +201,23 @@ export default {
       customersSelected: "campaignStore/getCustomersSelected",
       customers: "customerStore/getCustomers",
     }),
+  },
+  watch: {
+    "emailBackground.opacity": function (newVal, oldVal) {
+      if (newVal > 100) {
+        this.emailBackground.opacity = 100;
+      }
+    },
+    "emailButton.backgroundOpacity": function (newVal, oldVal) {
+      if (newVal > 100) {
+        this.emailButton.backgroundOpacity = 100;
+      }
+    },
+    "emailButton.textOpacity": function (newVal, oldVal) {
+      if (newVal > 100) {
+        this.emailButton.textOpacity = 100;
+      }
+    },
   },
 };
 </script>

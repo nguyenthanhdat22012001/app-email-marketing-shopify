@@ -9,11 +9,7 @@
           <div
             class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input
-              type="color"
-              id="color"
-              v-model="background.color"
-            />
+            <input type="color" id="color" v-model="background.color" />
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="background.color"
@@ -21,8 +17,6 @@
           </div>
           <div class="w-[50px] flex justify-center">
             <input
-              min="1"
-              max="100"
               v-model="background.opacity"
               type="number"
               class="w-[24px] text-center text-xs outline-none"
@@ -36,15 +30,14 @@
           <div
             class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="background.radius"
+              type="number"
+              maxlength="2"
             />
           </div>
-          <div class="w-[50px] flex justify-center">
-            Px
-          </div>
+          <div class="w-[50px] flex justify-center">Px</div>
         </div>
       </div>
     </div>
@@ -64,7 +57,18 @@ export default {
         this.$emit("input", val);
       },
     },
+   
   },
+  methods: {
+    checkValidateNumber(e) {
+      // console.log(this.background.opacity)
+      if (e.keyCode != 8 && this.background.opacity > 100) {
+        this.background.opacity = 100;
+        e.preventDefault();
+      }
+    },
+  },
+ 
 };
 </script>
 <style lang="scss" scope>
