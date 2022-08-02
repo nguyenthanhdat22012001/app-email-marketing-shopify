@@ -2,9 +2,9 @@
   <div class="flex flex-col gap-[25px] h-full">
     <div class="preview-head flex justify-between items-center">
       <h1 class="font-bold text-lg lead-5">Preview</h1>
-      <v-button class="flex gap-[5px]">
+      <v-button class="flex gap-[5px]" @click="visibleSendTestMailModal = true">
         <img src="@/assets/icons/send-test.svg" alt="" />
-        <p>Send text</p>
+        <p>Send test</p>
       </v-button>
     </div>
     <div
@@ -123,14 +123,18 @@
         </div>
       </div>
     </div>
+
+    <campaign-modal-send-mail v-model="visibleSendTestMailModal" />
   </div>
 </template>
 
 <script>
 import VButton from "@/components/VButton.vue";
+import CampaignModalSendMail from "../components/CampaignModalSendMail.vue";
 export default {
   components: {
     VButton,
+    CampaignModalSendMail,
   },
   props: {
     emailSubject: String,
@@ -143,6 +147,7 @@ export default {
   data() {
     return {
       email_color: "#28293D",
+      visibleSendTestMailModal: false,
     };
   },
   methods: {
@@ -204,6 +209,7 @@ export default {
       return rgba;
     },
   },
+  
 };
 </script>
 

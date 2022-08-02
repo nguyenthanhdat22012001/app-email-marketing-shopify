@@ -5,7 +5,7 @@ import store from './store'
 import './index.css'
 
 Vue.config.productionTip = false
-
+document.title = "Customer Management - Team2"
 new Vue({
   router,
   store,

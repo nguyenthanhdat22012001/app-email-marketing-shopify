@@ -13,7 +13,7 @@
       </h2>
       <a
         class="absolute cursor-pointer top-0 right-0 pt-6 pr-[22px]"
-        @click="$emit('emitCloseModal')"
+        @click="visible = false"
       >
         <img src="@/assets/icons/close.svg" alt="" />
       </a>
@@ -51,6 +51,9 @@
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
             :disabled="page >= Math.floor(getCustomers.length / number)"
+            :class="{
+              disabled: page >= Math.floor(getCustomers.length / number),
+            }"
             @click="nextPage()"
           >
             Next
