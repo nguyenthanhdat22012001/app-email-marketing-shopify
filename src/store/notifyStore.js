@@ -1,18 +1,5 @@
 const state = {
-  notifies_store: [
-    // {
-    //   id: 1,
-    //   status: "success",
-    //   title: "Success",
-    //   message: "Create campaign successfully",
-    // },
-    // {
-    //   id: 2,
-    //   status: "success",
-    //   title: "Success",
-    //   message: "Create home successfully",
-    // },
-  ],
+  notifies_store: [],
 };
 const getters = {
   getNotifies(state) {
@@ -41,7 +28,6 @@ const actions = {
   },
   autoRemove({ state }, payload) {
     let { time } = payload;
-    console.log("autoRemove", time);
     let remove_notify = setInterval(function () {
       if (state.notifies_store.length <= 0) {
         clearInterval(remove_notify);
