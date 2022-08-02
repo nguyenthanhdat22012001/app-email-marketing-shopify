@@ -33,18 +33,18 @@ export default {
   },
   data() {
     return {
-      progress: 0,
+      progress:100,
       increaseProgress: null,
     };
   },
   created() {
     this.fetchCustomer()
-      .then(() => {
-        this.progress = 100;
-      })
-      .catch(() => {
-        this.subscribe();
-      });
+      // .then(() => {
+      //   this.progress = 100;
+      // })
+      // .catch(() => {
+      //   this.subscribe();
+      // });
   },
   mounted() {},
   methods: {
