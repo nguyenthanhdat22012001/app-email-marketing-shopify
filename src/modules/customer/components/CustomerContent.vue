@@ -54,15 +54,16 @@
         </td>
         <td class="py-5 pr-3.5">
           <v-avatar
-            :name="getFullName(customer.first_name,customer.last_name)"
+            :name="customer.name"
             class="mr-3"
-          />{{ getFullName(customer.first_name,customer.last_name) }}
+          />{{ customer.name }} 
+          <!-- getFullName(customer.first_name,customer.last_name) -->
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
-        <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at.split(' ')[0] }}</td>
+        <td class="py-5 pr-3.5">{{ customer.orders }} Orders</td>
+        <td class="py-5 pr-3.5">$ {{ customer.spent }}</td>
+        <td class="py-5 pr-3.5 text-muted">{{ customer.create }}</td>
       </tr>
     </template>
   </v-table>
