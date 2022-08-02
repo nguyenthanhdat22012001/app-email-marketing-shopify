@@ -27,7 +27,7 @@
       >
         <div>
           <span style="color: #555770">Subject: </span>
-          <span v-html="emailSubject"></span>
+          <span v-html="emailSubject" style="line-break: anywhere"></span>
         </div>
         <div class="flex gap-5">
           <img
@@ -59,6 +59,7 @@
         class="sticky top-5"
         style="display: flex; flex-direction: column; gap: 20px"
         ref="sticky"
+        v-show="hideBoxPreview"
       >
         <div
           class="preview-content"
@@ -207,6 +208,20 @@ export default {
       );
       this.handleChangeColorText(rgba);
       return rgba;
+    },
+    hideBoxPreview() {
+      if (this.emailBanner != "") {
+        return true;
+      }
+
+      if (this.emailContent != "") {
+        if (this.emailContent.length <= 7) {
+          return false;
+        }
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   
