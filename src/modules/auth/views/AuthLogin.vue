@@ -10,12 +10,13 @@
         v-model="shopName"
         type="text"
         placeholder="Store Name"
+        required
       ></v-input>
       <span class="pr-[19px]">.myshopify.com</span>
     </div>
     <v-button
       class="w-[100%] items-center justify-center py-3 mb-10 text-4 font-bold"
-      @click="login"
+      @click="handleLogin"
       >Login</v-button
     >
     <p>
@@ -28,8 +29,7 @@
 <script>
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
-import api from "@/plugins/api";
-
+import { mapActions } from "vuex";
 export default {
   components: {
     VInput,
@@ -41,10 +41,14 @@ export default {
     };
   },
   methods: {
-    login() {
-      api.AUTH.login({
-        shopName: this.shopName,
-      }).then((res) => console.log(res));
+    ...mapActions({
+      login: "auth/loginShopify",
+    }),
+    handleLogin() {
+      this.login(this.shopName).then((res) => {
+        console.log(res);
+        // window.location = res;
+      });
     },
   },
 };

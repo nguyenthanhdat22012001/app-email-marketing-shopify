@@ -5,6 +5,7 @@ Vue.use(Vuex);
 import customerStore from "./customerStore";
 import notifyStore from "./notifyStore";
 import campaignStore from "./campaignStore";
+import auth from "./auth";
 export default new Vuex.Store({
   state: {
     isToggle: false,
@@ -31,5 +32,6 @@ export default new Vuex.Store({
     customerStore,
     campaignStore,
     notifyStore,
+    auth
   },
 });
