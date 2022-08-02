@@ -47,10 +47,15 @@ export default {
   //  return api.get("/users", { page, sort, search });
   //},
   AUTH: {
-    login({shopName}) {
+    loginShopify({shopName}) {
       return api.post('/api/login', {
         "shop": shopName
       })
+    },
+    loginStore({shopName}) {
+      // return api.post('/api/login', {
+      //   "shop": shopName
+      // })
     },
 
   },

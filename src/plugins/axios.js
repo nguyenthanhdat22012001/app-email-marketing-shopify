@@ -1,7 +1,6 @@
 import { default as instance } from "axios";
 import cookie from '@/plugins/cookie'
 import store from '@/store'
-console.log(process.env.VUE_APP_API)
 let axios = instance.create({
   baseURL: process.env.VUE_APP_API,
   timeout: 60 * 1000,
