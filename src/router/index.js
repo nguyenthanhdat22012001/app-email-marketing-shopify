@@ -20,29 +20,29 @@ const routes = [
   },
   {
     path: "/customer",
-    component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/layout.vue"),
+    component: () => import(/* webpackChunkName: "customer" */ "@/modules/customer/views/layout.vue"),
     children: [
       {
         path: '',
         name: 'customer',
-        component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/CustomerHome.vue"),
+        component: () => import(/* webpackChunkName: "customer" */ "@/modules/customer/views/CustomerHome.vue"),
       },
 
     ]
   },
   {
     path: "/campaign",
-    component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/layout.vue"),
+    component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/layout.vue"),
     children: [
       {
         path: '',
         name: 'campaign',
-        component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/CampaignHome.vue"),
+        component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignHome.vue"),
       },
       {
         path: 'create',
         name: 'campaign/create',
-        component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/CampaignCreate.vue"),
+        component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignCreate.vue"),
       }
     ]
   },
@@ -57,31 +57,16 @@ VueRouter.prototype.push = function push(
 ) {
   return originalPush.call(this, location, onComplete, onAbort)
 }
+
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior: function (to, from, savedPosition) {
+  scrollBehavior: function () {
+    // arg: to, from, savedPosition
     return { x: 0, y: 0 };
   },
 })
 
-router.beforeEach(async (to, from, next) => {
-  if (to.meta.middleware) {
-    const middleware = to.meta.middleware;
-    const payload = { to, from, next, store };
-    let preventNext = false;
-    for (let i = 0; i < middleware.length; i++) {
-      const result = await middleware[i](payload);
-      if (!result) {
-        preventNext = true;
-        break;
-      }
-    }
-    if (preventNext) {
-      return;
-    }
-  }
-  next();
-});
 export default router
