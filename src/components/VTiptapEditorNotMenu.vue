@@ -1,9 +1,15 @@
 <template>
   <div>
-    <editor-content
-      :editor="editor"
-      class="editor-field bg-white p-3 border border-light rounded"
-    />
+    <div class="flex items-center w-[100%] border border-light rounde">
+      <editor-content
+        :editor="editor"
+        class="flex-1 editor-field bg-white p-3 border-r border-light"
+      />
+      <span class="text-gray-light w-[60px] text-center"
+        >{{editor ?  editor.storage.characterCount.characters() : 0}}/{{limit}}</span
+      >
+    </div>
+
     <div v-if="prop_open_variant" class="mt-4">
       <v-dropdown-variant @emitClickVariant="onClickVariant" />
     </div>
@@ -14,6 +20,7 @@
 import StarterKit from "@tiptap/starter-kit";
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import Paragraph from "@tiptap/extension-paragraph";
+import CharacterCount from "@tiptap/extension-character-count";
 import Text from "@tiptap/extension-text";
 import Variant from "@/custom_extensions/variant/index";
 import VDropdownVariant from "./VDropdownVariant.vue";
@@ -36,6 +43,7 @@ export default {
   data() {
     return {
       editor: null,
+       limit: 78,
     };
   },
   methods: {
@@ -50,12 +58,24 @@ export default {
         Paragraph,
         Text,
         Variant,
+        CharacterCount.configure({
+          limit: this.limit,
+        }),
       ],
       content: this.prop_email_content,
     });
 
     this.editor.on("update", ({ editor }) => {
       let newString = editor.getHTML();
+      // let string_length = editor.getText().length;
+      // let max_tring = 78;
+      // if (string_length < max_tring) {
+      //   console.log('true',editor.getText())
+      //   this.$emit("emitUpdateEmailContent", newString);
+      // }else{
+      //    console.log('false',editor.getText())
+      //    this.$emit("emitUpdateEmailContent", this.prop_email_content);
+      // }
       this.$emit("emitUpdateEmailContent", newString);
     });
   },
@@ -69,13 +89,9 @@ export default {
 <style lang="scss" scoped>
 .editor-field::v-deep(.ProseMirror) {
   outline: none;
-//   min-height: 112px;
-//   padding: 12px 5px;
   line-break: anywhere;
 }
 .ProseMirror [contenteditable="false"] {
   white-space: normal;
 }
-
-
 </style>

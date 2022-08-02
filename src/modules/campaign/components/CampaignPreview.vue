@@ -7,41 +7,78 @@
         <p>Send text</p>
       </v-button>
     </div>
-    <div class="preview-body flex flex-col gap-5 h-full">
+    <div
+      class="preview-body"
+      style="display: flex; flex-direction: column; gap: 20px; height: 100%"
+    >
       <div
-        class="preview-subject font-bold flex flex-col gap-[18px] text-sm text-dark px-5 py-5 pb-4 bg-white rounded shadow-content"
+        style="
+          display: flex;
+          flex-direction: column;
+          font-weight: 700;
+          gap: 18px;
+          color: #28293d;
+          padding: 20px 16px;
+          background: #ffffff;
+          border-radius: 4px;
+          box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.08),
+            0px 0.5px 2px rgba(96, 97, 112, 0.16);
+        "
       >
-        <div class="subject--title flex gap-[5px]">
-          <span class="text-muted text-sm">Subject: </span>
-          <span v-html="emailSubject"></span>
+        <div>
+          <span style="color: #555770">Subject: </span>
+          <span v-html="emailSubject" style="line-break: anywhere"></span>
         </div>
         <div class="flex gap-5">
           <img
             src="@/assets/images/avatar-preview.png"
             alt=""
-            class="object-contain"
+            style="object-fit: contain"
           />
-          <div class="flex flex-col gap-1">
-            <div class="flex gap-2">
-              <h1 class="font-bold text-sm text-dark lead-5">Jessica Tran</h1>
-              <p class="text-muted text-sm text-gray-light font-normal">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <div style="display: flex; gap: 8px; line-height: 17px">
+              <h1 style="font-weight: bold; line-height: 17px">Jessica Tran</h1>
+              <p style="color: #8f90a6; line-height: 17px; font-weight: 400">
                 jesst@firegroup.com via mailchimpapp.net
               </p>
             </div>
-            <p class="text-muted text-sm text-gray-light font-normal">
+            <p
+              style="
+                color: #8f90a6;
+                line-height: 17px;
+                font-size: 14px;
+                font-weight: 400;
+              "
+            >
               to Customer email
             </p>
           </div>
         </div>
       </div>
-      <div class="sticky top-5 flex flex-col gap-5" ref="sticky">
+      <div
+        class="sticky top-5"
+        style="display: flex; flex-direction: column; gap: 20px"
+        ref="sticky"
+        v-show="hideBoxPreview"
+      >
         <div
-          class="preview-content overflow-hidden"
+          class="preview-content"
           :style="'border-radius:' + emailBackground.radius + 'px'"
         >
-          <img :src="emailBanner" alt="" class="w-full object-cover" />
+          <img
+            :src="emailBanner"
+            alt=""
+            style="width: 100%; object-fit: cover"
+          />
           <div
-            class="preview-email-content bg-white pt-7 pb-9 px-[30px] flex flex-col gap-[30px]"
+            class="preview-email-content"
+            style="
+              background: #ffffff;
+              padding: 28px 30px 36px;
+              display: flex;
+              flex-direction: column;
+              gap: 30px;
+            "
             :style="'background-color:' + backgroundColor"
           >
             <div
@@ -50,19 +87,40 @@
               :style="'color:' + email_color"
               v-html="emailContent"
             ></div>
-            <v-button
-              class="w-full justify-center font-bold text-sm lead-[18px]"
+            <button
+              style="
+                width: 100%;
+                line-height: 18px;
+                font-size: 14px;
+                font-weight: bold;
+                padding: 9px 0px;
+              "
               :style="styleButton()"
-              >{{ emailButton.label }}</v-button
             >
+              {{ emailButton.label }}
+            </button>
           </div>
         </div>
 
         <div
-          class="preview--footer text-center font-small text-muted text-sm lead-[18px]"
+          class="preview--footer"
+          style="
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 18px;
+            color: #555770;
+          "
         >
           <div v-html="emailFooter"></div>
-          <a href="#" class="underline">Unsubscribe here</a>
+          <a
+            href="#"
+            style="
+              display: block;
+              text-align: center;
+              text-decoration: underline;
+            "
+            >Unsubscribe here</a
+          >
         </div>
       </div>
     </div>
@@ -119,8 +177,8 @@ export default {
         255 / 2
       ) {
         // dark color
-        if(rgba_arr[3] <= 0.3){
-          return true
+        if (rgba_arr[3] <= 0.3) {
+          return true;
         }
         return false;
       } else {
@@ -145,6 +203,20 @@ export default {
       );
       this.handleChangeColorText(rgba);
       return rgba;
+    },
+    hideBoxPreview() {
+      if (this.emailBanner != "") {
+        return true;
+      }
+
+      if (this.emailContent != "") {
+        if (this.emailContent.length <= 7) {
+          return false;
+        }
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
