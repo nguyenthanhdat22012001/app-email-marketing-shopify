@@ -17,7 +17,7 @@ const routes = [
   },
   {
     path: "/customer",
-    component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/Layout.vue"),
+    component: () => import(/* webpackChunkName: "about" */ "@/modules/customer/views/layout.vue"),
     children:[
       {
         path:'',
@@ -29,7 +29,7 @@ const routes = [
   },
   {
     path: "/campaign",
-    component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/Layout.vue"),
+    component: () => import(/* webpackChunkName: "about" */ "@/modules/campaign/views/layout.vue"),
     children:[
       {
         path:'',

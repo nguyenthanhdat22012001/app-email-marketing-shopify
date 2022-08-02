@@ -1,5 +1,5 @@
 import api from '@/plugins/api'
-
+import data from "./data"
 const state = {
     customersList: []
 }
@@ -14,22 +14,22 @@ const mutations = {
     }
 }
 const actions = {
-    fetchCustomer({ commit }, state) {
-        return new Promise((resolve, reject) => {
-            api.getCustomers().then(res => {
-                if (res.data) {
-                    commit('setCustomer', res.data);
-                    resolve();
-                } else {
-                    reject()
-                }
+    fetchCustomer({ commit }, payload) {
+        // return new Promise((resolve, reject) => {
+        //     api.getCustomers().then(res => {
+        //         if (res.data) {
+        //             commit('setCustomer', res.data);
+        //             resolve();
+        //         } else {
+        //             reject()
+        //         }
 
-            }).catch(err => {
-                reject(err)
-            })
-        })
+        //     }).catch(err => {
+        //         reject(err)
+        //     })
+        // })
 
-        // commit('setCustomer', data)
+        commit('setCustomer', data)
     }
 }
 
