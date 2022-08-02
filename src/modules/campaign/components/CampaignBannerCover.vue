@@ -29,6 +29,7 @@
 </template>
 <script>
 import VButton from "@/components/VButton.vue";
+import notify from "@/helper/notify";
 
 export default {
   components: {
@@ -43,8 +44,26 @@ export default {
   methods: {
     onFileChange(e) {
       const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
-      this.$emit("input", this.url);
+      let is_image = this.validateFileImage(file);
+      if (is_image) {
+        this.url = URL.createObjectURL(file);
+        this.$emit("input", this.url);
+      } else {
+       notify.showNotify('error','image error', 'Accept JPG, PNG, JPEG, GIF file with max size of 5MB');
+      }
+    },
+    validateFileImage(file) {
+      const maxSize = 5000000;
+      let image = file;
+      if (!image.type.includes("image")) {
+        return false;
+      }
+
+      if (image.size > maxSize) {
+        return false;
+      }
+
+      return true;
     },
   },
 };

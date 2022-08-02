@@ -16,6 +16,9 @@
           <template v-if="getNotify.status == 'success'">
             <img src="@/assets/icons/check-circle.svg" alt="" />
           </template>
+          <template v-if="getNotify.status == 'error'">
+            <img src="@/assets/icons/error-circle.svg" alt="" />
+          </template>
           <span :class="classStatusText(getNotify.status)">{{
             getNotify.title
           }}</span>
