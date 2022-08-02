@@ -163,9 +163,9 @@ export default {
     return {
       campaignName: "",
       email_content: "",
-      email_footer: `Copyright 2010-2022 Firegroup, all rights reserved.`,
+      email_footer: `<p style="text-align: center">Copyright 2010-2022 Firegroup, all rights reserved.</p>`,
       isShowVariants: false,
-      email_subject: "We are giving away 5 months FREE to use the app",
+      email_subject: "",
       visibleCustomerEmailModal: false,
       emailBanner: "",
       emailBackground: {
