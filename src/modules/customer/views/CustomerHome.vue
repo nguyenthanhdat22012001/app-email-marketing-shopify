@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ progressing: progress < 100 }">
+  <div :class="{ progressing: progress < 100 }" class="flex flex-col gap-5">
     <v-progress-loading
       class="translate-y-full-180deg"
       v-model="progress"
@@ -12,7 +12,22 @@
     >
       <customer-filter />
       <customer-content />
-      <div class="customer-content--body"></div>
+    </div>
+    <div class="flex justify-center">
+      <v-button
+        variant="secondary"
+        class="py-[9px] px-[18px] text-sm font-medium"
+      >
+        <img src="@/assets/icons/arrow-left.svg" />
+        Previous
+      </v-button>
+      <v-button
+        variant="secondary"
+        class="py-[9px] px-[18px] text-sm font-medium"
+      >
+        Next
+        <img src="@/assets/icons/arrow-right.svg" />
+      </v-button>
     </div>
   </div>
 </template>
@@ -23,6 +38,7 @@ import Pusher from "pusher-js";
 import VProgressLoading from "@/components/VProgressLoading.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
 import CustomerContent from "../components/CustomerContent.vue";
+import VButton from "@/components/VButton.vue";
 import { mapActions } from "vuex";
 
 export default {
@@ -30,10 +46,11 @@ export default {
     VProgressLoading,
     CustomerFilter,
     CustomerContent,
+    VButton,
   },
   data() {
     return {
-      progress: 0,
+      progress: 100,
       increaseProgress: null,
     };
   },
@@ -46,7 +63,6 @@ export default {
         this.subscribe();
       });
   },
-  mounted() {},
   methods: {
     ...mapActions({
       fetchCustomer: "customerStore/fetchCustomer",
