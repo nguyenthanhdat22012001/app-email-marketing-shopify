@@ -4,7 +4,7 @@
       v-model="visible"
       @emitCloseModal="handleCloseModal"
     ></campaign-modal-send-mail> -->
-      
+
     <div :class="{ progressing: progress <= 100 }">
       <v-progress-loading
         class="translate-y-full-180deg"
@@ -41,7 +41,6 @@ import VButton from "@/components/VButton.vue";
 import VProgressLoading from "@/components/VProgressLoading.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
-// import CampaignModalSendMail from "../components/CampaignModalSendMail.vue";
 
 export default {
   components: {
@@ -50,7 +49,6 @@ export default {
     CampaignFilter,
     CampaignTable,
     // CampaignModalSendMail,
-    
   },
   data() {
     return {
@@ -59,7 +57,7 @@ export default {
       visible: true,
     };
   },
- 
+
   mounted() {
     this.increaseProgress = setInterval(() => {
       this.progress++;

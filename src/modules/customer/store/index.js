@@ -1,3 +1,4 @@
+import notify from '@/helper/notify'
 import api from '@/plugins/api'
 import data from "@/store/data"
 const state = {
@@ -17,22 +18,41 @@ const mutations = {
     }
 }
 const actions = {
-    fetchCustomer({ commit }, payload) {
-        // return new Promise((resolve, reject) => {
-        //     api.getCustomers().then(res => {
-        //         if (res.data) {
-        //             commit('setCustomer', res.data);
-        //             resolve();
-        //         } else {
-        //             reject()
-        //         }
+    fetchCustomersSync({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            api.getCustomersSync().then(res => {
+                console.log(res)
+                if (res.data) {
+                    commit('setCustomer', res.data);
+                    resolve();
+                } else {
+                    reject()
+                }
+            }).catch(err => {
+                reject(err)
+            })
+        }).finally(() => {
+            this.commit('setLoading', false)
 
-        //     }).catch(err => {
-        //         reject(err)
-        //     })
-        // })
+        })
+    },
+    fetchCustomers({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            api.getCustomers().then(res => {
+                console.log(res)
+                if (res.data) {
+                    commit('setCustomer', res.data);
+                    resolve();
+                } else {
+                    reject()
+                }
+            }).catch(err => {
+                reject(err)
+            })
+        }).finally(() => {
+            this.commit('setLoading', false)
 
-        commit('setCustomer', data)
+        })
     }
 }
 

@@ -50,10 +50,23 @@ export default {
     VStatus,
     VProgressBar,
   },
+  created() {
+    if (this.progress <= 100) {
+      this.increaseProgress = setInterval(() => {
+        const rand = 1 + Math.floor(Math.random() * 10);
+        this.setProgress(this.progress + rand);
+      }, 200);
+    }
+  },
   data() {
     return {
       selectedCustomer: [],
     };
+  },
+  computed: {
+    percentProgress(id) {
+      return this.prop_number / this.prop_total;
+    },
   },
 };
 </script>
