@@ -38,21 +38,13 @@ const api = {
 };
 
 export default {
-  //getUser(payload) {
-  //  let { id } = payload;
-  //  return api.get(`/use/${id}`, { id });
-  //},
-  //getListUser(payload) {
-  //  let { page = 1, sort = "A-Z", search = "name" } = payload;
-  //  return api.get("/users", { page, sort, search });
-  //},
   AUTH: {
-    loginShopify({shopName}) {
+    loginStore({ shopName }) {
       return api.post('/api/login', {
         "shop": shopName
       })
     },
-    loginStore({shopName}) {
+    fetchUser(payload) {
       // return api.post('/api/login', {
       //   "shop": shopName
       // })

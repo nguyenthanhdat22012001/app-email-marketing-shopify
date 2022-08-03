@@ -1,7 +1,7 @@
-import data from './data.js'
+import data from '@/store/data'
 const state = {
     campaignList: [],
-    customersSelected:[]
+    customersSelected: []
 }
 const getters = {
     getCustomersSelected(state) {
@@ -14,7 +14,7 @@ const mutations = {
     }
 }
 const actions = {
-    
+
 }
 
 
