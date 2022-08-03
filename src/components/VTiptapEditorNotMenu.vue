@@ -67,7 +67,6 @@ export default {
 
     this.editor.on("update", ({ editor }) => {
       let newString = editor.getHTML();
-
       this.$emit("emitUpdateEmailContent", newString);
     });
   },

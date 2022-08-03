@@ -14,7 +14,7 @@
         <router-view></router-view>
       </div>
     </div>
-    <div class="bg-auth relative w-[40%] ">
+    <div class="bg-auth relative w-[42%] ">
       <img src="@/assets/images/bg-auth.png" alt="" class="w-full h-[100vh]" />
       <div
         class="absolute top-[50%] right-[50%] translate-y-[-50%] translate-x-[50%] text-center text-white"

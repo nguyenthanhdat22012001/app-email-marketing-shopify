@@ -18,7 +18,7 @@
 <script>
 export default {
   props: {
-    prop_number: {
+    prop_percent: {
       type: Number,
       default: 0,
     },
@@ -35,16 +35,16 @@ export default {
     classProgressContent: function () {
       return {
         width: `${this.numberSuccess}%`,
-        "background-color": this.prop_is_loading ? "#3E7BFA" : "#05A660",
+        "background-color": this.prop_percent != 100 ? "#3E7BFA" : "#05A660",
       };
     },
     classProgressText: function () {
       return {
-        color: this.prop_is_loading ? "#3E7BFA" : "#05A660",
+        color: this.prop_percent != 100 ? "#3E7BFA" : "#05A660",
       };
     },
     numberSuccess() {
-      return (this.prop_number / this.prop_total) * 100;
+      return this.prop_percent;
     },
   },
 };

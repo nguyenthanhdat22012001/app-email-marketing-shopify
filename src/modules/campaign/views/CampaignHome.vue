@@ -1,17 +1,6 @@
 <template>
-  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gra(y-light">
-    <!-- <campaign-modal-send-mail
-      v-model="visible"
-      @emitCloseModal="handleCloseModal"
-    ></campaign-modal-send-mail> -->
-      
-    <div :class="{ progressing: progress <= 100 }">
-      <v-progress-loading
-        class="translate-y-full-180deg"
-        v-model="progress"
-        label="Syncing customers from Shopify"
-        v-if="progress <= 100"
-      />
+  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
+    <div>
       <div class="flex justify-between w-full items-center">
         <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
         <div class="flex gap-[10px]">
@@ -29,7 +18,7 @@
       >
         <campaign-filter />
         <div class="pl-5">
-          <campaign-table />
+          <campaign-table :prop_list_campaign="list_campaign" />
         </div>
       </div>
     </div>
@@ -38,39 +27,49 @@
 
 <script>
 import VButton from "@/components/VButton.vue";
-import VProgressLoading from "@/components/VProgressLoading.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
-// import CampaignModalSendMail from "../components/CampaignModalSendMail.vue";
+import { pusher } from "@/plugins";
+import api from "@/plugins/api";
 
 export default {
   components: {
     VButton,
-    VProgressLoading,
     CampaignFilter,
     CampaignTable,
-    // CampaignModalSendMail,
-    
   },
   data() {
     return {
-      progress: 101,
-      increaseProgress: null,
-      visible: true,
+      page: 1,
+      size: 10,
+      list_campaign: [],
     };
   },
- 
-  mounted() {
-    this.increaseProgress = setInterval(() => {
-      this.progress++;
-    }, 50);
-  },
-  watch: {
-    progress(value) {
-      if (value > 100) {
-        clearInterval(this.increaseProgress);
+  methods: {
+    subscribe() {
+      pusher.subscribe("campaigns");
+      pusher.bind("send_mail", (data) => {
+        console.log("campaigns", data);
+        // this.setProgress(Number(data.message));
+        // if (data.message >= 100) {
+        //   pusher.unsubscribe("customers_syncing");
+        // }
+      });
+    },
+    async fetchCampaigns() {
+      try {
+        let res = await api.CAMPAIGN.fetch();
+        // console.log("res", res);
+        if (res.status == 200) {
+          this.list_campaign = res.data;
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
+  },
+  created() {
+    this.fetchCampaigns();
   },
 };
 </script>

@@ -84,7 +84,7 @@
             <div
               class="email--content"
               style="line-break: anywhere"
-              :style="'color:' + email_color"
+              :style="'color:' + text_email_color"
               v-html="emailContent"
             ></div>
             <button
@@ -147,7 +147,7 @@ export default {
   },
   data() {
     return {
-      email_color: "#28293D",
+      text_email_color: "#28293D",
       visibleSendTestMailModal: false,
     };
   },
@@ -194,9 +194,9 @@ export default {
     handleChangeColorText(rgba) {
       let is_bg_light = this.checkBackgroundLightDark(rgba);
       if (!is_bg_light) {
-        this.email_color = "#ffffff";
+        this.text_email_color = "#ffffff";
       } else {
-        this.email_color = "#28293D";
+        this.text_email_color = "#28293D";
       }
     },
   },
