@@ -47,7 +47,7 @@ export default {
     checkAuth(payload) {
       return api.post('/api/authen', payload)
     },
-    fetchStore() {
+    fetchUser() {
       return api.get('/api/authen/getUser')
     }
 

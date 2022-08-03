@@ -7,16 +7,11 @@ export default async function ({ next, to, store }) {
                 await store.dispatch('auth/fetchUser')
                 return true
             } catch (error) {
-                if (error.status == 401) {
-                    store.dispatch('auth/logout')
-                    next({
-                        name: 'login'
-                    })
-                    return false
-                } else {
-                    store.commit('setLoadingError', true)
-                    return false
-                }
+                store.dispatch('auth/logout')
+                next({
+                    name: 'login'
+                })
+                return false
             }
         } else {
             return true

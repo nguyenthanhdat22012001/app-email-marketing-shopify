@@ -24,6 +24,7 @@ const actions = {
                 console.log(res)
                 if (res.data) {
                     commit('setCustomer', res.data);
+                    // notify.showNotify("success", "Success", "Login Successfully!!")
                     resolve();
                 } else {
                     reject()
@@ -42,6 +43,7 @@ const actions = {
                 console.log(res)
                 if (res.data) {
                     commit('setCustomer', res.data);
+                    // notify.showNotify("success", "Success", "Login Successfully!!")
                     resolve();
                 } else {
                     reject()
