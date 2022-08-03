@@ -1,7 +1,8 @@
 
+import notify from "@/helper/notify";
 import api from "@/plugins/api";
 import cookie from "@/plugins/cookie";
-let token = cookie.get('test_token');
+let token = cookie.get('access_token');
 
 
 const state = {
@@ -32,13 +33,13 @@ const mutations = {
     },
     setToken(state, payload) {
         state.token = payload;
-        cookie.set("test_token", payload, {
+        cookie.set("access_token", payload, {
             expires: 7,
         });
     },
     removeToken(state) {
         state.token = "";
-        cookie.remove("test_token");
+        cookie.remove("access_token");
     },
 };
 const actions = {
@@ -47,9 +48,43 @@ const actions = {
             this.commit('setLoading', true)
             api.AUTH.loginStore({ shopName }).then(res => {
                 resolve(res)
+            }).catch(err => {
+                console.log('error')
+                reject(err)
+                notify.showNotify('error', "error", "Something wrong!! Try again")
+            }).finally(() => {
+                this.commit('setLoading', false)
+
             })
         })
+    },
+    checkAuth({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.commit('setLoading', true)
+            api.AUTH.checkAuth(payload).then(res => {
+                console.log(res)
+                resolve(res)
+            }).catch(err => {
+                reject(err)
+                notify.showNotify('error', "error", "Something wrong!! Try again")
+            }).finally(() => {
+                this.commit('setLoading', false)
+            })
 
+        })
+    },
+    fetchStore({ commit }, payload) {
+        return new Promise((resolve,reject)=>{
+            this.commit('setLoading', true)
+            api.AUTH.fetchStore(payload).then(res => {
+                resolve(res)
+            }).catch(err => {
+                reject(err)
+                notify.showNotify('error', "error", "Something wrong!! Try again")
+            }).finally(() => {
+                this.commit('setLoading', false)
+            })
+        })
     },
     logout({ commit }) {
         commit("removeUser");

@@ -44,15 +44,19 @@ export default {
         "shop": shopName
       })
     },
-    fetchUser(payload) {
-      // return api.post('/api/login', {
-      //   "shop": shopName
-      // })
+    checkAuth(payload) {
+      return api.post('/api/authen', payload)
     },
+    fetchStore() {
+      return api.get('/api/authen/getUser')
+    }
 
   },
   getCustomers() {
-    return api.get('/api/customer/sync')
+    return api.get('/api/customer')
+  },
+  getCustomersSync() {
+    return api.get('https://d651-113-161-32-170.ap.ngrok.io/api/customer/sync')
   },
   CAMPAIGN: {
     fetch(payload) {

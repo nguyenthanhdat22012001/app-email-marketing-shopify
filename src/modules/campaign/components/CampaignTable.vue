@@ -75,6 +75,11 @@ export default {
       selectedCustomer: [],
     };
   },
+  computed: {
+    percentProgress(id) {
+      return this.prop_number / this.prop_total;
+    },
+  },
 };
 </script>
 

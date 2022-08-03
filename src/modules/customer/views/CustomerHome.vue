@@ -61,18 +61,17 @@ export default {
   },
   created() {
     this.fetchCustomer();
-
-    this.increaseProgress = setInterval(() => {
-      const rand = 1 + Math.floor(Math.random() * 10);
-      this.setProgress(this.progress + rand);
-    }, 200);
-  },
-  mounted() {
-    console.log(this.progress);
+    this.subscribe();
+    // if (this.progress <= 100) {
+    //   this.increaseProgress = setInterval(() => {
+    //     const rand = 1 + Math.floor(Math.random() * 10);
+    //     this.setProgress(this.progress + rand);
+    //   }, 200);
+    // }
   },
   methods: {
     ...mapActions({
-      fetchCustomer: "customerStore/fetchCustomer",
+      fetchCustomer: "customerStore/fetchCustomersSync",
     }),
     ...mapMutations({
       setProgress: "setProgress",
@@ -81,8 +80,9 @@ export default {
       pusher.subscribe("customers_syncing");
       pusher.bind("syncing_customer", (data) => {
         console.log(data);
-        this.setProgress(Number(data.message));
+        if (this.progress < 100) this.setProgress(Number(data.message));
         if (data.message >= 100) {
+          this.setProgress(100);
           pusher.unsubscribe("customers_syncing");
         }
       });

@@ -54,13 +54,21 @@ export default {
 };
 </script>
 <style>
-.list-notify-enter-active,
-.list-notify-leave-active {
-  transition: all 0.5s ease-out;
+.list-notify-enter-active {
+  animation: show 0.4s ease forwards;
 }
-.list-notify-enter-from,
-.list-notify-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
+.list-notify-leave-active {
+  animation: show 0.4s ease forwards reverse;
+}
+
+@keyframes show {
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 </style>

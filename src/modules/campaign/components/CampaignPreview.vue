@@ -25,7 +25,7 @@
             0px 0.5px 2px rgba(96, 97, 112, 0.16);
         "
       >
-        <div style="display:flex;gap:5px">
+        <div style="display: flex; gap: 5px">
           <span style="color: #555770">Subject: </span>
           <span v-html="emailSubject" style="line-break: anywhere"></span>
         </div>
@@ -173,8 +173,8 @@ export default {
     styleButton() {
       return `background:${this.emailButton.backgroundColor};color:${this.emailButton.textColor};border-radius:${this.emailButton.radius}px`;
     },
-    checkBackgroundLightDark(rgba) {
-      let string_lenght = rgba.length - 1;
+    checkBackgroundLightDark(rgba = "#ffffff") {
+      let string_lenght = rgba?.length - 1;
       let new_string = rgba.substring(5, string_lenght);
       let rgba_arr = new_string.split(",");
       if (
@@ -224,7 +224,6 @@ export default {
       }
     },
   },
-  
 };
 </script>
 
