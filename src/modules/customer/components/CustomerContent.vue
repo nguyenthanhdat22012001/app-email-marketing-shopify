@@ -53,14 +53,16 @@
           />
         </td>
         <td class="py-5 pr-3.5">
-          <v-avatar :name="customer.name" class="mr-3" />{{ customer.name }}
-          <!-- getFullName(customer.first_name,customer.last_name) -->
+          <v-avatar
+            :name="getFullName(customer.first_name, customer.last_name)"
+            class="mr-3"
+          />{{ getFullName(customer.first_name, customer.last_name) }}
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5">{{ customer.orders }} Orders</td>
-        <td class="py-5 pr-3.5">$ {{ customer.spent }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.create }}</td>
+        <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
+        <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
+        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at }}</td>
       </tr>
     </template>
   </v-table>
@@ -95,7 +97,7 @@ export default {
       selectedAll: false,
     };
   },
-  
+
   methods: {
     handleSelectAll() {
       if (this.selectedAll) {
@@ -111,9 +113,9 @@ export default {
         this.selectedAll = false;
       }
     },
-    getFullName(firstName, lastName) {
-      return firstName + " " + lastName;
-    },
+    // getFullName(firstName, lastName) {
+    //   return firstName + " " + lastName;
+    // },
   },
   computed: {
     ...mapGetters({

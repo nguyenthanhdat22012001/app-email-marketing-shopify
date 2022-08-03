@@ -47,7 +47,7 @@ export default {
     handleLogin() {
       this.login(this.shopName).then((res) => {
         console.log(res);
-        // window.location = res;
+        window.location = res;
       });
     },
   },

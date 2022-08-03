@@ -13,12 +13,14 @@
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="background.color"
+              maxlength="7"
             />
           </div>
           <div class="w-[50px] flex justify-center">
             <input
               v-model="background.opacity"
               type="number"
+              maxlength="3"
               class="w-[24px] text-center text-xs outline-none"
             />%
           </div>
