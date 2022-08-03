@@ -1,5 +1,6 @@
 
 import notify from "@/helper/notify";
+import { mixin } from "@/plugins";
 import api from "@/plugins/api";
 import cookie from "@/plugins/cookie";
 let token = cookie.get('access_token');
@@ -49,9 +50,8 @@ const actions = {
             api.AUTH.loginStore({ shopName }).then(res => {
                 resolve(res)
             }).catch(err => {
-                console.log('error')
                 reject(err)
-                notify.showNotify('error', "error", "Something wrong!! Try again")
+                mixin.methods.toastMessageError()
             }).finally(() => {
                 this.commit('setLoading', false)
 
@@ -62,25 +62,25 @@ const actions = {
         return new Promise((resolve, reject) => {
             this.commit('setLoading', true)
             api.AUTH.checkAuth(payload).then(res => {
-                console.log(res)
                 resolve(res)
             }).catch(err => {
                 reject(err)
-                notify.showNotify('error', "error", "Something wrong!! Try again")
+                mixin.methods.toastMessageError()
+
             }).finally(() => {
                 this.commit('setLoading', false)
             })
 
         })
     },
-    fetchStore({ commit }, payload) {
-        return new Promise((resolve,reject)=>{
+    fetchUser({ commit }, payload) {
+        return new Promise((resolve, reject) => {
             this.commit('setLoading', true)
-            api.AUTH.fetchStore(payload).then(res => {
+            api.AUTH.fetchUser(payload).then(res => {
                 resolve(res)
             }).catch(err => {
                 reject(err)
-                notify.showNotify('error', "error", "Something wrong!! Try again")
+                mixin.methods.toastMessageError()
             }).finally(() => {
                 this.commit('setLoading', false)
             })
