@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      login: "auth/loginShopify",
+      login: "auth/loginStore",
     }),
     handleLogin() {
       this.login(this.shopName).then((res) => {

@@ -40,7 +40,7 @@
     <template #table_body>
       <tr
         class="bg-white border-t border-[#EBEBF0]"
-        v-for="customer in customerList"
+        v-for="customer in customerListPagination"
         :key="customer.id"
       >
         <td>
@@ -53,10 +53,7 @@
           />
         </td>
         <td class="py-5 pr-3.5">
-          <v-avatar
-            :name="customer.name"
-            class="mr-3"
-          />{{ customer.name }} 
+          <v-avatar :name="customer.name" class="mr-3" />{{ customer.name }}
           <!-- getFullName(customer.first_name,customer.last_name) -->
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
@@ -82,13 +79,23 @@ export default {
     VAvatar,
     VButton,
   },
+  props: {
+    page: {
+      default: 0,
+      type: Number,
+    },
+    size: {
+      default: 10,
+      type: Number,
+    },
+  },
   data() {
     return {
       selectedCustomer: [],
       selectedAll: false,
     };
   },
-
+  
   methods: {
     handleSelectAll() {
       if (this.selectedAll) {
@@ -116,6 +123,12 @@ export default {
       get() {
         return this.selectedCustomer.length;
       },
+    },
+    customerListPagination() {
+      return this.customerList.slice(
+        (this.page - 1) * this.size,
+        this.page * this.size
+      );
     },
   },
 };
