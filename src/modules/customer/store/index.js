@@ -1,11 +1,14 @@
 import api from '@/plugins/api'
-import data from "./data"
+import data from "@/store/data"
 const state = {
     customersList: []
 }
 const getters = {
     getCustomers(state) {
         return state.customersList
+    },
+    getCustomerCount(state) {
+        return state.customersList.length
     }
 }
 const mutations = {

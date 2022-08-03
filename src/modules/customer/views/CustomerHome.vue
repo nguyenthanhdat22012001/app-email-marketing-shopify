@@ -6,40 +6,44 @@
       label="Syncing customers from Shopify"
       v-if="progress < 100"
     />
-    <div
-      class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 shadow-content"
-      v-else
-    >
-      <customer-filter />
-      <customer-content />
-    </div>
-    <div class="flex justify-center">
-      <v-button
-        variant="secondary"
-        class="py-[9px] px-[18px] text-sm font-medium"
+    <div v-else class="flex-1 flex flex-col gap-5">
+      <div
+        class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 shadow-content"
       >
-        <img src="@/assets/icons/arrow-left.svg" />
-        Previous
-      </v-button>
-      <v-button
-        variant="secondary"
-        class="py-[9px] px-[18px] text-sm font-medium"
-      >
-        Next
-        <img src="@/assets/icons/arrow-right.svg" />
-      </v-button>
+        <customer-filter />
+        <customer-content :page="page" :size="size" />
+      </div>
+      <div class="flex justify-center">
+        <v-button
+          variant="secondary"
+          class="py-[9px] px-[18px] text-sm font-medium"
+          @click="page--"
+          :disabled="page <= 1"
+        >
+          <img src="@/assets/icons/arrow-left.svg" />
+          Previous
+        </v-button>
+        <v-button
+          variant="secondary"
+          class="py-[9px] px-[18px] text-sm font-medium"
+          @click="page++"
+          :disabled="page >= Math.floor(customerCount / size)"
+        >
+          Next
+          <img src="@/assets/icons/arrow-right.svg" />
+        </v-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Pusher from "pusher-js";
-
 import VProgressLoading from "@/components/VProgressLoading.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
 import CustomerContent from "../components/CustomerContent.vue";
 import VButton from "@/components/VButton.vue";
-import { mapActions } from "vuex";
+import { pusher } from "@/plugins";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -50,36 +54,45 @@ export default {
   },
   data() {
     return {
-      progress:100,
       increaseProgress: null,
+      page: 1,
+      size: 10,
     };
   },
   created() {
-    this.fetchCustomer()
-      // .then(() => {
-      //   this.progress = 100;
-      // })
-      // .catch(() => {
-      //   this.subscribe();
-      // });
+    this.fetchCustomer();
+
+    this.increaseProgress = setInterval(() => {
+      const rand = 1 + Math.floor(Math.random() * 10);
+      this.setProgress(this.progress + rand);
+    }, 200);
+  },
+  mounted() {
+    console.log(this.progress);
   },
   methods: {
     ...mapActions({
       fetchCustomer: "customerStore/fetchCustomer",
     }),
+    ...mapMutations({
+      setProgress: "setProgress",
+    }),
     subscribe() {
-      let pusher = new Pusher(process.env.VUE_APP_PUSHER_APP_KEY, {
-        cluster: process.env.VUE_APP_PUSHER_APP_CLUSTER,
-      });
       pusher.subscribe("customers_syncing");
       pusher.bind("syncing_customer", (data) => {
         console.log(data);
-        this.progress = Number(data.message);
+        this.setProgress(Number(data.message));
         if (data.message >= 100) {
-          pusher.unsubscribe("syncing_customer");
+          pusher.unsubscribe("customers_syncing");
         }
       });
     },
+  },
+  computed: {
+    ...mapGetters({
+      progress: "getProgress",
+      customerCount: "customerStore/getCustomerCount",
+    }),
   },
   watch: {
     progress(value) {
