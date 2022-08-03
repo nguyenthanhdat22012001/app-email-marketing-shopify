@@ -5,14 +5,14 @@ export default async function ({ next, to, store }) {
     next({ name: 'customer' })
     return true
   }
+
   if (Object.keys(to.query).length) {
     axios.interceptors.request.use(function (config) {
       config.headers['HTTP_X_SHOPIFY_HMAC_SHA256'] = to.query.hmac
       return config;
     });
     Headers['HTTP_X_SHOPIFY_HMAC_SHA256'] = to.query.hmac
-
-    store.dispatch('auth/fetchUser', {
+    store.dispatch('auth/checkAuth', {
       ...to.query,
       "myshopify_domain": to.query.shop
     }).then(res => {
@@ -21,8 +21,6 @@ export default async function ({ next, to, store }) {
         store.commit('auth/setUser', res.data.original.user)
         next({ name: 'customer' })
       }
-      console.log(res)
-
     }).catch(err => console.log(err));
   }
   // if (token) {
