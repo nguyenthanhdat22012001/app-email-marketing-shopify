@@ -172,6 +172,7 @@ export default {
         color: "#ffffff",
         opacity: 100,
         radius: "3",
+        color_text: "#28293D",
       },
       emailButton: {
         backgroundColor: "#003084",
@@ -200,6 +201,24 @@ export default {
       }
       return Number(value);
     },
+    // onSendMail() {
+    //   let data = {
+    //     name: this.campaignName,
+    //     subject: this.email_subject,
+    //     content: this.email_content,
+    //     footer: this.email_footer,
+    //     variant_name: ["Full_name", "last_name"],
+    //     color_content: this.emailBackground.color_text,
+    //     background_banner: this.emailBanner,
+    //     background_color: this.emailBackground.color,
+    //     background_radius: this.emailBackground.radius,
+    //     button_label: this.emailButton.label,
+    //     button_radius: this.emailButton.radius,
+    //     button_background_color: this.emailButton.backgroundColor,
+    //     button_text_color: this.emailButton.textColor,
+    //     list_mail_customers: ["khanhhcm4@gmail.com", "khanhhcm4"],
+    //   };
+    // },
   },
 
   computed: {

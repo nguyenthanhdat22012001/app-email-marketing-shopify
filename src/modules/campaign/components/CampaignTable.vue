@@ -10,30 +10,37 @@
       <th scope="col" class="py-5 pr-3.5">Fail</th>
     </template>
 
-    <template #table_body>
-      <tr class="bg-white border-t border-[#EBEBF0]">
+    <template #table_body v-if="prop_list_campaign.length > 0">
+      <tr
+        class="bg-white border-t border-[#EBEBF0]"
+        v-for="item in prop_list_campaign"
+        :key="item.id"
+      >
         <td class="py-5 pr-3.5">
           <div class="flex items-center gap-3 font-semibold">
             <img src="@/assets/icons/envelope-open.svg" alt="" />
-            Black Friday Campaign
+            {{ item.name }}
           </div>
         </td>
-        <td class="py-5 pr-3.5 text-gray-light">Feb 28, 2004</td>
+        <td class="py-5 pr-3.5 text-gray-light">{{ item.created_at }}</td>
         <td class="py-5 pr-3.5">
-          <v-status class="text-primary">running</v-status>
+          <v-status class="text-primary">{{ item.status }}</v-status>
         </td>
         <td width="100px" class="py-5 pr-3.5">
-          <v-progress-bar
-            :prop_number="500"
-            :prop_total="1000"
-          ></v-progress-bar>
+          <v-progress-bar :prop_percent="item.process"></v-progress-bar>
         </td>
-        <td class="py-5 pr-3.5">1,000</td>
+        <td class="py-5 pr-3.5">{{ item.total_customers }}</td>
         <td class="py-5 pr-3.5 text-success font-bold">
-          250 <span class="ml-1 font-normal text-gray-light">(25%)</span>
+          {{ item.send_email_done }}
+          <span class="ml-1 font-normal text-gray-light"
+            ></span
+          >
         </td>
         <td class="py-5 pr-3.5 text-red font-bold">
-          35 <span class="ml-1 font-normal text-gray-light">(3%)</span>
+          {{ item.send_email_fail }}
+          <span class="ml-1 font-normal text-gray-light"
+            ></span
+          >
         </td>
       </tr>
     </template>
@@ -44,11 +51,24 @@
 import VTable from "@/components/VTable.vue";
 import VStatus from "@/components/VStatus.vue";
 import VProgressBar from "@/components/VProgressBar.vue";
+
+import { handlePercentByMath } from "@/helper/number";
 export default {
   components: {
     VTable,
     VStatus,
     VProgressBar,
+  },
+  props: {
+    prop_list_campaign: {
+      type: Array,
+      default(rawProps) {
+        return [];
+      },
+    },
+  },
+  methods: {
+    handlePercentByMath: handlePercentByMath,
   },
   data() {
     return {

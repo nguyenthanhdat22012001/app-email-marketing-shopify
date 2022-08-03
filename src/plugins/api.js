@@ -53,5 +53,11 @@ export default {
   },
   getCustomers() {
     return api.get('/api/customer/sync')
-  }
+  },
+  CAMPAIGN: {
+    fetch(payload) {
+      return api.get('/api/get-campaigns-process')
+    },
+
+  },
 };

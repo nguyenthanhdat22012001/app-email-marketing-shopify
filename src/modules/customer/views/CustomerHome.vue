@@ -4,7 +4,7 @@
       class="translate-y-full-180deg"
       v-model="progress"
       label="Syncing customers from Shopify"
-      v-if="progress < 100"
+      v-if="progress <= 100"
     />
     <div v-else class="flex-1 flex flex-col gap-5">
       <div
@@ -100,6 +100,9 @@ export default {
         clearInterval(this.increaseProgress);
       }
     },
+  },
+  beforeDestroy() {
+    clearInterval(this.increaseProgress);
   },
 };
 </script>
