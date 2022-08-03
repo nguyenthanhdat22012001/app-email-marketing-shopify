@@ -198,6 +198,7 @@ export default {
       } else {
         this.text_email_color = "#28293D";
       }
+      this.$emit('emitChangeTextColorContent', this.text_email_color)
     },
   },
   computed: {

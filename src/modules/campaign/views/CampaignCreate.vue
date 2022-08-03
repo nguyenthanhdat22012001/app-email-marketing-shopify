@@ -17,7 +17,9 @@
         </div>
         <div class="head--right flex items-center gap-[10px]">
           <v-button variant="secondary" class="py-1 px-5">Cancel</v-button>
-          <v-button variant="primary" class="py-1 px-7">Save</v-button>
+          <v-button variant="primary" class="py-1 px-7" @click="onSendMail()"
+            >Save</v-button
+          >
         </div>
       </div>
       <div
@@ -103,12 +105,16 @@
         </div>
         <div class="content--right flex-1 break-normal">
           <campaign-preview
+            ref="ref_preview"
             :email-content="email_content"
             :email-footer="email_footer"
             :email-subject="email_subject"
             :email-banner="emailBanner"
             :email-background="emailBackground"
             :email-button="emailButton"
+            @emitChangeTextColorContent="
+              (color_text) => (this.emailBackground.color_text = color_text)
+            "
           ></campaign-preview>
         </div>
       </div>
@@ -201,24 +207,30 @@ export default {
       }
       return Number(value);
     },
-    // onSendMail() {
-    //   let data = {
-    //     name: this.campaignName,
-    //     subject: this.email_subject,
-    //     content: this.email_content,
-    //     footer: this.email_footer,
-    //     variant_name: ["Full_name", "last_name"],
-    //     color_content: this.emailBackground.color_text,
-    //     background_banner: this.emailBanner,
-    //     background_color: this.emailBackground.color,
-    //     background_radius: this.emailBackground.radius,
-    //     button_label: this.emailButton.label,
-    //     button_radius: this.emailButton.radius,
-    //     button_background_color: this.emailButton.backgroundColor,
-    //     button_text_color: this.emailButton.textColor,
-    //     list_mail_customers: ["khanhhcm4@gmail.com", "khanhhcm4"],
-    //   };
-    // },
+    onSendMail() {
+      let el_preview_body = this.$refs.ref_preview.$el.children[1];
+      let el_preview_content = el_preview_body.children[1];
+
+      let data = {
+        name: this.campaignName,
+        subject: this.email_subject,
+        content: this.email_content,
+        footer: this.email_footer,
+        variant_name: ["Full_name", "last_name"],
+        color_content: this.emailBackground.color_text,
+        background_banner: this.emailBanner,
+        background_color: this.emailBackground.color,
+        background_radius: this.emailBackground.radius,
+        button_label: this.emailButton.label,
+        button_radius: this.emailButton.radius,
+        button_background_color: this.emailButton.backgroundColor,
+        button_text_color: this.emailButton.textColor,
+        list_mail_customers: ["khanhhcm4@gmail.com", "khanhhcm4"],
+        preview_email: el_preview_content
+      };
+
+      console.log("onSendMail", data, "ref", data);
+    },
   },
 
   computed: {
