@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h2 class="text-[40px] text-black font-bold mb-2.5">Login</h2>
-    <p class="text-[16px] text-dark mt-2.5">
+  <div class="w-full">
+    <h2 class="text-[40px] text-black font-bold ">Login</h2>
+    <p class="text-[16px] text-dark mt-[11px]">
       Please enter your Shopify URL to login
     </p>
     <div class="flex items-center bg-white my-5">
