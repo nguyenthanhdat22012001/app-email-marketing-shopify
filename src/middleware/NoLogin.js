@@ -1,4 +1,4 @@
-import axios from "@/plugins/axios";
+import { axios } from "@/plugins";
 export default async function ({ next, to, store }) {
   let token = store.getters['auth/getToken'];
   if (Object.keys(to.query).length) {
