@@ -107,7 +107,7 @@ export default {
       this.selectedAll = value;
     },
     ...mapActions({
-      fetchCustomer: "customerStore/fetchCustomer",
+      fetchCustomer: "customerStore/fetchCustomersSync",
     }),
     getCustomersPage(page, number) {
       return this.customerList.slice((page - 1) * number, page * 10 - 1);
