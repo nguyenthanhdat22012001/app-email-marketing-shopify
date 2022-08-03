@@ -50,6 +50,7 @@
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="emailButton.backgroundColor"
+              maxlength="7"
             />
           </div>
           <div class="w-[50px] flex justify-center">
@@ -73,6 +74,7 @@
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="emailButton.textColor"
+              maxlength="7"
             />
           </div>
           <div class="w-[50px] flex justify-center">
@@ -104,7 +106,6 @@ export default {
       },
     },
   },
-  
 };
 </script>
 <style lang=""></style>

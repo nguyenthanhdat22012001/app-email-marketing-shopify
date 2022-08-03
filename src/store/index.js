@@ -6,6 +6,8 @@ import customerStore from "@/modules/customer/store";
 import notifyStore from "./notifyStore";
 import campaignStore from "@/modules/campaign/store";
 import auth from "@/modules/auth/store";
+
+import notify from '@/helper/notify'
 export default new Vuex.Store({
   state: {
     isToggle: false,
@@ -29,12 +31,22 @@ export default new Vuex.Store({
     },
     setLoading(state, payload) {
       state.isLoading = payload
+      // if (payload) {
+      //   this.dispatch('timeoutError')
+      // }
     },
     setProgress(state, payload) {
       state.progress = payload
     }
   },
-  actions: {},
+  actions: {
+    timeoutError({ commit }) {
+      return setTimeout(() => {
+        commit('setLoading', false)
+        notify.showNotify("error","Error","Something wrong !! Try again")
+      }, 5000)
+    }
+  },
   modules: {
     customerStore,
     campaignStore,

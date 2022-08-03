@@ -3,8 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './index.css'
+import {mixin} from '@/plugins'
 
 Vue.config.productionTip = false
+Vue.mixin(mixin)
+
 document.title = "Customer Management - Team2"
 new Vue({
   router,
