@@ -58,10 +58,17 @@ export default {
   getCustomersSync() {
     return api.get('https://d651-113-161-32-170.ap.ngrok.io/api/customer/sync')
   },
+  CUSTOMER: {
+    fetchPagination(page) {
+      return api.get('/api/customer/get-all',{page: page})
+    },
+  },
   CAMPAIGN: {
-    fetch(payload) {
+    fetch() {
       return api.get('/api/get-campaigns-process')
     },
-
+    postTestMail(payload) {
+      return api.post('/api/save-campaign ',payload)
+    },
   },
 };

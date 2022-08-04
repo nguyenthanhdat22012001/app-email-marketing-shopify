@@ -29,8 +29,8 @@
       <div class="mt-[30px] overflow-auto flex-1">
         <campaign-table-modal-select
           v-model="customersSelected"
-          :page="page"
-          :number="number"
+          :prop_list_customer="list_customer"
+          @emitSelectAllCustomer="handleSelectAllCustomer"
         />
       </div>
       <div class="pr-[22px] pl-[30px] mt-6 flex justify-between items-center">
@@ -41,7 +41,7 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
-            :disabled="page == 1"
+            :disabled="page.prev_page_url == null ? true : false"
             @click="previousPage()"
           >
             <img src="@/assets/icons/arrow-left.svg" />
@@ -50,10 +50,7 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
-            :disabled="page >= Math.floor(getCustomers.length / number)"
-            :class="{
-              disabled: page >= Math.floor(getCustomers.length / number),
-            }"
+            :disabled="page.next_page_url == null ? true : false"
             @click="nextPage()"
           >
             Next
@@ -79,12 +76,11 @@
   </v-modal>
 </template>
 <script>
-import { mapGetters, mapMutations } from "vuex";
-
 import VModal from "@/components/VModal.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import CampaignTableModalSelect from "./CampaignTableModalSelect.vue";
+import api from "@/plugins/api";
 
 export default {
   components: {
@@ -96,12 +92,13 @@ export default {
   data() {
     return {
       customersSelected: [],
-      page: 1,
-      number: 10,
+      list_customer: [],
+      page: {
+        prev_page_url: null,
+        next_page_url: null,
+        current_page: 1,
+      },
     };
-  },
-  mounted() {
-    this.customersSelected = this.getCustomersSelected;
   },
   props: {
     value: {
@@ -109,24 +106,62 @@ export default {
     },
   },
   methods: {
-    ...mapMutations({
-      setCustomersSelected: "campaignStore/setCustomersSelected",
-    }),
     handleClickCancel() {
       this.$emit("emitCloseModal");
-      this.customersSelected = this.getCustomersSelected;
     },
     handleClickInsert() {
       this.$emit("emitCloseModal");
-      this.setCustomersSelected(
-        (state) => (state.customersSelected = this.customersSelected)
-      );
     },
-    nextPage() {
-      this.page++;
+    async nextPage() {
+      let current_page = this.page.current_page + 1;
+      this.page.current_page = current_page;
+      await this.fetchCustomerPagination(current_page);
     },
-    previousPage() {
-      this.page--;
+    async previousPage() {
+      let current_page = this.page.current_page - 1;
+      this.page.current_page = current_page;
+      await this.fetchCustomerPagination(current_page);
+    },
+    async fetchCustomerPagination(page) {
+      try {
+        let res = await api.CUSTOMER.fetchPagination(page);
+        if (res.status) {
+          this.list_customer = res.data.data;
+          this.page.prev_page_url = res.data.prev_page_url;
+          this.page.next_page_url = res.data.next_page_url;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    //emit call toggle check all
+    handleSelectAllCustomer(is_select_all) {
+      this.handlAddOrRemoveCustomers();
+    },
+    // handle check all customer when pagination if is_checked_all = true
+    handlAddOrRemoveCustomers(is_checked_all) {
+      let data = [];
+      if (is_checked_all) {
+        data = this.handleGetIdsCustomers(this.list_customer);
+        this.customersSelected = this.removeItemDuplicateInArray([
+          ...this.customersSelected,
+          ...data,
+        ]);
+      } else {
+        return false;
+      }
+    },
+    // handle get ids list customer
+    handleGetIdsCustomers(list_customer) {
+      let data = [];
+      list_customer.forEach((item) => {
+        data.push(item.id);
+      });
+      return data;
+    },
+
+    removeItemDuplicateInArray(arr) {
+      return Array.from(new Set(arr));
     },
   },
   computed: {
@@ -138,10 +173,14 @@ export default {
         this.$emit("input", value);
       },
     },
-    ...mapGetters({
-      getCustomersSelected: "campaignStore/getCustomersSelected",
-      getCustomers: "customerStore/getCustomers",
-    }),
+  },
+  watch: {
+    customersSelected(value) {
+      console.log("customersSelected", this.customersSelected);
+    },
+  },
+  created() {
+    this.fetchCustomerPagination(this.page.current_page);
   },
 };
 </script>

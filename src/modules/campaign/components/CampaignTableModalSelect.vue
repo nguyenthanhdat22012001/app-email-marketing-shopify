@@ -14,12 +14,9 @@
           <v-checkbox
             :prop_is_checkbox_custom="true"
             scope="col"
-            v-model="selectedAll"
+            :value="is_selected_all"
             prop_input_value="all"
-            :prop_label="
-              countSelectedCustomer ? countSelectedCustomer + ' Selected' : ''
-            "
-            @input="handleSelectAll"
+            @input="onToggleSelectAll"
             :class="{
               'border border-solid border-light p-[10px] rounded flex gap-4':
                 countSelectedCustomer,
@@ -35,10 +32,10 @@
       </template>
     </template>
 
-    <template #table_body>
+    <template #table_body v-if="prop_list_customer.length > 0">
       <tr
         class="bg-white border-t border-[#EBEBF0]"
-        v-for="customer in getCustomersPage(page, number)"
+        v-for="customer in prop_list_customer"
         :key="customer.id"
       >
         <td>
@@ -46,7 +43,6 @@
             scope="col"
             :prop_input_value="customer.id"
             class="py-[22px] pl-[30px] translate-y-2/4"
-            @input="handleSelect"
             v-model="customersSelected"
           />
         </td>
@@ -68,7 +64,6 @@
 import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
-import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     VTable,
@@ -77,50 +72,30 @@ export default {
   },
   props: {
     value: Array,
-    page: Number,
-    number: Number,
+    prop_list_customer: {
+      type: Array,
+      default(rawProps) {
+        return [];
+      },
+    },
   },
   data() {
     return {
-      selectedAll: false,
+      countSelectedCustomer: 0,
     };
   },
-  mounted() {
-    this.fetchCustomer();
-  },
   methods: {
-    handleSelectAll() {
-      if (this.selectedAll) {
-        this.customersSelected = this.customerList.map((item) => item.id);
-      } else {
-        this.customersSelected = [];
-      }
+    onToggleSelectAll() {
+       this.$emit("emitSelectAllCustomer", !this.is_selected_all);
     },
-    handleSelect() {
-      if (this.customersSelected.length) {
-        this.setSelectedAll(true);
-      } else {
-        this.setSelectedAll(false);
-      }
-    },
-    setSelectedAll(value) {
-      this.selectedAll = value;
-    },
-    ...mapActions({
-      fetchCustomer: "customerStore/fetchCustomersSync",
-    }),
-    getCustomersPage(page, number) {
-      return this.customerList.slice((page - 1) * number, page * 10 - 1);
-    },
+    oncheckCustomersInCustomerSelected(){
+      // this.prop_list_customer.forEach(item => {
+        
+      // });
+      return true
+    }
   },
   computed: {
-    ...mapGetters({
-      customerList: "customerStore/getCustomers",
-    }),
-    countSelectedCustomer() {
-      this.setSelectedAll(Boolean(this.customersSelected.length));
-      return this.customersSelected.length;
-    },
     customersSelected: {
       get() {
         return this.value;
@@ -129,6 +104,9 @@ export default {
         this.$emit("input", value);
       },
     },
+    is_selected_all(){
+      return this.oncheckCustomersInCustomerSelected();
+    }
   },
 };
 </script>

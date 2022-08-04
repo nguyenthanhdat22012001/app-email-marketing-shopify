@@ -79,12 +79,15 @@
               flex-direction: column;
               gap: 30px;
             "
-            :style="'background-color:' + backgroundColor"
+            :style="{
+              backgroundColor: backgroundColor,
+              borderRadius: emailBackground.radius + 'px',
+              color: emailBackground.color_text,
+            }"
           >
             <div
               class="email--content"
               style="line-break: anywhere"
-              :style="'color:' + text_email_color"
               v-html="emailContent"
             ></div>
             <button
@@ -198,7 +201,7 @@ export default {
       } else {
         this.text_email_color = "#28293D";
       }
-      this.$emit('emitChangeTextColorContent', this.text_email_color)
+      this.$emit("emitChangeTextColorContent", this.text_email_color);
     },
   },
   computed: {

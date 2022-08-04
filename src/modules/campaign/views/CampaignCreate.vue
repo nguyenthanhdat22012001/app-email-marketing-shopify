@@ -39,6 +39,15 @@
                 {{ campaignName.length }}/255
               </p>
             </div>
+            <div class="text-sm mt-1 text-red" v-if="formstate">
+              <template v-if="!validation.form.campaignName.required.valid">
+                {{ validation.form.campaignName.required.message }}
+              </template>
+              <template
+                v-else-if="!validation.form.campaignName.minLength.valid"
+                >{{ validation.form.campaignName.minLength.message }}
+              </template>
+            </div>
           </campaign-input>
           <campaign-input title="Send to customer?">
             <button
@@ -83,6 +92,11 @@
               @emitUpdateEmailContent="(value) => (email_subject = value)"
               maxlength="78"
             ></v-tiptap-editor-not-menu>
+            <div class="text-sm mt-1 text-red" v-if="formstate">
+              <template v-if="!validation.form.email_subject.required.valid">
+                {{ validation.form.email_subject.required.message }}
+              </template>
+            </div>
           </campaign-input>
           <campaign-input title="Email Content">
             <v-tiptap-editor
@@ -150,6 +164,7 @@ import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeE
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 import { mapGetters } from "vuex";
+import { api } from "@/plugins";
 export default {
   components: {
     VButton,
@@ -177,7 +192,7 @@ export default {
       emailBackground: {
         color: "#ffffff",
         opacity: 100,
-        radius: "3",
+        radius: 3,
         color_text: "#28293D",
       },
       emailButton: {
@@ -188,6 +203,7 @@ export default {
         radius: 4,
         label: "TRY FREE NOW",
       },
+      formstate: false,
     };
   },
 
@@ -207,37 +223,109 @@ export default {
       }
       return Number(value);
     },
-    onSendMail() {
+    handleGetVariantInString(element_html) {
+      let string =
+        typeof element_html == "object" ? element_html.outerHTML : element_html;
+      let variants = [
+        "Customer_Last_name",
+        "Customer_First_name",
+        "Customer_Full_name",
+        "Shop_name",
+      ];
+      let newVariants = [];
+      variants.forEach((item) => {
+        if (string.includes(`id="${item}"`)) {
+          newVariants.push(item);
+        }
+      });
+      return newVariants;
+    },
+    handleGetDataCreateCampaign() {
       let el_preview_body = this.$refs.ref_preview.$el.children[1];
       let el_preview_content = el_preview_body.children[1];
-
+      let variants_subject = this.handleGetVariantInString(this.email_subject);
+      let variants_content = this.handleGetVariantInString(el_preview_content);
       let data = {
+        store_id: 1,
         name: this.campaignName,
         subject: this.email_subject,
         content: this.email_content,
         footer: this.email_footer,
-        variant_name: ["Full_name", "last_name"],
+        variant_name: [...variants_subject, ...variants_content],
         color_content: this.emailBackground.color_text,
-        background_banner: this.emailBanner,
+        background_banner: this.emailBanner ? this.emailBanner : 'test',
         background_color: this.emailBackground.color,
-        background_radius: this.emailBackground.radius,
+        background_radius: `${this.emailBackground.radius}px`,
         button_label: this.emailButton.label,
-        button_radius: this.emailButton.radius,
+        button_radius: `${this.emailButton.radius}px`,
         button_background_color: this.emailButton.backgroundColor,
         button_text_color: this.emailButton.textColor,
-        list_mail_customers: ["khanhhcm4@gmail.com", "khanhhcm4"],
-        preview_email: el_preview_content
+        list_mail_customers: [],
+        preview_email: el_preview_content.outerHTML,
       };
-
-      console.log("onSendMail", data, "ref", data);
+      return data;
+    },
+    onSendMail() {
+      let data = this.handleGetDataCreateCampaign();
+      this.formstate = true;
+      console.log("data", data);
+    },
+    async onSendTestMail(email) {
+      let data = this.handleGetDataCreateCampaign();
+      let newData = { ...data, list_mail_customers: [email] };
+      await this.handleSendTestMailApi(newData);
+      console.log("onSendTestMail", { ...data, list_mail_customers: [email] });
+    },
+    async handleSendTestMailApi(data) {
+      try {
+        let res = api.CAMPAIGN.postTestMail(data);
+        console.log("res", res);
+      } catch (error) {
+        console.log("error", error);
+      }
     },
   },
-
   computed: {
     ...mapGetters({
       customersSelected: "campaignStore/getCustomersSelected",
       customers: "customerStore/getCustomers",
     }),
+    validation() {
+      const campaignName = {
+        required: {
+          valid: this.campaignName ? true : false,
+          message: "is required !",
+        },
+        minLength: {
+          valid: this.campaignName.length >= 6 ? true : false,
+          message: "min lenght 6 character !",
+        },
+      };
+      const email_subject = {
+        required: {
+          valid: (() => {
+            if (this.email_subject) {
+              if (this.email_subject.length <= 7) {
+                return false;
+              }
+              return true;
+            }
+            return false;
+          })(),
+          message: "is required !",
+        },
+      };
+      return {
+        form: {
+          campaignName,
+          email_subject,
+        },
+        valid:
+          campaignName.required.valid &&
+          campaignName.minLength.valid &&
+          email_subject.required.valid,
+      };
+    },
   },
   watch: {
     "emailBackground.opacity": function (newVal) {
@@ -249,6 +337,12 @@ export default {
     "emailButton.textOpacity": function (newVal) {
       this.emailButton.textOpacity = this.checkValue(newVal);
     },
+  },
+  mounted() {
+    this.$eventBus.$on("emitSendTestMail", this.onSendTestMail);
+  },
+  beforeDestroy() {
+    this.$eventBus.$off("emitSendTestMail", this.onSendTestMail);
   },
 };
 </script>
