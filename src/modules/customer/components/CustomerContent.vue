@@ -40,7 +40,7 @@
     <template #table_body>
       <tr
         class="bg-white border-t border-[#EBEBF0]"
-        v-for="customer in customerListPagination"
+        v-for="customer in customerList.data"
         :key="customer.id"
       >
         <td>
@@ -101,7 +101,7 @@ export default {
   methods: {
     handleSelectAll() {
       if (this.selectedAll) {
-        this.selectedCustomer = this.customerList.map((item) => item.id);
+        this.selectedCustomer = this.customerList.data.map((item) => item.id);
       } else {
         this.selectedCustomer = [];
       }
@@ -126,12 +126,7 @@ export default {
         return this.selectedCustomer.length;
       },
     },
-    customerListPagination() {
-      return this.customerList.slice(
-        (this.page - 1) * this.size,
-        this.page * this.size
-      );
-    },
+    
   },
 };
 </script>
