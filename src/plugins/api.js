@@ -41,14 +41,14 @@ export default {
   AUTH: {
     loginStore({ shopName }) {
       return api.post('/api/login', {
-        "shop": shopName
+        "myshopify_domain": shopName
       })
     },
     checkAuth(payload) {
-      return api.post('/api/authen', payload)
+      return api.post('/api/login', payload)
     },
     fetchUser() {
-      return api.get('/api/authen/getUser')
+      return api.get('/api/auth/getUser')
     }
 
   },

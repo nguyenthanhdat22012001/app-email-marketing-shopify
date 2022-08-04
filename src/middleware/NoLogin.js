@@ -1,4 +1,4 @@
-import { api, axios } from "@/plugins";
+import { api, axios, mixin } from "@/plugins";
 export default async function ({ next, to, store }) {
   let token = store.getters['auth/getToken'];
   if (token) {
@@ -16,12 +16,22 @@ export default async function ({ next, to, store }) {
       ...to.query,
       "myshopify_domain": to.query.shop
     }).then(res => {
+      console.log(res)
       if (res.status) {
         store.commit('auth/setToken', res.data.original.access_token)
-        store.commit('auth/setUser', res.data.original.user)
         next({ name: 'customer' })
+      } else {
+        mixin.methods.toastMessageError({
+          message: 'Store invalid!! Try again'
+        });
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {
+      console.log(err)
+      mixin.methods.toastMessageError({
+        message: 'Server Error!! Try again'
+      });
+    })
+
   }
   // if (token) {
   //   next({

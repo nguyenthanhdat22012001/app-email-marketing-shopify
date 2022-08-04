@@ -11,10 +11,10 @@ let axios = instance.create({
 axios.CancelToken = instance.CancelToken;
 axios.isCancel = instance.isCancel;
 axios.interceptors.request.use(function (config) {
-  let token = cookie.get("test_token");
+  let token = cookie.get("access_token");
   config.headers["ngrok-skip-browser-warning"] = 1
   if (token) {
-    config.headers["Authorization"] =  token;
+    config.headers["Authorization"] = "Bearer " + token;
   }
   return config;
 });
