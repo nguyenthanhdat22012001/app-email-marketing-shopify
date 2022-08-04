@@ -8,7 +8,9 @@
       @click="toggleDropdownUser"
     >
       <img src="@/assets/icons/avatar-shop.png" />
-      <p class="text-dark-gray leading-4 font-semibold">BaobaoStore</p>
+      <p class="text-dark-gray leading-4 font-semibold">
+        {{ store?.name_merchant }}
+      </p>
       <v-dropdown
         v-model="isShowDropDown"
         class="absolute before:content-[''] bottom-1 right-2 translate-y-full"
@@ -17,7 +19,7 @@
         <a href="#" class="text-dark"
           ><img src="@/assets/icons/shopify.svg" alt="" />Back to Shopify</a
         >
-        <a href="#" class="text-red"
+        <a href="#" class="text-red" @click="handleLogout"
           ><img src="@/assets/icons/logout.svg" alt="" />Logout</a
         >
       </v-dropdown>
@@ -27,7 +29,7 @@
 
 <script>
 import VDropdown from "@/components/VDropDown.vue";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   components: {
     VDropdown,
@@ -41,13 +43,24 @@ export default {
     toggleDropdownUser() {
       this.isShowDropDown = !this.isShowDropDown;
     },
-
+    ...mapActions({
+      logout: "auth/logout",
+    }),
     ...mapMutations(["toggle"]),
+    handleLogout() {
+      this.logout();
+      this.$router.push({ name: "login" });
+    },
+  },
+  computed: {
+    ...mapGetters({
+      store: "auth/getUser",
+    }),
   },
 };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .user::before {
   position: absolute;
   border: 1px solid #ebebf0;
