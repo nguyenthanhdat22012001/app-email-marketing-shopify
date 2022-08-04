@@ -20,6 +20,7 @@
         <v-input
           class="w-[100%] rounded py-3 px-[13px] border border-[#EBEBF0]"
           type="text"
+          v-model="input_email"
           placeholder="Enter your email"
         ></v-input>
       </div>
@@ -30,7 +31,10 @@
           @click="visible = false"
           >No, Cancel</v-button
         >
-        <v-button variant="primary" class="py-[8px] px-9 text-3 font-medium"
+        <v-button
+          variant="primary"
+          class="py-[8px] px-9 text-3 font-medium"
+          @click="onSendTestMail"
           >Send</v-button
         >
       </div>
@@ -51,6 +55,17 @@ export default {
   props: {
     value: {
       type: [Boolean],
+    },
+  },
+  data() {
+    return {
+      input_email: "",
+    };
+  },
+  methods: {
+    onSendTestMail() {
+      this.$eventBus.$emit("emitSendTestMail",this.input_email);
+      this.visible = false;
     },
   },
   computed: {
