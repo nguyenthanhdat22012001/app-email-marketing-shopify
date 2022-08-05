@@ -40,11 +40,10 @@ const actions = {
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
             api.getCustomers().then(res => {
-                console.log(res)
                 if (res.data) {
                     commit('setCustomer', res.data);
                     // notify.showNotify("success", "Success", "Login Successfully!!")
-                    resolve();
+                    resolve(res.data);
                 } else {
                     reject()
                 }

@@ -25,8 +25,6 @@ const getters = {
 
 const mutations = {
     setUser(state, payload) {
-        console.log('set user ');
-        console.log(payload);
         state.user = payload;
     },
     removeUser(state) {
@@ -51,7 +49,6 @@ const actions = {
                 resolve(res)
             }).catch(err => {
                 reject(err)
-                mixin.methods.toastMessageError()
             }).finally(() => {
                 this.commit('setLoading', false)
 
@@ -65,8 +62,6 @@ const actions = {
                 resolve(res)
             }).catch(err => {
                 reject(err)
-                mixin.methods.toastMessageError()
-
             }).finally(() => {
                 this.commit('setLoading', false)
             })
@@ -80,7 +75,6 @@ const actions = {
                 resolve(res)
             }).catch(err => {
                 reject(err)
-                mixin.methods.toastMessageError()
             }).finally(() => {
                 this.commit('setLoading', false)
             })

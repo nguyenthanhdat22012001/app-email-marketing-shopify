@@ -1,24 +1,27 @@
 <template>
   <div class="w-full">
-    <h2 class="text-[40px] text-black font-bold ">Login</h2>
+    <h2 class="text-[40px] text-black font-bold">Login</h2>
     <p class="text-[16px] text-dark mt-[11px]">
       Please enter your Shopify URL to login
     </p>
-    <div class="flex items-center bg-white my-5">
-      <v-input
-        class="flex-1 border-0 py-4 px-[19px]"
-        v-model="shopName"
-        type="text"
-        placeholder="Store Name"
-        required
-      ></v-input>
-      <span class="pr-[19px]">.myshopify.com</span>
-    </div>
-    <v-button
-      class="w-[100%] items-center justify-center py-3 mb-10 text-4 font-bold"
-      @click="handleLogin"
-      >Login</v-button
-    >
+    <form @submit.prevent="handleLogin">
+      <div class="flex items-center bg-white my-5">
+        <v-input
+          class="flex-1 border-0 py-4 px-[19px]"
+          v-model="shopName"
+          type="text"
+          placeholder="Store Name"
+          required
+        ></v-input>
+        <span class="pr-[19px]">.myshopify.com</span>
+      </div>
+      <v-button
+        class="w-[100%] items-center justify-center py-3 mb-10 text-4 font-bold"
+        
+        >Login</v-button
+      >
+    </form>
+
     <p>
       Don't have a
       <img class="inline-block" src="@/assets/icons/shopify-text.svg" alt="" />
@@ -45,10 +48,14 @@ export default {
       login: "auth/loginStore",
     }),
     handleLogin() {
-      this.login(this.shopName).then((res) => {
-        console.log(res);
-        window.location = res;
-      });
+      this.login(`${this.shopName}.myshopify.com`)
+        .then((res) => {
+          window.location = res;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.toastMessageError();
+        });
     },
   },
 };

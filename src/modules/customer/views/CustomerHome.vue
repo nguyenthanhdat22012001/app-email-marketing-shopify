@@ -60,18 +60,22 @@ export default {
     };
   },
   created() {
-    this.fetchCustomer();
-    this.subscribe();
-    // if (this.progress <= 100) {
-    //   this.increaseProgress = setInterval(() => {
-    //     const rand = 1 + Math.floor(Math.random() * 10);
-    //     this.setProgress(this.progress + rand);
-    //   }, 200);
-    // }
+    this.fetchCustomers().then((res) => {
+      if (res?.data?.length) {
+        if (this.progress < 100) {
+          this.increaseProgress = setInterval(() => {
+            const rand = 1 + Math.floor(Math.random() * 10);
+            this.setProgress(this.progress + rand);
+          }, 100);
+        }
+      }
+    });
+    // this.subscribe();
   },
   methods: {
     ...mapActions({
-      fetchCustomer: "customerStore/fetchCustomersSync",
+      fetchCustomersSync: "customerStore/fetchCustomersSync",
+      fetchCustomers: "customerStore/fetchCustomers",
     }),
     ...mapMutations({
       setProgress: "setProgress",
