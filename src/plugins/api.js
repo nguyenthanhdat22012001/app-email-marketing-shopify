@@ -41,19 +41,19 @@ export default {
   AUTH: {
     loginStore({ shopName }) {
       return api.post('/api/login', {
-        "shop": shopName
+        "myshopify_domain": shopName
       })
     },
     checkAuth(payload) {
-      return api.post('/api/authen', payload)
+      return api.post('/api/login', payload)
     },
     fetchUser() {
-      return api.get('/api/authen/getUser')
+      return api.get('/api/auth/getUser')
     }
 
   },
-  getCustomers() {
-    return api.get('/api/customer')
+  getCustomers(payload) {
+    return api.get('/api/auth/getCustomer', payload)
   },
   getCustomersSync() {
     return api.get('https://d651-113-161-32-170.ap.ngrok.io/api/customer/sync')

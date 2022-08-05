@@ -5,7 +5,8 @@ export default {
         redirect(route) {
             this.$router.push(route)
         },
-        toastMessageError(title = "Error", message = "Something wrong!! Try again") {
+        toastMessageError() {
+            const { title = 'Error', message = "Something wrong!! Try again" } = arguments[0]
             notify.showNotify('error', title, message)
         },
         getFullName(firstName, lastName) {

@@ -93,6 +93,7 @@ export default {
     return {
       customersSelected: [],
       list_customer: [],
+      list_customer_exect: [],
       page: {
         prev_page_url: null,
         next_page_url: null,
@@ -112,6 +113,7 @@ export default {
     handleClickInsert() {
       this.$emit("emitCloseModal");
     },
+    //handle pagination
     async nextPage() {
       let current_page = this.page.current_page + 1;
       this.page.current_page = current_page;
@@ -122,6 +124,7 @@ export default {
       this.page.current_page = current_page;
       await this.fetchCustomerPagination(current_page);
     },
+    // fetch customer
     async fetchCustomerPagination(page) {
       try {
         let res = await api.CUSTOMER.fetchPagination(page);
