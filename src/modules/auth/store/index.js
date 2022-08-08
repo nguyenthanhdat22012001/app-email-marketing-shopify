@@ -42,10 +42,10 @@ const mutations = {
     },
 };
 const actions = {
-    loginStore({ commit }, shopName) {
+    loginStore({ commit }, payload) {
         return new Promise((resolve, reject) => {
             this.commit('setLoading', true)
-            api.AUTH.loginStore({ shopName }).then(res => {
+            api.AUTH.loginStore(payload).then(res => {
                 resolve(res)
             }).catch(err => {
                 reject(err)

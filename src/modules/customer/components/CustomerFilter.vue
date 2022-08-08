@@ -6,7 +6,7 @@
       <img src="@/assets/icons/search.svg" alt="" />
       <v-input
         placeholder="Search customers by name, phone, email..."
-        v-model="searchText"
+        v-model="filters.keywords"
         class="flex-1"
       />
     </div>
@@ -14,32 +14,41 @@
       <div class="flex">
         <v-date-range
           prop_label="Create date"
-          @emitVDateRangeRange="(payload) => (filter_date = payload)"
+          @emitVDateRangeRange="
+            (payload) =>
+              (filters.created_at = payload.start + '/' + payload.end)
+          "
         />
         <v-select-number-range
           prop_label="Total spent"
-          @emitVSelectNumberRange="(payload) => (filterSpent = payload)"
+          @emitVSelectNumberRange="
+            (payload) => (filters.total_spent = payload.from + '-' + payload.to)
+          "
         />
         <v-select-number-range
           prop_label="Total order"
-          @emitVSelectNumberRange="(payload) => (filterSpent = payload)"
+          @emitVSelectNumberRange="
+            (payload) =>
+              (filters.orders_count = payload.from + '-' + payload.to)
+          "
         />
       </div>
       <!-- select sort  -->
+
       <v-select-type-check
         prop_icon="sort"
         prop_label="Sort"
-        @emitClearForm="filterSort = ''"
+        @emitClearForm="filters.sort = ''"
       >
         <v-input-radio
           prop_label="Last created"
-          prop_input_value="Last created"
-          v-model="filterSort"
+          prop_input_value="ASC"
+          v-model="filters.sort"
         ></v-input-radio>
         <v-input-radio
           prop_label="First created"
-          prop_input_value="First created"
-          v-model="filterSort"
+          prop_input_value="DESC"
+          v-model="filters.sort"
         ></v-input-radio>
       </v-select-type-check>
     </div>
@@ -52,7 +61,7 @@ import VInputRadio from "@/components/VInputRadio.vue";
 import VSelectTypeCheck from "@/components/VSelectTypeCheck.vue";
 import VSelectNumberRange from "@/components/VSelectNumberRange.vue";
 import VDateRange from "@/components/VDateRange.vue";
-
+import { mapActions } from "vuex";
 export default {
   components: {
     VInput,
@@ -63,13 +72,36 @@ export default {
   },
   data() {
     return {
-      searchText: "",
-      filterCreate: "",
-      filterSort: "",
-      filterOrder: { from: "", to: "" },
-      filterSpent: { from: "", to: "" },
-      filter_date: { start: "", end: "" },
+      filters: {
+        keywords: "",
+        total_spent: "",
+        orders_count: "",
+        created_at: "",
+        sort: "ASC",
+      },
+
+      debounce: null,
     };
+  },
+  mounted() {},
+  methods: {
+    ...mapActions({
+      filterCustomers: "customerStore/filterCustomers",
+      fetchCustomers: "customerStore/fetchCustomers",
+    }),
+  },
+  watch: {
+    filters: {
+      handler(newVal) {
+        clearTimeout(this.debounce);
+        this.debounce = setTimeout(() => {
+          this.filterCustomers({
+            ...newVal,
+          });
+        }, 300);
+      },
+      deep: true,
+    },
   },
 };
 </script>
