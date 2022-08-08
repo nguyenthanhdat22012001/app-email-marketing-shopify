@@ -62,7 +62,9 @@
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
         <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
         <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ convertDateTime(customer.created_at) }}</td>
+        <td class="py-5 pr-3.5 text-muted">
+          {{ convertDateTime(customer.created_at) }}
+        </td>
       </tr>
     </template>
   </v-table>
@@ -113,7 +115,6 @@ export default {
         this.selectedAll = false;
       }
     },
-    
   },
   computed: {
     ...mapGetters({
@@ -124,7 +125,7 @@ export default {
         return this.selectedCustomer.length;
       },
     },
-    
+
   },
 };
 </script>
