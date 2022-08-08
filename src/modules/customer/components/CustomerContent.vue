@@ -62,6 +62,14 @@
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
         <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
         <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
+<<<<<<< HEAD
+=======
+
+        <td class="py-5 pr-3.5 text-muted">
+          {{ customer.created_at.split(" ")[0] }}
+        </td>
+
+>>>>>>> a1dc9a097c3bc5253b7f2273d9e96ce4552c6497
         <td class="py-5 pr-3.5 text-muted">
           {{ convertDateTime(customer.created_at) }}
         </td>
