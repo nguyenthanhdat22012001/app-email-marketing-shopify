@@ -14,7 +14,6 @@ const routes = [
     path: "/",
     redirect: "/customer",
   },
-
   ...authRouter,
   ...customerRouter,
   ...campaignRouter

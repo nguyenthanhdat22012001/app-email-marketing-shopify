@@ -5,26 +5,29 @@
 <template>
   <v-table align="center">
     <template #table_head_tr>
-      <th
-        :colspan="countSelectedCustomer ? 5 : 0"
-        class="py-5 pl-[30px]"
-        :class="{ 'py-[9px] pl-5': countSelectedCustomer }"
-      >
+      <th class="py-5 pl-[30px]">
         <div class="flex gap-2">
-          <v-checkbox
-            :prop_is_checkbox_custom="true"
-            scope="col"
-            :value="is_selected_all"
-            prop_input_value="all"
-            @input="onToggleSelectAll"
-            :class="{
-              'border border-solid border-light p-[10px] rounded flex gap-4':
-                countSelectedCustomer,
-            }"
-          />
+          <template v-if="select_any">
+            <v-checkbox
+              :prop_is_checkbox_custom="true"
+              scope="col"
+              v-model="select_any"
+              prop_input_value="select_any"
+              @input="handleClearCustomers"
+            />
+          </template>
+          <template v-else>
+            <v-checkbox
+              :prop_is_checkbox_custom="true"
+              scope="col"
+              v-model="select_all"
+              prop_input_value="all"
+              @input="handleClearCustomerExect"
+            />
+          </template>
         </div>
       </th>
-      <template v-if="countSelectedCustomer === 0">
+      <template>
         <th scope="col" class="py-5 pr-3.5">Customer name</th>
         <th scope="col" class="py-5 pr-3.5">Phone</th>
         <th scope="col" class="py-5 pr-3.5">Email</th>
@@ -39,12 +42,24 @@
         :key="customer.id"
       >
         <td>
-          <v-checkbox
-            scope="col"
-            :prop_input_value="customer.id"
-            class="py-[22px] pl-[30px] translate-y-2/4"
-            v-model="customersSelected"
-          />
+          <template v-if="select_all">
+            <v-checkbox
+              scope="col"
+              :prop_input_value="customer.id"
+              class="py-[22px] pl-[30px] translate-y-2/4"
+              :dataId="customer.id"
+              :value="handleCheckCustomerExectHasInCustomers(customer.id)"
+              @input="(value) => hanldeAddCustomerExect(value, customer.id)"
+            />
+          </template>
+          <template v-else>
+            <v-checkbox
+              scope="col"
+              :prop_input_value="customer.id"
+              class="py-[22px] pl-[30px] translate-y-2/4"
+              v-model="list_customer_selected"
+            />
+          </template>
         </td>
         <td class="py-5 pr-3.5">
           <v-avatar
@@ -54,7 +69,9 @@
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at }}</td>
+        <td class="py-5 pr-3.5 text-muted">
+          {{ convertDateTime(customer.created_at) }}
+        </td>
       </tr>
     </template>
   </v-table>
@@ -71,42 +88,92 @@ export default {
     VAvatar,
   },
   props: {
-    value: Array,
     prop_list_customer: {
       type: Array,
       default(rawProps) {
         return [];
       },
     },
+    prop_total_customers: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
-      countSelectedCustomer: 0,
+      list_customer_selected: [],
+      list_customer_exect: [],
+      select_all: false,
+      select_any: false,
     };
   },
   methods: {
-    onToggleSelectAll() {
-       this.$emit("emitSelectAllCustomer", !this.is_selected_all);
+    hanldeAddCustomerExect(is_check, id) {
+      if (this.select_all) {
+        if (!is_check) {
+          this.list_customer_exect = [...this.list_customer_exect, id];
+        } else {
+          let newData = this.list_customer_exect.filter((item) => item != id);
+          this.list_customer_exect = newData;
+        }
+      }
+      this.handleUpdateTotalCustomerSelect();
     },
-    oncheckCustomersInCustomerSelected(){
-      // this.prop_list_customer.forEach(item => {
-        
-      // });
-      return true
-    }
+    handleClearCustomerExect(value) {
+      if (this.list_customer_exect.length != 0) {
+        this.list_customer_exect = [];
+      }
+      this.handleUpdateTotalCustomerSelect();
+    },
+    handleCheckCustomerExectHasInCustomers(id) {
+      let list_customer_exect = this.list_customer_exect;
+      let is_check = list_customer_exect.find((item) => item == id);
+      return is_check ? false : true;
+    },
+    handleClearCustomers() {
+      this.list_customer_selected = [];
+      this.handleUpdateTotalCustomerSelect();
+    },
+    handleUpdateTotalCustomerSelect() {
+      let total = 0;
+      if (this.select_all) {
+        total = this.prop_total_customers - this.list_customer_exect.length;
+      } else {
+        total = 0;
+      }
+
+      if (this.select_any) {
+        total = this.list_customer_selected.length;
+      }
+
+      this.$emit("emitUpdateTotalCustomerSelect", total);
+      this.handleUpdateDataCustomerInModal(total);
+    },
+    handleUpdateDataCustomerInModal(total) {
+      let data = {
+        number_customer_select: total,
+        list_customer_selected: this.list_customer_selected,
+        list_customer_exect: this.list_customer_exect,
+        select_all: this.select_all,
+      };
+      this.$emit("emitHandleUpdateDataCustomerInModal", data);
+    },
   },
-  computed: {
-    customersSelected: {
-      get() {
-        return this.value;
-      },
-      set(value) {
-        this.$emit("input", value);
-      },
+  computed: {},
+  watch: {
+    list_customer_selected(value) {
+      if (value.length > 0) {
+        if (!this.select_any) {
+          this.select_any = true;
+        }
+      } else {
+        this.select_any = false;
+      }
+      this.handleUpdateTotalCustomerSelect();
     },
-    is_selected_all(){
-      return this.oncheckCustomersInCustomerSelected();
-    }
+    select_all() {
+      this.handleUpdateTotalCustomerSelect();
+    },
   },
 };
 </script>

@@ -61,20 +61,19 @@ export default {
     };
   },
   created() {
-    // this.subscribe();
     this.fetchCustomer(this.page);
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",
       fetchCustomers: "customerStore/fetchCustomers",
     }),
+
     ...mapMutations({
       setProgress: "setProgress",
     }),
-    
+
     nextPage() {
       this.fetchCustomer(this.customerList.current_page + 1);
     },
