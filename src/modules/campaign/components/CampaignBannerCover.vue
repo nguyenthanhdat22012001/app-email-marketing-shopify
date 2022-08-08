@@ -30,6 +30,7 @@
 <script>
 import VButton from "@/components/VButton.vue";
 import notify from "@/helper/notify";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -47,9 +48,14 @@ export default {
       let is_image = this.validateFileImage(file);
       if (is_image) {
         this.url = URL.createObjectURL(file);
+        this.setFileImage(file);
         this.$emit("input", this.url);
       } else {
-       notify.showNotify('error','image error', 'Accept JPG, PNG, JPEG, GIF file with max size of 5MB');
+        notify.showNotify(
+          "error",
+          "image error",
+          "Accept JPG, PNG, JPEG, GIF file with max size of 5MB"
+        );
       }
     },
     validateFileImage(file) {
@@ -65,6 +71,9 @@ export default {
 
       return true;
     },
+    ...mapMutations({
+      setFileImage: "campaignStore/setFileImage",
+    }),
   },
 };
 </script>
