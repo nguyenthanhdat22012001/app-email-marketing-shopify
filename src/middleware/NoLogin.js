@@ -5,7 +5,7 @@ export default async function ({ next, to, store }) {
     next({ name: 'customer' })
     return true
   }
-
+  
   if (Object.keys(to.query).length) {
     axios.interceptors.request.use(function (config) {
       config.headers['HTTP_X_SHOPIFY_HMAC_SHA256'] = to.query.hmac

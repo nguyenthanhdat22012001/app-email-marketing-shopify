@@ -59,7 +59,6 @@ export default {
         this.$emit("input", val);
       },
     },
-   
   },
   methods: {
     checkValidateNumber(e) {
@@ -70,7 +69,6 @@ export default {
       }
     },
   },
- 
 };
 </script>
 <style lang="scss" scope>

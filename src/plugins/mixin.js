@@ -12,6 +12,18 @@ export default {
         },
         getFullName(firstName, lastName) {
             return `${firstName} ${lastName}`
+        },
+        convertDateTime(date) {
+            const newDate = new Date(date);
+            if (newDate instanceof Date && !isNaN(newDate.valueOf())) {
+                const monthConvert = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"]
+                const day = newDate.getDate();
+                const month = newDate.getMonth();
+                const year = newDate.getFullYear();
+                return `${monthConvert[month]} ${day}, ${year}`
+            }
+            return "Invalid Date"
+
         }
     }
 }

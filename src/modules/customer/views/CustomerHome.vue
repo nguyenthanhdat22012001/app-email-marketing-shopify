@@ -4,7 +4,7 @@
       class="translate-y-full-180deg"
       v-model="progress"
       label="Syncing customers from Shopify"
-      v-if="progress <= 100"
+      v-if="progress < 100"
     />
     <div v-else class="flex-1 flex flex-col gap-5">
       <div
@@ -23,7 +23,7 @@
           <img src="@/assets/icons/arrow-left.svg" />
           Previous
         </v-button>
-        <span class="text-sm font-medium">{{customerList.current_page}}</span>
+        <span class="text-sm font-medium">{{ customerList.current_page }}</span>
         <v-button
           variant="secondary"
           class="py-[9px] px-[18px] text-sm font-medium w-[110px] justify-center"
@@ -43,7 +43,6 @@ import VProgressLoading from "@/components/VProgressLoading.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
 import CustomerContent from "../components/CustomerContent.vue";
 import VButton from "@/components/VButton.vue";
-import { pusher } from "@/plugins";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
@@ -65,6 +64,8 @@ export default {
     // this.subscribe();
     this.fetchCustomer(this.page);
   },
+  mounted() {
+  },
   methods: {
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",
@@ -73,17 +74,7 @@ export default {
     ...mapMutations({
       setProgress: "setProgress",
     }),
-    subscribe() {
-      pusher.subscribe("customers_syncing");
-      pusher.bind("syncing_customer", (data) => {
-        console.log(data);
-        if (this.progress < 100) this.setProgress(Number(data.message));
-        if (data.message >= 100) {
-          this.setProgress(100);
-          pusher.unsubscribe("customers_syncing");
-        }
-      });
-    },
+    
     nextPage() {
       this.fetchCustomer(this.customerList.current_page + 1);
     },
@@ -105,7 +96,7 @@ export default {
           }
         })
         .finally(() => {
-          this.isDisabled = false; 
+          this.isDisabled = false;
         });
     },
   },

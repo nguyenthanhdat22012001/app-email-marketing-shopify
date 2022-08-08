@@ -24,7 +24,7 @@
       </a>
     </div>
     <div
-      class="accordion-body flex gap-5 flex-col overflow-hidden h-0 mt-[25px] "
+      class="accordion-body flex gap-5 flex-col overflow-hidden h-0  "
       :class="{'active':is_open}"
     >
       <slot></slot>
@@ -51,5 +51,6 @@ export default {
 }
 .active {
   height: 100%;
+  margin-top: 25px;
 }
 </style>

@@ -1,4 +1,5 @@
 import notify from '@/helper/notify'
+import { pusher } from '@/plugins'
 import api from '@/plugins/api'
 import data from "@/store/data"
 const state = {
@@ -18,13 +19,29 @@ const mutations = {
     }
 }
 const actions = {
-    fetchCustomersSync({ commit }, payload) {
+
+    subscribe({ commit, dispatch }) {
+        const eventCustomersSync = (data) => {
+            console.log(this.getters.getProgress);
+            if (this.getters.getProgress < 100) {
+                this.commit('setProgress', Number(data.message));
+            }
+            if (data.message >= 100) {
+                this.commit('setProgress', 100);
+                pusher.unbind("syncing_customer", eventCustomersSync);
+            }
+        }
+        this.commit('setProgress', 0);
+        pusher.subscribe("customers_syncing");
+        pusher.bind("syncing_customer", eventCustomersSync);
+    },
+    fetchCustomersSync({ commit, dispatch }, payload) {
         return new Promise((resolve, reject) => {
-            api.fetchSync().then(res => {
+            api.CUSTOMER.fetchSync().then(res => {
                 console.log(res)
+                dispatch('subscribe');
                 if (res.data) {
-                    commit('setCustomer', res.data);
-                    // notify.showNotify("success", "Success", "Login Successfully!!")
+                    // console.log(res.data)
                     resolve();
                 } else {
                     reject()
@@ -62,7 +79,8 @@ const actions = {
                 resolve(res)
             }).catch(err => reject(err));
         })
-    }
+    },
+
 }
 
 

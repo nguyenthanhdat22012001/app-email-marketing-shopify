@@ -7,7 +7,7 @@
           <img src="@/assets/icons/download.svg" />
           Export CSV
         </v-button>
-        <v-button variant="primary">
+        <v-button variant="primary" @click="fetchCustomerSync">
           <img src="@/assets/icons/async.svg" />
           Manual sync
         </v-button>
@@ -19,10 +19,17 @@
 
 <script>
 import VButton from "@/components/VButton.vue";
+import { mapActions } from 'vuex';
 export default {
   components: {
     VButton,
   },
+  methods:{
+    ...mapActions({
+      fetchCustomerSync:'customerStore/fetchCustomersSync'
+    }),
+   
+  }
 };
 </script>
 
