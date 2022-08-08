@@ -17,7 +17,6 @@
       </div>
       <v-button
         class="w-[100%] items-center justify-center py-3 mb-10 text-4 font-bold"
-        
         >Login</v-button
       >
     </form>
@@ -48,7 +47,9 @@ export default {
       login: "auth/loginStore",
     }),
     handleLogin() {
-      this.login(`${this.shopName}.myshopify.com`)
+      this.login({
+        myshopify_domain: `${this.shopName}.myshopify.com`,
+      })
         .then((res) => {
           window.location = res;
         })

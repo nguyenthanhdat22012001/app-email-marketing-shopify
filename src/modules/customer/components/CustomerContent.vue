@@ -107,15 +107,13 @@ export default {
       }
     },
     handleSelect() {
-      if (this.selectedCustomer.length) {
+      if (this.customerList.length) {
         this.selectedAll = true;
       } else {
         this.selectedAll = false;
       }
     },
-    // getFullName(firstName, lastName) {
-    //   return firstName + " " + lastName;
-    // },
+    
   },
   computed: {
     ...mapGetters({

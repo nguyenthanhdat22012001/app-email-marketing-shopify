@@ -13,21 +13,22 @@
         <customer-filter />
         <customer-content :page="page" :size="size" />
       </div>
-      <div class="flex justify-center">
+      <div class="flex justify-center items-center gap-2">
         <v-button
           variant="secondary"
-          class="py-[9px] px-[18px] text-sm font-medium"
-          @click="page--"
-          :disabled="page <= 1"
+          class="py-[9px] px-[18px] text-sm font-medium w-[110px] justify-center"
+          @click="previousPage"
+          :disabled="customerList.current_page <= 1 || isDisabled"
         >
           <img src="@/assets/icons/arrow-left.svg" />
           Previous
         </v-button>
+        <span class="text-sm font-medium">{{customerList.current_page}}</span>
         <v-button
           variant="secondary"
-          class="py-[9px] px-[18px] text-sm font-medium"
-          @click="page++"
-          :disabled="page >= Math.floor(customerCount / size)"
+          class="py-[9px] px-[18px] text-sm font-medium w-[110px] justify-center"
+          @click="nextPage()"
+          :disabled="!customerList.next_page_url || isDisabled"
         >
           Next
           <img src="@/assets/icons/arrow-right.svg" />
@@ -57,20 +58,12 @@ export default {
       increaseProgress: null,
       page: 1,
       size: 10,
+      isDisabled: true,
     };
   },
   created() {
-    this.fetchCustomers().then((res) => {
-      if (res?.data?.length) {
-        if (this.progress < 100) {
-          this.increaseProgress = setInterval(() => {
-            const rand = 1 + Math.floor(Math.random() * 10);
-            this.setProgress(this.progress + rand);
-          }, 100);
-        }
-      }
-    });
     // this.subscribe();
+    this.fetchCustomer(this.page);
   },
   methods: {
     ...mapActions({
@@ -91,11 +84,36 @@ export default {
         }
       });
     },
+    nextPage() {
+      this.fetchCustomer(this.customerList.current_page + 1);
+    },
+    previousPage() {
+      this.fetchCustomer(this.customerList.current_page - 1);
+    },
+    fetchCustomer(page) {
+      this.isDisabled = true;
+      this.fetchCustomers(page)
+        .then((res) => {
+          console.log(res);
+          if (res?.data?.length) {
+            if (this.progress < 100) {
+              this.increaseProgress = setInterval(() => {
+                const rand = 1 + Math.floor(Math.random() * 10);
+                this.setProgress(this.progress + rand);
+              }, 100);
+            }
+          }
+        })
+        .finally(() => {
+          this.isDisabled = false; 
+        });
+    },
   },
   computed: {
     ...mapGetters({
       progress: "getProgress",
       customerCount: "customerStore/getCustomerCount",
+      customerList: "customerStore/getCustomers",
     }),
   },
   watch: {

@@ -260,6 +260,7 @@ export default {
         subject: this.email_subject,
         content: this.email_content,
         footer: this.email_footer,
+        fileImage:this.fileImage,
         variant_name: [...variants_subject, ...variants_content],
         color_content: this.emailBackground.color_text,
         background_banner: this.emailBanner ? this.emailBanner : "test",
@@ -308,7 +309,7 @@ export default {
     },
     async handleSendTestMailApi(data) {
       try {
-        let res = api.CAMPAIGN.postTestMail(data);
+        let res = await api.CAMPAIGN.postTestMail(data);
         console.log("res", res);
       } catch (error) {
         console.log("error", error);

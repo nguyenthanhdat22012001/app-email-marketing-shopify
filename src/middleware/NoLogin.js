@@ -12,9 +12,8 @@ export default async function ({ next, to, store }) {
       return config;
     });
     Headers['HTTP_X_SHOPIFY_HMAC_SHA256'] = to.query.hmac
-    store.dispatch('auth/checkAuth', {
+    store.dispatch('auth/loginStore', {
       ...to.query,
-      "myshopify_domain": to.query.shop
     }).then(res => {
       console.log(res)
       if (res.status) {
