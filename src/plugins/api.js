@@ -70,5 +70,8 @@ export default {
     postTestMail(payload) {
       return api.post('/api/save-campaign ',payload)
     },
+    postSendMail(payload) {
+      return api.post('/api/save-campaign ',payload)
+    },
   },
 };
