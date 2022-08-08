@@ -55,7 +55,100 @@
           </div>
         </div>
       </div>
-      <div
+      <div style="top: 20px" v-show="hideBoxPreview" class="sticky">
+        <div style="width: 100%" ref="sticky">
+          <table style="width: 100%; margin: 0px auto">
+            <tbody>
+              <tr>
+                <td
+                  :style="{
+                    borderRadius: ` ${emailBackground.radius}px ${emailBackground.radius}px 0px 0px`,
+                    overflow: 'hidden',
+                  }"
+                >
+                  <img
+                    :src="emailBanner"
+                    alt=""
+                    style="width: 100%; object-fit: cover"
+                  />
+                </td>
+              </tr>
+              <tr
+                class="preview-email-content"
+                :style="{
+                  backgroundColor: backgroundColor,
+                  color: emailBackground.color_text,
+                }"
+              >
+                <td
+                  class="email--content"
+                  style="line-break: anywhere; padding: 28px 30px 25px"
+                  v-html="emailContent"
+                ></td>
+              </tr>
+              <tr>
+                <td
+                  style="padding: 0px 30px 36px"
+                  :style="{
+                    backgroundColor: backgroundColor,
+                    borderRadius: `0px 0px ${emailBackground.radius}px ${emailBackground.radius}px`,
+                  }"
+                >
+                  <button
+                    style="
+                      width: 100%;
+                      line-height: 18px;
+                      font-size: 14px;
+                      font-weight: bold;
+                      padding: 9px 0px;
+                    "
+                    :style="styleButton()"
+                  >
+                    {{ emailButton.label }}
+                  </button>
+                </td>
+              </tr>
+              <tr style="margin-top: 20px">
+                <td
+                  class="preview--footer"
+                  style="
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 18px;
+                    color: #555770;
+                    display: block;
+                    margin-top: 20px;
+                  "
+                  v-html="emailFooter"
+                ></td>
+              </tr>
+              <tr>
+                <td
+                  class="preview--footer"
+                  style="
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 18px;
+                    color: #555770;
+                  "
+                >
+                  <a
+                    href="#"
+                    style="
+                      display: block;
+                      text-align: center;
+                      text-decoration: underline;
+                    "
+                    >Unsubscribe here</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- <div
         class="sticky top-5"
         style="display: flex; flex-direction: column; gap: 20px"
         ref="sticky"
@@ -125,7 +218,7 @@
             >Unsubscribe here</a
           >
         </div>
-      </div>
+      </div> -->
     </div>
 
     <campaign-modal-send-mail v-model="visibleSendTestMailModal" />
@@ -227,7 +320,6 @@ export default {
         return false;
       }
     },
-    
   },
 };
 </script>

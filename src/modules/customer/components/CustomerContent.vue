@@ -62,7 +62,9 @@
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
         <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
         <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ convertDateTime(customer.created_at) }}</td>
+        <td class="py-5 pr-3.5 text-muted">
+          {{ convertDateTime(customer.created_at) }}
+        </td>
       </tr>
     </template>
   </v-table>
@@ -73,7 +75,7 @@ import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
 import VButton from "@/components/VButton.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
     VTable,
@@ -99,6 +101,9 @@ export default {
   },
 
   methods: {
+    ...mapMutations({
+      setSelectedCustomers: "customerStore/setSelectedCustomers",
+    }),
     handleSelectAll() {
       if (this.selectedAll) {
         this.selectedCustomer = this.customerList.data.map((item) => item.id);
@@ -113,18 +118,17 @@ export default {
         this.selectedAll = false;
       }
     },
-    
   },
   computed: {
     ...mapGetters({
       customerList: "customerStore/getCustomers",
+      selectedCustomers: "customerStore/getSelectedCustomers",
     }),
     countSelectedCustomer: {
       get() {
         return this.selectedCustomer.length;
       },
     },
-    
   },
 };
 </script>

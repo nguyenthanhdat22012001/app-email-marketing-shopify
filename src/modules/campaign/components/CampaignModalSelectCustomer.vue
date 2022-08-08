@@ -126,9 +126,10 @@ export default {
         this.list_customer[2],
       ];
       let data = { ...this.data_customer, customers_avatar: customers_avatar };
-       this.$emit("emitHandleAddAvatarSendToCustomer",data);
+      this.$emit("emitHandleAddAvatarSendToCustomer", data);
       this.$emit("emitCloseModal");
     },
+
     //handle pagination
     async nextPage() {
       let current_page = this.page.current_page + 1;
@@ -172,7 +173,6 @@ export default {
         payload.list_customer_selected;
       this.data_customer.list_customer_exect = payload.list_customer_exect;
 
-      console.log("data_customer", this.data_customer);
     },
   },
   computed: {

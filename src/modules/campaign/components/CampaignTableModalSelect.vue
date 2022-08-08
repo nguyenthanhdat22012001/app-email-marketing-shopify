@@ -69,7 +69,9 @@
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at }}</td>
+        <td class="py-5 pr-3.5 text-muted">
+          {{ convertDateTime(customer.created_at) }}
+        </td>
       </tr>
     </template>
   </v-table>
@@ -116,14 +118,12 @@ export default {
         }
       }
       this.handleUpdateTotalCustomerSelect();
-      console.log(" this.list_customer_exect", this.list_customer_exect);
     },
     handleClearCustomerExect(value) {
       if (this.list_customer_exect.length != 0) {
         this.list_customer_exect = [];
       }
       this.handleUpdateTotalCustomerSelect();
-      console.log(" this.list_customer_exect", this.list_customer_exect);
     },
     handleCheckCustomerExectHasInCustomers(id) {
       let list_customer_exect = this.list_customer_exect;
@@ -148,7 +148,6 @@ export default {
 
       this.$emit("emitUpdateTotalCustomerSelect", total);
       this.handleUpdateDataCustomerInModal(total);
-      console.log("handleTotalCustomerSelect", total);
     },
     handleUpdateDataCustomerInModal(total) {
       let data = {
@@ -171,7 +170,6 @@ export default {
         this.select_any = false;
       }
       this.handleUpdateTotalCustomerSelect();
-      console.log(this.list_customer_selected);
     },
     select_all() {
       this.handleUpdateTotalCustomerSelect();
