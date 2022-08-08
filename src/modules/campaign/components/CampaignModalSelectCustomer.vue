@@ -24,15 +24,13 @@
         <v-input
           placeholder="Search customers by name, phone, email..."
           class="flex-1"
+          @input="inpputSearchCustomer"
         />
       </div>
       <div class="mt-[30px] overflow-auto flex-1">
         <campaign-table-modal-select
           :prop_list_customer="list_customer"
           :prop_total_customers="total_customers"
-          @emitUpdateTotalCustomerSelect="
-            (value) => (data_customer.number_customer_select = value)
-          "
           @emitHandleUpdateDataCustomerInModal="handleUpdateDataCustomerInModal"
         />
       </div>
@@ -72,7 +70,7 @@
             variant="primary"
             class="py-[6px] px-[22px] text-sm font-medium"
             @click="handleClickInsert"
-            >Inserrt</v-button
+            >Insert</v-button
           >
         </div>
       </div>
@@ -84,6 +82,7 @@ import VModal from "@/components/VModal.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import CampaignTableModalSelect from "./CampaignTableModalSelect.vue";
+
 import api from "@/plugins/api";
 
 export default {
@@ -100,6 +99,7 @@ export default {
         number_customer_select: 0,
         list_customer_selected: [],
         list_customer_exect: [],
+        customers_avatar: [],
         select_all: false,
       },
       total_customers: 0,
@@ -107,6 +107,11 @@ export default {
         prev_page_url: null,
         next_page_url: null,
         current_page: 1,
+      },
+      filters: {
+        is_filter: false,
+        debounce: null,
+        keywords: "",
       },
     };
   },
@@ -119,26 +124,55 @@ export default {
     handleClickCancel() {
       this.$emit("emitCloseModal");
     },
+    //handle click insert in modal select customer
     handleClickInsert() {
-      let customers_avatar = [
-        this.list_customer[0],
-        this.list_customer[1],
-        this.list_customer[2],
-      ];
-      let data = { ...this.data_customer, customers_avatar: customers_avatar };
-       this.$emit("emitHandleAddAvatarSendToCustomer",data);
+      this.data_customer = {
+        ...this.data_customer,
+        customers_avatar: this.handleReturnCustomerAvatar(),
+      };
+      console.log("data", this.data_customer);
+      this.$emit("emitHandleAddAvatarSendToCustomer", this.data_customer);
       this.$emit("emitCloseModal");
+    },
+    //handle return customer avatar when click insert in modal select customer
+    handleReturnCustomerAvatar() {
+      let customers_avatar = [];
+      if (!this.data_customer.select_all) {
+        if (this.data_customer.list_customer_selected.length > 0) {
+          if (this.data_customer.list_customer_selected.length >= 3) {
+            customers_avatar = this.list_customer.slice(0, 3);
+          } else {
+            customers_avatar = this.list_customer.slice(
+              0,
+              this.data_customer.list_customer_selected.length
+            );
+          }
+        }
+      } else {
+       customers_avatar = this.list_customer.slice(0, 3);
+      }
+      return customers_avatar;
     },
     //handle pagination
     async nextPage() {
       let current_page = this.page.current_page + 1;
       this.page.current_page = current_page;
-      await this.fetchCustomerPagination(current_page);
+
+      if (this.filters.is_filter) {
+        await this.fetchFilterCustomerPagination();
+      } else {
+        await this.fetchCustomerPagination(current_page);
+      }
     },
     async previousPage() {
       let current_page = this.page.current_page - 1;
       this.page.current_page = current_page;
-      await this.fetchCustomerPagination(current_page);
+
+      if (this.filters.is_filter) {
+        await this.fetchFilterCustomerPagination();
+      } else {
+        await this.fetchCustomerPagination(current_page);
+      }
     },
     // fetch customer
     async fetchCustomerPagination(page) {
@@ -158,21 +192,56 @@ export default {
     },
     //handle update  data_customer
     handleUpdateDataCustomerInModal(payload) {
-      if (
-        this.data_customer.number_customer_select !=
-        payload.number_customer_select
-      ) {
-        this.data_customer.number_customer_select =
-          payload.number_customer_select;
-      }
-      if (this.data_customer.select_all != payload.select_all) {
-        this.data_customer.select_all = payload.select_all;
-      }
-      this.data_customer.list_customer_selected =
-        payload.list_customer_selected;
-      this.data_customer.list_customer_exect = payload.list_customer_exect;
-
+      this.data_customer = payload;
       console.log("data_customer", this.data_customer);
+    },
+    // hanlde validate input search
+    handleValidateSearch(value) {
+      let text_search = value.trim();
+      if (text_search.length != 0) {
+        if (!this.filters.is_filter) {
+          this.filters.is_filter = true;
+        }
+      } else {
+        if (this.filters.is_filter) {
+          this.filters.is_filter = false;
+        }
+      }
+      this.filters.keywords = text_search;
+      console.log(this.filters);
+    },
+    // function delay get value for event input search
+    async inpputSearchCustomer(value) {
+      clearTimeout(this.filters.debounce);
+      this.filters.debounce = setTimeout(async () => {
+        (this.page = this.page =
+          {
+            prev_page_url: null,
+            next_page_url: null,
+            current_page: 1,
+          }),
+          this.handleValidateSearch(value);
+
+        if (this.filters.is_filter) {
+          await this.fetchFilterCustomerPagination();
+        }
+      }, 500);
+    },
+    // fetch customer
+    async fetchFilterCustomerPagination() {
+      let data = {
+        keywords: this.filters.keywords,
+      };
+      try {
+        let res = await api.CUSTOMER.filter(data);
+        if (res.status) {
+          this.list_customer = res.data.data;
+          this.page.prev_page_url = res.data.prev_page_url;
+          this.page.next_page_url = res.data.next_page_url;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   computed: {

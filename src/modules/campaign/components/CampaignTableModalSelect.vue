@@ -101,6 +101,7 @@ export default {
     return {
       list_customer_selected: [],
       list_customer_exect: [],
+      // customers_avatar: [],
       select_all: false,
       select_any: false,
     };
@@ -115,15 +116,13 @@ export default {
           this.list_customer_exect = newData;
         }
       }
-      this.handleUpdateTotalCustomerSelect();
-      console.log(" this.list_customer_exect", this.list_customer_exect);
+      this.handleUpdateDataCustomerInModal();
     },
     handleClearCustomerExect(value) {
       if (this.list_customer_exect.length != 0) {
         this.list_customer_exect = [];
       }
-      this.handleUpdateTotalCustomerSelect();
-      console.log(" this.list_customer_exect", this.list_customer_exect);
+      this.handleUpdateDataCustomerInModal();
     },
     handleCheckCustomerExectHasInCustomers(id) {
       let list_customer_exect = this.list_customer_exect;
@@ -132,9 +131,9 @@ export default {
     },
     handleClearCustomers() {
       this.list_customer_selected = [];
-      this.handleUpdateTotalCustomerSelect();
+      this.handleUpdateDataCustomerInModal();
     },
-    handleUpdateTotalCustomerSelect() {
+    handleUpdateDataCustomerInModal() {
       let total = 0;
       if (this.select_all) {
         total = this.prop_total_customers - this.list_customer_exect.length;
@@ -146,19 +145,36 @@ export default {
         total = this.list_customer_selected.length;
       }
 
-      this.$emit("emitUpdateTotalCustomerSelect", total);
-      this.handleUpdateDataCustomerInModal(total);
-      console.log("handleTotalCustomerSelect", total);
-    },
-    handleUpdateDataCustomerInModal(total) {
       let data = {
         number_customer_select: total,
         list_customer_selected: this.list_customer_selected,
         list_customer_exect: this.list_customer_exect,
         select_all: this.select_all,
+        // customers_avatar: [],
+        // customers_avatar: this.handleReturnCustomerAvatar(),
       };
+
       this.$emit("emitHandleUpdateDataCustomerInModal", data);
     },
+    //handle return customer avatar when click insert in modal select customer
+    // handleReturnCustomerAvatar() {
+    //   let customers_avatar = [];
+    //   if (!this.select_all) {
+    //     if (this.list_customer_selected.length > 0) {
+    //       if (this.list_customer_selected.length >= 3) {
+    //         customers_avatar = this.prop_list_customer.slice(0, 3);
+    //       } else {
+    //         customers_avatar = this.prop_list_customer.slice(
+    //           0,
+    //           this.list_customer_selected.length
+    //         );
+    //       }
+    //     }
+    //   } else {
+    //     customers_avatar = this.prop_list_customer.slice(0, 3);
+    //   }
+    //   return customers_avatar;
+    // },
   },
   computed: {},
   watch: {
@@ -170,11 +186,7 @@ export default {
       } else {
         this.select_any = false;
       }
-      this.handleUpdateTotalCustomerSelect();
-      console.log(this.list_customer_selected);
-    },
-    select_all() {
-      this.handleUpdateTotalCustomerSelect();
+      this.handleUpdateDataCustomerInModal();
     },
   },
 };

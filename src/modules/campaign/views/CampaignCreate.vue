@@ -68,7 +68,7 @@
                   <v-avatar
                     v-for="(
                       item, index
-                    ) in data_customer.customers_avatar.slice(0, 3)"
+                    ) in data_customer.customers_avatar"
                     :key="item.id"
                     :name="item.first_name +' '+ item.last_name"
                     class="avatar--selected bg-primary text-white z-[1]"
@@ -167,6 +167,9 @@ import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeE
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 import { api } from "@/plugins";
+// import notify from "@/helper/notify";
+
+
 export default {
   components: {
     VButton,
@@ -187,7 +190,6 @@ export default {
       campaignName: "",
       email_content: "",
       email_footer: `<p style="text-align: center">Copyright 2010-2022 Firegroup, all rights reserved.</p>`,
-      isShowVariants: false,
       email_subject: "",
       visibleCustomerEmailModal: false,
       emailBanner: "",
@@ -217,12 +219,6 @@ export default {
   },
 
   methods: {
-    createVariantText(text) {
-      return `<span style="border-radius:4px;padding:2px;background:#003084;color:#ffffff" class="variant">${text}</span>`;
-    },
-    showVariants() {
-      this.isShowVariants = !this.isShowVariants;
-    },
     handleCloseModal() {
       this.visibleCustomerEmailModal = false;
     },
