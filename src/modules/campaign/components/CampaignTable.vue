@@ -33,13 +33,13 @@
         <td class="py-5 pr-3.5 text-success font-bold">
           {{ item.send_email_done }}
           <span class="ml-1 font-normal text-gray-light"
-            ></span
+            >{{handlePercentByMath(item.total_customers ,item.send_email_done)}}</span
           >
         </td>
         <td class="py-5 pr-3.5 text-red font-bold">
           {{ item.send_email_fail }}
           <span class="ml-1 font-normal text-gray-light"
-            ></span
+            >{{handlePercentByMath(item.send_email_done ,item.send_email_fail)}}</span
           >
         </td>
       </tr>

@@ -53,7 +53,7 @@
             <button
               class="w-full flex justify-center items-center border border-dashed border-light bg-[#FAFAFC] text-primary text-sm py-[13px]"
               @click="visibleCustomerEmailModal = true"
-              v-if="!customersSelected.length"
+              v-if="data_customer.number_customer_select == 0"
             >
               + Add customer
             </button>
@@ -66,15 +66,17 @@
               >
                 <div>
                   <v-avatar
-                    v-for="(id, index) in customersSelected.slice(0, 3)"
-                    :key="id"
-                    :name="customers.filter((item) => item.id == id)[0].name"
+                    v-for="(
+                      item, index
+                    ) in data_customer.customers_avatar.slice(0, 3)"
+                    :key="item.id"
+                    :name="item.first_name +' '+ item.last_name"
                     class="avatar--selected bg-primary text-white z-[1]"
                     :style="`z-index: ${index};--z-index:${index}`"
                   />
                 </div>
                 <span class="text-dark"
-                  >+ {{ customersSelected.length - 3 }} customers</span
+                  >+ {{ data_customer.number_customer_select }} customers</span
                 >
               </div>
               <button
@@ -141,6 +143,7 @@
       <campaign-modal-select-customer
         v-model="visibleCustomerEmailModal"
         @emitCloseModal="handleCloseModal"
+        @emitHandleAddAvatarSendToCustomer="(data) => (data_customer = data)"
       >
       </campaign-modal-select-customer>
       <!-- <div>{{ opacity }}</div> -->
@@ -163,7 +166,6 @@ import CampaignBannerCover from "../components/CampaignBannerCover.vue";
 import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeEmail.vue";
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
-import { mapGetters } from "vuex";
 import { api } from "@/plugins";
 export default {
   components: {
@@ -202,6 +204,13 @@ export default {
         textOpacity: 100,
         radius: 4,
         label: "TRY FREE NOW",
+      },
+      data_customer: {
+        number_customer_select: 0,
+        list_customer_selected: [],
+        list_customer_exect: [],
+        customers_avatar: [],
+        select_all: false,
       },
       formstate: false,
     };
@@ -253,7 +262,7 @@ export default {
         footer: this.email_footer,
         variant_name: [...variants_subject, ...variants_content],
         color_content: this.emailBackground.color_text,
-        background_banner: this.emailBanner ? this.emailBanner : 'test',
+        background_banner: this.emailBanner ? this.emailBanner : "test",
         background_color: this.emailBackground.color,
         background_radius: `${this.emailBackground.radius}px`,
         button_label: this.emailButton.label,
@@ -265,11 +274,32 @@ export default {
       };
       return data;
     },
-    onSendMail() {
-      let data = this.handleGetDataCreateCampaign();
+    // handle send mail
+    async onSendMail() {
       this.formstate = true;
-      console.log("data", data);
+      if (this.validation.valid) {
+        let data = this.handleGetDataCreateCampaign();
+        let newData = {
+          ...data,
+          list_mail_customers: [
+            "josephine19@gmail.com",
+            "kautzer.cristian@gaylord.com",
+            "elva07@pagac.com",
+          ],
+        };
+        await this.handleSendMailApi(newData);
+        this.$router.push({ name: "campaign" });
+      }
     },
+    async handleSendMailApi(data) {
+      try {
+        let res = api.CAMPAIGN.postSendMail(data);
+        console.log("res", res);
+      } catch (error) {
+        console.log("error", error);
+      }
+    },
+    // handle send test mail
     async onSendTestMail(email) {
       let data = this.handleGetDataCreateCampaign();
       let newData = { ...data, list_mail_customers: [email] };
@@ -286,10 +316,6 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      customersSelected: "campaignStore/getCustomersSelected",
-      customers: "customerStore/getCustomers",
-    }),
     validation() {
       const campaignName = {
         required: {

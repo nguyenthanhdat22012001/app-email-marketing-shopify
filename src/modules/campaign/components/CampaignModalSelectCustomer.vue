@@ -28,14 +28,18 @@
       </div>
       <div class="mt-[30px] overflow-auto flex-1">
         <campaign-table-modal-select
-          v-model="customersSelected"
           :prop_list_customer="list_customer"
-          @emitSelectAllCustomer="handleSelectAllCustomer"
+          :prop_total_customers="total_customers"
+          @emitUpdateTotalCustomerSelect="
+            (value) => (data_customer.number_customer_select = value)
+          "
+          @emitHandleUpdateDataCustomerInModal="handleUpdateDataCustomerInModal"
         />
       </div>
       <div class="pr-[22px] pl-[30px] mt-6 flex justify-between items-center">
         <div class="text-gray-light">
-          Customers has been selected: {{ customersSelected.length }}
+          Customers has been selected:
+          {{ data_customer.number_customer_select }}
         </div>
         <div class="flex">
           <v-button
@@ -91,9 +95,14 @@ export default {
   },
   data() {
     return {
-      customersSelected: [],
       list_customer: [],
-      list_customer_exect: [],
+      data_customer: {
+        number_customer_select: 0,
+        list_customer_selected: [],
+        list_customer_exect: [],
+        select_all: false,
+      },
+      total_customers: 0,
       page: {
         prev_page_url: null,
         next_page_url: null,
@@ -111,6 +120,13 @@ export default {
       this.$emit("emitCloseModal");
     },
     handleClickInsert() {
+      let customers_avatar = [
+        this.list_customer[0],
+        this.list_customer[1],
+        this.list_customer[2],
+      ];
+      let data = { ...this.data_customer, customers_avatar: customers_avatar };
+       this.$emit("emitHandleAddAvatarSendToCustomer",data);
       this.$emit("emitCloseModal");
     },
     //handle pagination
@@ -132,39 +148,31 @@ export default {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;
           this.page.next_page_url = res.data.next_page_url;
+          if (this.total_customers != res.total_customers) {
+            this.total_customers = res.total_customers;
+          }
         }
       } catch (error) {
         console.log(error);
       }
     },
-    //emit call toggle check all
-    handleSelectAllCustomer(is_select_all) {
-      this.handlAddOrRemoveCustomers();
-    },
-    // handle check all customer when pagination if is_checked_all = true
-    handlAddOrRemoveCustomers(is_checked_all) {
-      let data = [];
-      if (is_checked_all) {
-        data = this.handleGetIdsCustomers(this.list_customer);
-        this.customersSelected = this.removeItemDuplicateInArray([
-          ...this.customersSelected,
-          ...data,
-        ]);
-      } else {
-        return false;
+    //handle update  data_customer
+    handleUpdateDataCustomerInModal(payload) {
+      if (
+        this.data_customer.number_customer_select !=
+        payload.number_customer_select
+      ) {
+        this.data_customer.number_customer_select =
+          payload.number_customer_select;
       }
-    },
-    // handle get ids list customer
-    handleGetIdsCustomers(list_customer) {
-      let data = [];
-      list_customer.forEach((item) => {
-        data.push(item.id);
-      });
-      return data;
-    },
+      if (this.data_customer.select_all != payload.select_all) {
+        this.data_customer.select_all = payload.select_all;
+      }
+      this.data_customer.list_customer_selected =
+        payload.list_customer_selected;
+      this.data_customer.list_customer_exect = payload.list_customer_exect;
 
-    removeItemDuplicateInArray(arr) {
-      return Array.from(new Set(arr));
+      console.log("data_customer", this.data_customer);
     },
   },
   computed: {
@@ -175,11 +183,6 @@ export default {
       set(value) {
         this.$emit("input", value);
       },
-    },
-  },
-  watch: {
-    customersSelected(value) {
-      console.log("customersSelected", this.customersSelected);
     },
   },
   created() {
