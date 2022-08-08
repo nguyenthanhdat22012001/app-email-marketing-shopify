@@ -70,7 +70,7 @@
                       item, index
                     ) in data_customer.customers_avatar"
                     :key="item.id"
-                    :name="item.first_name +' '+ item.last_name"
+                    :name="item.first_name + ' ' + item.last_name"
                     class="avatar--selected bg-primary text-white z-[1]"
                     :style="`z-index: ${index};--z-index:${index}`"
                   />
@@ -167,6 +167,7 @@ import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeE
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 import { api } from "@/plugins";
+import { mapGetters } from "vuex";
 export default {
   components: {
     VButton,
@@ -248,11 +249,17 @@ export default {
       let variants_subject = this.handleGetVariantInString(this.email_subject);
       let variants_content = this.handleGetVariantInString(el_preview_content);
       const cloneNode = el_preview_content.cloneNode(true);
-      cloneNode.style.width = "600px";
+      const table = cloneNode.querySelector("table");
+      table.style.width = "600px";
+      const parser = new DOMParser();
+      const newSubject = parser.parseFromString(
+        this.email_subject,
+        "text/html"
+      ).firstChild;
       let data = {
         store_id: 1,
         name: this.campaignName,
-        subject: this.email_subject,
+        subject: newSubject.innerText,
         content: this.email_content,
         footer: this.email_footer,
         fileImage: this.fileImage,
@@ -314,15 +321,18 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      fileImage: "campaignStore/getFileImage",
+    }),
     validation() {
       const campaignName = {
         required: {
           valid: this.campaignName ? true : false,
-          message: "is required !",
+          message: "This field is required !",
         },
         minLength: {
           valid: this.campaignName.length >= 6 ? true : false,
-          message: "min lenght 6 character !",
+          message: "Min length 6 character !",
         },
       };
       const email_subject = {

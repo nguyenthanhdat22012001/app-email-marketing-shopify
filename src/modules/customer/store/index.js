@@ -1,9 +1,8 @@
-import notify from '@/helper/notify'
 import { pusher } from '@/plugins'
 import api from '@/plugins/api'
-import data from "@/store/data"
 const state = {
-    customersList: []
+    customersList: [],
+    selectedCustomers: [],
 }
 const getters = {
     getCustomers(state) {
@@ -11,15 +10,20 @@ const getters = {
     },
     getCustomerCount(state) {
         return state.customersList.length
+    },
+    getSelectedCustomers(state) {
+        return state.selectedCustomers
     }
 }
 const mutations = {
     setCustomer(state, payload) {
         state.customersList = payload;
+    },
+    setSelectedCustomers(state, callback) {
+        callback(state.selectedCustomers)
     }
 }
 const actions = {
-
     subscribe({ commit, dispatch }) {
         const eventCustomersSync = (data) => {
             console.log(this.getters.getProgress);

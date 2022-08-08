@@ -19,6 +19,7 @@ export default new Vuex.Store({
       return state.isToggle;
     },
     getLoading(state) {
+
       return state.isLoading;
     },
     getProgress(state) {
@@ -31,9 +32,6 @@ export default new Vuex.Store({
     },
     setLoading(state, payload) {
       state.isLoading = payload
-      // if (payload) {
-      //   this.dispatch('timeoutError')
-      // }
     },
     setProgress(state, payload) {
       state.progress = payload
@@ -43,7 +41,7 @@ export default new Vuex.Store({
     timeoutError({ commit }) {
       return setTimeout(() => {
         commit('setLoading', false)
-        notify.showNotify("error","Error","Something wrong !! Try again")
+        notify.showNotify("error", "Error", "Something wrong !! Try again")
       }, 5000)
     }
   },

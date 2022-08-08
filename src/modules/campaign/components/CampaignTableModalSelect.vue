@@ -69,7 +69,9 @@
         </td>
         <td class="py-5 pr-3.5">{{ customer.phone }}</td>
         <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5 text-muted">{{ customer.created_at }}</td>
+        <td class="py-5 pr-3.5 text-muted">
+          {{ convertDateTime(customer.created_at) }}
+        </td>
       </tr>
     </template>
   </v-table>
@@ -133,18 +135,7 @@ export default {
       this.list_customer_selected = [];
       this.handleUpdateDataCustomerInModal();
     },
-    handleUpdateDataCustomerInModal() {
-      let total = 0;
-      if (this.select_all) {
-        total = this.prop_total_customers - this.list_customer_exect.length;
-      } else {
-        total = 0;
-      }
-
-      if (this.select_any) {
-        total = this.list_customer_selected.length;
-      }
-
+    handleUpdateDataCustomerInModal(total) {
       let data = {
         number_customer_select: total,
         list_customer_selected: this.list_customer_selected,
