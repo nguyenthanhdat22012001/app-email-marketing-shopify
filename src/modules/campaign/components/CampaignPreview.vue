@@ -55,6 +55,28 @@
           </div>
         </div>
       </div>
+      <div style="width:600px">
+        <table>
+          <thead>
+            <tr></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div
         class="sticky top-5"
         style="display: flex; flex-direction: column; gap: 20px"
