@@ -135,7 +135,17 @@ export default {
       this.list_customer_selected = [];
       this.handleUpdateDataCustomerInModal();
     },
-    handleUpdateDataCustomerInModal(total) {
+    handleUpdateDataCustomerInModal() {
+       let total = 0;
+      if (this.select_all) {
+        total = this.prop_total_customers - this.list_customer_exect.length;
+      } else {
+        total = 0;
+      }
+
+      if (this.select_any) {
+        total = this.list_customer_selected.length;
+      }
       let data = {
         number_customer_select: total,
         list_customer_selected: this.list_customer_selected,

@@ -52,7 +52,7 @@ export default {
 
   CUSTOMER: {
     fetchPagination(page) {
-      return api.get('/api/customer/get-all', { page: page })
+      return api.get('/api/customer', { page: page })
     },
 
     fetchSync() {
@@ -65,7 +65,7 @@ export default {
   },
   CAMPAIGN: {
     fetch() {
-      return api.get('/api/get-campaigns-process')
+      return api.get('/api/customer/get-campaigns-process')
     },
     postTestMail(payload) {
       return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
