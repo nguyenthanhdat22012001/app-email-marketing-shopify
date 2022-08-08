@@ -69,5 +69,8 @@ export default {
     postTestMail(payload) {
       return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
     },
+    postSendMail(payload) {
+      return api.post('/api/save-campaign ',payload)
+    },
   },
 };

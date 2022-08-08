@@ -49,11 +49,8 @@ export default {
     subscribe() {
       pusher.subscribe("campaigns");
       pusher.bind("send_mail", (data) => {
-        console.log("campaigns", data);
-        // this.setProgress(Number(data.message));
-        // if (data.message >= 100) {
-        //   pusher.unsubscribe("customers_syncing");
-        // }
+        console.log("campaigns", data.message.original);
+        this.handleUpdateListCampaign(data.message.original);
       });
     },
     async fetchCampaigns() {
@@ -67,9 +64,26 @@ export default {
         console.log(error);
       }
     },
+    handleUpdateListCampaign(data) {
+      let list_campaign = this.list_campaign;
+
+      for (let index = 0; index < list_campaign.length; index++) {
+        if (list_campaign[index].id == data.campaignId) {
+          list_campaign[index].process = data.processing;
+          list_campaign[index].send_email_done = data.mail_send_done;
+          list_campaign[index].send_email_fail = data.mail_send_failed;
+          break;
+        }
+      }
+
+      this.list_campaign = list_campaign;
+    },
   },
-  created() {
-    this.fetchCampaigns();
+  async created() {
+    await this.fetchCampaigns();
+  },
+  mounted() {
+    this.subscribe();
   },
 };
 </script>
