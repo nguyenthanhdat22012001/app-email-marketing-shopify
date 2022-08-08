@@ -39,36 +39,35 @@ const api = {
 
 export default {
   AUTH: {
-    loginStore({ shopName }) {
-      return api.post('/api/login', {
-        "myshopify_domain": shopName
-      })
-    },
-    checkAuth(payload) {
+    loginStore(payload) {
       return api.post('/api/login', payload)
     },
+
     fetchUser() {
       return api.get('/api/auth/getUser')
     }
 
   },
-  getCustomers(payload) {
-    return api.get('/api/auth/getCustomer', payload)
-  },
-  getCustomersSync() {
-    return api.get('https://d651-113-161-32-170.ap.ngrok.io/api/customer/sync')
-  },
+
   CUSTOMER: {
     fetchPagination(page) {
-      return api.get('/api/customer/get-all',{page: page})
+      return api.get('/api/customer/get-all', { page: page })
     },
+  
+    fetchSync() {
+      return api.get('/api/customer/sync')
+    },
+    filter(payload){
+      return api.post('/api/auth/filterCustomer',payload);
+    }
+
   },
   CAMPAIGN: {
     fetch() {
       return api.get('/api/get-campaigns-process')
     },
     postTestMail(payload) {
-      return api.post('/api/save-campaign ',payload)
+      return api.post('https://e48d-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
     },
     postSendMail(payload) {
       return api.post('/api/save-campaign ',payload)

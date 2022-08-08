@@ -20,7 +20,7 @@ const mutations = {
 const actions = {
     fetchCustomersSync({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            api.getCustomersSync().then(res => {
+            api.fetchSync().then(res => {
                 console.log(res)
                 if (res.data) {
                     commit('setCustomer', res.data);
@@ -39,7 +39,7 @@ const actions = {
     },
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            api.getCustomers().then(res => {
+            api.CUSTOMER.fetchPagination(payload).then(res => {
                 if (res.data) {
                     commit('setCustomer', res.data);
                     // notify.showNotify("success", "Success", "Login Successfully!!")
@@ -53,6 +53,14 @@ const actions = {
         }).finally(() => {
             this.commit('setLoading', false)
 
+        })
+    },
+    filterCustomers({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            api.CUSTOMER.filter(payload).then(res => {
+                commit('setCustomer', res);
+                resolve(res)
+            }).catch(err => reject(err));
         })
     }
 }
