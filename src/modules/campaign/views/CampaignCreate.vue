@@ -25,7 +25,7 @@
       <div
         class="campaign-create-page--content flex-1 bg-gray-light flex gap-6 pl-[25px] pr-5"
       >
-        <div class="content--left flex flex-col gap-[25px] w-[45%]">
+        <div class="content--left flex flex-1 flex-col gap-[25px] w-[45%]">
           <campaign-input title="Campaign Name">
             <div class="flex border border-solid border-light p-3 gap-3">
               <v-input
@@ -117,7 +117,7 @@
             <campaign-button-customize-email v-model="emailButton" />
           </campaign-customize-email>
         </div>
-        <div class="content--right flex-1 break-normal">
+        <div class="content--right w-[calc(100%*calc(10/19))] break-normal">
           <campaign-preview
             ref="ref_preview"
             :email-content="email_content"
@@ -245,16 +245,18 @@ export default {
       let el_preview_content = el_preview_body.children[1];
       let variants_subject = this.handleGetVariantInString(this.email_subject);
       let variants_content = this.handleGetVariantInString(el_preview_content);
+      const cloneNode = el_preview_content.cloneNode(true);
+      cloneNode.style.width = "600px";
       let data = {
         store_id: 1,
         name: this.campaignName,
         subject: this.email_subject,
         content: this.email_content,
         footer: this.email_footer,
-        fileImage:this.fileImage,
+        fileImage: this.fileImage,
         variant_name: [...variants_subject, ...variants_content],
         color_content: this.emailBackground.color_text,
-        background_banner: this.emailBanner ? this.emailBanner : 'test',
+        background_banner: this.emailBanner ? this.emailBanner : "test",
         background_color: this.emailBackground.color,
         background_radius: `${this.emailBackground.radius}px`,
         button_label: this.emailButton.label,
@@ -262,7 +264,7 @@ export default {
         button_background_color: this.emailButton.backgroundColor,
         button_text_color: this.emailButton.textColor,
         list_mail_customers: [],
-        preview_email: el_preview_content.outerHTML,
+        preview_email: cloneNode.outerHTML,
       };
       return data;
     },
@@ -280,6 +282,8 @@ export default {
     async handleSendTestMailApi(data) {
       try {
         let res = await api.CAMPAIGN.postTestMail(data);
+        this.$refs.ref_preview.$el.children[1].children[1].style.width =
+          "unset";
         console.log("res", res);
       } catch (error) {
         console.log("error", error);
@@ -290,7 +294,7 @@ export default {
     ...mapGetters({
       customersSelected: "campaignStore/getCustomersSelected",
       customers: "customerStore/getCustomers",
-      fileImage:"campaignStore/getFileImage"
+      fileImage: "campaignStore/getFileImage",
     }),
     validation() {
       const campaignName = {
