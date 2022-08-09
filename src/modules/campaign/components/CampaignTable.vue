@@ -22,9 +22,9 @@
             {{ item.name }}
           </div>
         </td>
-        <td class="py-5 pr-3.5 text-gray-light">{{ item.created_at }}</td>
+        <td class="py-5 pr-3.5 text-gray-light">{{formatdateNameMonthDY(item.created_at) }}</td>
         <td class="py-5 pr-3.5">
-          <v-status class="text-primary">{{ item.status }}</v-status>
+          <v-status :class="item.process == 100 ? 'text-success' : 'text-primary'" class="text-primary">{{item.process == 100 ? 'completed' : 'running' }}</v-status>
         </td>
         <td width="100px" class="py-5 pr-3.5">
           <v-progress-bar :prop_percent="item.process"></v-progress-bar>
@@ -53,6 +53,7 @@ import VStatus from "@/components/VStatus.vue";
 import VProgressBar from "@/components/VProgressBar.vue";
 
 import { handlePercentByMath } from "@/helper/number";
+import { formatdateNameMonthDY } from "@/helper/formatDate";
 export default {
   components: {
     VTable,
@@ -69,6 +70,7 @@ export default {
   },
   methods: {
     handlePercentByMath: handlePercentByMath,
+    formatdateNameMonthDY: formatdateNameMonthDY,
   },
   data() {
     return {

@@ -59,19 +59,23 @@ export default {
       return api.get('/api/customer/sync')
     },
     filter(payload) {
-      return api.post('/api/auth/filterCustomer', payload);
+      return api.get('/api/customer/filterCustomer', payload);
+    },
+    getCustomerShowAvatars(payload) {
+      console.log('{...payload}',{...payload})
+      return api.get('/api/customer', {...payload});
     }
 
   },
   CAMPAIGN: {
     fetch() {
-      return api.get('/api/customer/get-campaigns-process')
+      return api.get('api/campaign/get-campaigns-process')
     },
     postTestMail(payload) {
-      return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
+      return api.post('/api/campaign/save-campaign', payload)
     },
     postSendMail(payload) {
-      return api.post('/api/save-campaign ', payload)
+      return api.post('/api/campaign/save-campaign', payload)
     },
   },
 };

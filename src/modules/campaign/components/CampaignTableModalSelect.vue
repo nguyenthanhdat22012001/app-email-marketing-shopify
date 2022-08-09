@@ -81,6 +81,7 @@
 import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
+
 export default {
   components: {
     VTable,
@@ -103,7 +104,6 @@ export default {
     return {
       list_customer_selected: [],
       list_customer_exect: [],
-      // customers_avatar: [],
       select_all: false,
       select_any: false,
     };
@@ -120,7 +120,7 @@ export default {
       }
       this.handleUpdateDataCustomerInModal();
     },
-    handleClearCustomerExect(value) {
+    handleClearCustomerExect() {
       if (this.list_customer_exect.length != 0) {
         this.list_customer_exect = [];
       }
@@ -136,7 +136,7 @@ export default {
       this.handleUpdateDataCustomerInModal();
     },
     handleUpdateDataCustomerInModal() {
-       let total = 0;
+      let total = 0;
       if (this.select_all) {
         total = this.prop_total_customers - this.list_customer_exect.length;
       } else {
@@ -151,33 +151,23 @@ export default {
         list_customer_selected: this.list_customer_selected,
         list_customer_exect: this.list_customer_exect,
         select_all: this.select_all,
-        // customers_avatar: [],
-        // customers_avatar: this.handleReturnCustomerAvatar(),
       };
 
       this.$emit("emitHandleUpdateDataCustomerInModal", data);
     },
-    //handle return customer avatar when click insert in modal select customer
-    // handleReturnCustomerAvatar() {
-    //   let customers_avatar = [];
-    //   if (!this.select_all) {
-    //     if (this.list_customer_selected.length > 0) {
-    //       if (this.list_customer_selected.length >= 3) {
-    //         customers_avatar = this.prop_list_customer.slice(0, 3);
-    //       } else {
-    //         customers_avatar = this.prop_list_customer.slice(
-    //           0,
-    //           this.list_customer_selected.length
-    //         );
-    //       }
-    //     }
-    //   } else {
-    //     customers_avatar = this.prop_list_customer.slice(0, 3);
-    //   }
-    //   return customers_avatar;
-    // },
+
+    hanldeReturnBackDataCustomerOld(data) {
+      this.list_customer_selected = data.list_customer_selected;
+      this.list_customer_exect = data.list_customer_exect;
+      this.number_customer_select = data.number_customer_select;
+      this.select_all = data.select_all;
+      if (data.number_customer_select.length > 0) {
+        if (!this.select_any) {
+          this.select_any = true;
+        }
+      }
+    },
   },
-  computed: {},
   watch: {
     list_customer_selected(value) {
       if (value.length > 0) {
@@ -189,6 +179,18 @@ export default {
       }
       this.handleUpdateDataCustomerInModal();
     },
+  },
+  mounted() {
+    this.$eventBus.$on(
+      "eventBusReturnBackDataCustomerOld",
+      this.hanldeReturnBackDataCustomerOld
+    );
+  },
+  beforeDestroy() {
+    this.$eventBus.$off(
+      "eventBusReturnBackDataCustomerOld",
+      this.hanldeReturnBackDataCustomerOld
+    );
   },
 };
 </script>
