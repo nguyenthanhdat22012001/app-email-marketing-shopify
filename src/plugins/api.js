@@ -62,7 +62,6 @@ export default {
       return api.get('/api/customer/filterCustomer', payload);
     },
     getCustomerShowAvatars(payload) {
-      console.log('{...payload}',{...payload})
       return api.get('/api/customer', {...payload});
     }
 
