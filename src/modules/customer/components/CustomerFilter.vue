@@ -93,6 +93,7 @@ export default {
   watch: {
     filters: {
       handler(newVal) {
+        console.log(newVal);
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
           this.filterCustomers({

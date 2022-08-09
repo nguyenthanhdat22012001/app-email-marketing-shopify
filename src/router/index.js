@@ -14,6 +14,7 @@ const routes = [
     path: "/",
     redirect: "/customer",
   },
+  { path: '*', redirect: '/' },
   ...authRouter,
   ...customerRouter,
   ...campaignRouter
@@ -32,6 +33,7 @@ VueRouter.prototype.push = function push(
 
 const router = new VueRouter({
   mode: 'history',
+  hash: false,
   base: '/',
   routes,
   scrollBehavior: function () {

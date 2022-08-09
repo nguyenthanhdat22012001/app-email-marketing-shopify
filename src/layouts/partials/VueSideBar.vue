@@ -11,16 +11,18 @@
       />
     </div>
     <nav class="menu flex flex-col mb-auto">
-      <router-link :to="{ name: 'customer' }">
+      <router-link :to="{ name: 'customer' }" class="menu--item relative">
         <img
           src="@/assets/icons/customer.svg"
           class="w-[18px] h-6 object-cover"
         />
         <p class="nav-text">Customer</p>
+        <div class="tooltip">Customer</div>
       </router-link>
-      <router-link :to="{ name: 'campaign' }">
+      <router-link :to="{ name: 'campaign' }" class="menu--item relative">
         <img src="@/assets/icons/Union.svg" class="object-cover" />
         <p class="nav-text">Campaign</p>
+        <div class="tooltip">Customer</div>
       </router-link>
     </nav>
     <div class="footer-sidebar opacity-50 text-white flex gap-[10px] py-3 px-5">
@@ -70,5 +72,30 @@ export default {
     opacity: 0.1;
     z-index: -1;
   }
+  .tooltip {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(calc(100% + 5px), -50%);
+    padding: 5px 10px;
+    color: #ffffff;
+    background: rgba($color: #000000, $alpha: 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    line-height: 17px;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 100%; /* To the left of the tooltip */
+      transform: translate(0%, -50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent black transparent transparent;
+    }
+  }
 }
+
 </style>

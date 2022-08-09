@@ -1,5 +1,8 @@
 <template>
-  <v-table align="center">
+  <div>
+  <v-loading v-if="isLoading" />
+
+  <v-table align="center" v-else>
     <template #table_head_tr>
       <th
         :colspan="countSelectedCustomer ? 7 : 0"
@@ -15,13 +18,16 @@
             :prop_label="
               countSelectedCustomer ? countSelectedCustomer + ' Selected' : ''
             "
-            @input="handleSelectAll"
             :class="{
               'border border-solid border-light p-[10px] rounded flex gap-4':
                 countSelectedCustomer,
             }"
           />
-          <v-button v-if="countSelectedCustomer" variant="secondary">
+          <v-button
+            v-if="countSelectedCustomer"
+            variant="secondary"
+            @click="visibleExportModal = true"
+          >
             <img src="@/assets/icons/download.svg" />
             Export CSV
           </v-button>
@@ -46,10 +52,9 @@
         <td>
           <v-checkbox
             scope="col"
-            v-model="selectedCustomer"
+            v-model="selectedCustomers"
             :prop_input_value="customer.id"
             class="py-[22px] pl-[30px] translate-y-2/4"
-            @input="handleSelect"
           />
         </td>
         <td class="py-5 pr-3.5">
@@ -67,7 +72,18 @@
         </td>
       </tr>
     </template>
+    
   </v-table>
+  <customer-modal-export v-model="visibleExportModal">
+      <template #message>
+        <p>
+          Export
+          {{ selectedCustomers.length }}
+          customer{{ selectedCustomers.length > 1 ? "s" : "" }} to your email
+        </p>
+      </template>
+    </customer-modal-export>
+  </div>
 </template>
 
 <script>
@@ -75,6 +91,8 @@ import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
 import VButton from "@/components/VButton.vue";
+import VLoading from "@/components/VLoading.vue";
+import CustomerModalExport from "../components/CustomerModalExport.vue";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
@@ -82,6 +100,8 @@ export default {
     VCheckbox,
     VAvatar,
     VButton,
+    VLoading,
+    CustomerModalExport,
   },
   props: {
     page: {
@@ -95,8 +115,7 @@ export default {
   },
   data() {
     return {
-      selectedCustomer: [],
-      selectedAll: false,
+      visibleExportModal: false,
     };
   },
 
@@ -104,30 +123,50 @@ export default {
     ...mapMutations({
       setSelectedCustomers: "customerStore/setSelectedCustomers",
     }),
-    handleSelectAll() {
-      if (this.selectedAll) {
-        this.selectedCustomer = this.customerList.data.map((item) => item.id);
-      } else {
-        this.selectedCustomer = [];
-      }
-    },
-    handleSelect() {
-      if (this.customerList.length) {
-        this.selectedAll = true;
-      } else {
-        this.selectedAll = false;
-      }
-    },
   },
   computed: {
     ...mapGetters({
       customerList: "customerStore/getCustomers",
-      selectedCustomers: "customerStore/getSelectedCustomers",
+      isLoading: "customerStore/getIsLoading",
     }),
-    countSelectedCustomer: {
+    customerListId() {
+      return this.customerList.data.map((item) => item.id);
+    },
+    selectedCustomers: {
       get() {
-        return this.selectedCustomer.length;
+        // console.log(this.$store.getters["customerStore/getSelectedCustomers"]);
+        return this.$store.getters["customerStore/getSelectedCustomers"];
       },
+      set(val) {
+        this.setSelectedCustomers(() => {
+          return val;
+        });
+      },
+    },
+    selectedAll: {
+      get() {
+        return Boolean(
+          this.selectedCustomers.filter((id) =>
+            this.customerListId.includes(id)
+          ).length
+        );
+      },
+      set(val) {
+        if (val) {
+          this.selectedCustomer = this.customerList.data.map((item) => item.id);
+          this.setSelectedCustomers((selected) => [
+            ...selected,
+            ...this.customerListId,
+          ]);
+        } else {
+          this.setSelectedCustomers((selected) =>
+            selected.filter((id) => !this.customerListId.includes(id))
+          );
+        }
+      },
+    },
+    countSelectedCustomer() {
+      return this.selectedCustomers.length;
     },
   },
 };

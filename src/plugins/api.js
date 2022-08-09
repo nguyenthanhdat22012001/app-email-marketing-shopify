@@ -41,7 +41,7 @@ export default {
 
   AUTH: {
     loginStore(payload) {
-      return api.post('/api/login', payload)
+      return api.post('/api/auth/login', payload)
     },
 
     fetchUser() {
@@ -59,7 +59,7 @@ export default {
       return api.get('/api/customer/sync')
     },
     filter(payload) {
-      return api.post('/api/auth/filterCustomer', payload);
+      return api.get('/api/auth/filterCustomer', payload);
     }
 
   },
@@ -68,7 +68,7 @@ export default {
       return api.get('/api/customer/get-campaigns-process')
     },
     postTestMail(payload) {
-      return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
+      return api.post('https://bf15-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
     },
     postSendMail(payload) {
       return api.post('/api/save-campaign ', payload)
