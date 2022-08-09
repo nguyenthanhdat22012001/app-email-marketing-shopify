@@ -53,10 +53,12 @@ $time: 0.8s;
       opacity: 0;
       visibility: hidden;
     }
+    .tooltip {
+      visibility: visible;
+    }
     .logo-text {
       position: absolute;
     }
   }
 }
-
 </style>

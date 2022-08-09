@@ -3,6 +3,7 @@ import api from '@/plugins/api'
 const state = {
     customersList: [],
     selectedCustomers: [],
+    isLoading: false,
 }
 const getters = {
     getCustomers(state) {
@@ -13,6 +14,9 @@ const getters = {
     },
     getSelectedCustomers(state) {
         return state.selectedCustomers
+    },
+    getIsLoading(state) {
+        return state.isLoading
     }
 }
 const mutations = {
@@ -20,7 +24,10 @@ const mutations = {
         state.customersList = payload;
     },
     setSelectedCustomers(state, callback) {
-        callback(state.selectedCustomers)
+        state.selectedCustomers = callback(state.selectedCustomers)
+    },
+    setLoading(state, payload) {
+        state.isLoading = payload
     }
 }
 const actions = {
@@ -45,10 +52,9 @@ const actions = {
                 console.log(res)
                 dispatch('subscribe');
                 if (res.data) {
-                    // console.log(res.data)
-                    resolve();
+                    resolve(res);
                 } else {
-                    reject()
+                    reject(res)
                 }
             }).catch(err => {
                 reject(err)
@@ -63,17 +69,15 @@ const actions = {
             api.CUSTOMER.fetchPagination(payload).then(res => {
                 if (res.data) {
                     commit('setCustomer', res.data);
-                    // notify.showNotify("success", "Success", "Login Successfully!!")
                     resolve(res.data);
                 } else {
-                    reject()
+                    reject(res)
                 }
             }).catch(err => {
                 reject(err)
             })
         }).finally(() => {
             this.commit('setLoading', false)
-
         })
     },
     filterCustomers({ commit }, payload) {

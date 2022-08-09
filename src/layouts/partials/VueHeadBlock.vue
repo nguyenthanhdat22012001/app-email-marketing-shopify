@@ -49,7 +49,7 @@ export default {
     ...mapMutations(["toggle"]),
     handleLogout() {
       this.logout();
-      this.$router.push({ name: "login" });
+      this.$router.go({ name: "login" });
     },
   },
   computed: {

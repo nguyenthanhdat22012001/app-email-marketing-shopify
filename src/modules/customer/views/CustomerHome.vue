@@ -71,20 +71,26 @@ export default {
     }),
 
     ...mapMutations({
+      setLoading: "customerStore/setLoading",
       setProgress: "setProgress",
     }),
 
     nextPage() {
-      this.fetchCustomer(this.customerList.current_page + 1);
+      this.setLoading(true);
+      this.fetchCustomers(this.customerList.current_page + 1).finally(() =>
+        this.setLoading(false)
+      );
     },
     previousPage() {
-      this.fetchCustomer(this.customerList.current_page - 1);
+      this.setLoading(true);
+      this.fetchCustomers(this.customerList.current_page - 1).finally(() =>
+        this.setLoading(false)
+      );
     },
     fetchCustomer(page) {
       this.isDisabled = true;
       this.fetchCustomers(page)
         .then((res) => {
-          console.log(res);
           if (res?.data?.length) {
             if (this.progress < 100) {
               this.increaseProgress = setInterval(() => {

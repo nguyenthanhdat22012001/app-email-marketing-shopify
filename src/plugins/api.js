@@ -41,7 +41,7 @@ export default {
 
   AUTH: {
     loginStore(payload) {
-      return api.post('/api/login', payload)
+      return api.post('/api/auth/login', payload)
     },
 
     fetchUser() {
@@ -72,7 +72,7 @@ export default {
       return api.get('api/campaign/get-campaigns-process')
     },
     postTestMail(payload) {
-      return api.post('/api/campaign/save-campaign', payload)
+      return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
     },
     postSendMail(payload) {
       return api.post('/api/campaign/save-campaign', payload)
