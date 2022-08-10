@@ -66,9 +66,7 @@
               >
                 <div>
                   <v-avatar
-                    v-for="(
-                      item, index
-                    ) in data_customer.customers_avatar"
+                    v-for="(item, index) in data_customer.customers_avatar"
                     :key="item.id"
                     :name="item.first_name + ' ' + item.last_name"
                     class="avatar--selected bg-primary text-white z-[1]"
@@ -85,6 +83,11 @@
               >
                 Manage
               </button>
+            </div>
+            <div class="text-sm mt-1 text-red" v-if="formstate">
+              <template v-if="!validation.form.send_customer.required.valid">
+                {{ validation.form.send_customer.required.message }}
+              </template>
             </div>
           </campaign-input>
           <campaign-input title="Subject">
@@ -106,6 +109,11 @@
               :prop_email_content="email_content"
               @emitUpdateEmailContent="(value) => (email_content = value)"
             ></v-tiptap-editor>
+            <div class="text-sm mt-1 text-red" v-if="formstate">
+              <template v-if="!validation.form.email_content.required.valid">
+                {{ validation.form.email_content.required.message }}
+              </template>
+            </div>
           </campaign-input>
           <campaign-input title="Email footer">
             <v-tiptap-editor
@@ -218,6 +226,10 @@ export default {
 
   methods: {
     handleCloseModal() {
+      this.$eventBus.$emit(
+        "eventBusReturnBackDataCustomerOld",
+        this.data_customer
+      );
       this.visibleCustomerEmailModal = false;
     },
     checkValue(value) {
@@ -337,27 +349,35 @@ export default {
       };
       const email_subject = {
         required: {
-          valid: (() => {
-            if (this.email_subject) {
-              if (this.email_subject.length <= 7) {
-                return false;
-              }
-              return true;
-            }
-            return false;
-          })(),
-          message: "is required !",
+          valid: this.email_subject.length <= 7 ? false : true,
+          message: "This field is required !",
+        },
+      };
+      const send_customer = {
+        required: {
+          valid: this.data_customer.number_customer_select > 0 ? true : false,
+          message: "This field is required !",
+        },
+      };
+      const email_content = {
+        required: {
+          valid: this.email_content.length <= 7 ? false : true,
+          message: "This field is required !",
         },
       };
       return {
         form: {
           campaignName,
           email_subject,
+          send_customer,
+          email_content,
         },
         valid:
           campaignName.required.valid &&
           campaignName.minLength.valid &&
-          email_subject.required.valid,
+          email_subject.required.valid &&
+          send_customer.required.valid &&
+          email_content,
       };
     },
   },
@@ -405,9 +425,4 @@ export default {
     transform: translateX(0);
   }
 }
-/* .v-enter-from,
-.v-leave-to {
-  transform: translateX(100%);
-  transition: transform 0.5s ease;
-} */
 </style>

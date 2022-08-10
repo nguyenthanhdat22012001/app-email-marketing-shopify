@@ -13,7 +13,7 @@
       </h2>
       <a
         class="absolute cursor-pointer top-0 right-0 pt-6 pr-[22px]"
-        @click="visible = false"
+        @click="handleClickCancel"
       >
         <img src="@/assets/icons/close.svg" alt="" />
       </a>
@@ -124,34 +124,44 @@ export default {
     handleClickCancel() {
       this.$emit("emitCloseModal");
     },
-    //handle click insert in modal select customer
-    handleClickInsert() {
+    async handleClickInsert() {
       this.data_customer = {
         ...this.data_customer,
-        customers_avatar: this.handleReturnCustomerAvatar(),
       };
-      console.log("data", this.data_customer);
-      this.$emit("emitHandleAddAvatarSendToCustomer", this.data_customer);
-      this.$emit("emitCloseModal");
-    },
-    //handle return customer avatar when click insert in modal select customer
-    handleReturnCustomerAvatar() {
-      let customers_avatar = [];
-      if (!this.data_customer.select_all) {
-        if (this.data_customer.list_customer_selected.length > 0) {
-          if (this.data_customer.list_customer_selected.length >= 3) {
-            customers_avatar = this.list_customer.slice(0, 3);
-          } else {
-            customers_avatar = this.list_customer.slice(
-              0,
-              this.data_customer.list_customer_selected.length
-            );
-          }
-        }
+
+      if (this.data_customer.number_customer_select > 0) {
+        await this.fetchCustomerShowAvatars();
       } else {
-       customers_avatar = this.list_customer.slice(0, 3);
+        this.data_customer.customers_avatar = [];
       }
-      return customers_avatar;
+
+      this.$emit("emitHandleAddAvatarSendToCustomer", this.data_customer);
+      this.visible = false;
+    },
+    // fetch customer
+    async fetchCustomerShowAvatars() {
+      let data = {
+        limit: 3,
+      };
+      if (this.data_customer.select_all) {
+        data = {
+          ...data,
+          except_customer: this.data_customer.list_customer_exect.toString(),
+        };
+      } else {
+        data = {
+          ...data,
+          list_customer: this.data_customer.list_customer_selected.toString(),
+        };
+      }
+      try {
+        let res = await api.CUSTOMER.getCustomerShowAvatars(data);
+        if (res.status) {
+          this.data_customer.customers_avatar = res.data.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     //handle pagination
     async nextPage() {
@@ -159,7 +169,7 @@ export default {
       this.page.current_page = current_page;
 
       if (this.filters.is_filter) {
-        await this.fetchFilterCustomerPagination();
+        await this.fetchFilterCustomerPagination(current_page);
       } else {
         await this.fetchCustomerPagination(current_page);
       }
@@ -169,7 +179,7 @@ export default {
       this.page.current_page = current_page;
 
       if (this.filters.is_filter) {
-        await this.fetchFilterCustomerPagination();
+        await this.fetchFilterCustomerPagination(current_page);
       } else {
         await this.fetchCustomerPagination(current_page);
       }
@@ -193,7 +203,7 @@ export default {
     //handle update  data_customer
     handleUpdateDataCustomerInModal(payload) {
       this.data_customer = payload;
-      console.log("data_customer", this.data_customer);
+      // console.log("data_customer", this.data_customer);
     },
     // hanlde validate input search
     handleValidateSearch(value) {
@@ -214,23 +224,26 @@ export default {
     async inpputSearchCustomer(value) {
       clearTimeout(this.filters.debounce);
       this.filters.debounce = setTimeout(async () => {
-        (this.page = this.page =
-          {
-            prev_page_url: null,
-            next_page_url: null,
-            current_page: 1,
-          }),
-          this.handleValidateSearch(value);
+        this.handleValidateSearch(value);
+
+        this.page = {
+          prev_page_url: null,
+          next_page_url: null,
+          current_page: 1,
+        };
 
         if (this.filters.is_filter) {
-          await this.fetchFilterCustomerPagination();
+          await this.fetchFilterCustomerPagination(this.current_page);
+        } else {
+          await this.fetchCustomerPagination(this.current_page);
         }
       }, 500);
     },
     // fetch customer
-    async fetchFilterCustomerPagination() {
+    async fetchFilterCustomerPagination(page) {
       let data = {
         keywords: this.filters.keywords,
+        page: page,
       };
       try {
         let res = await api.CUSTOMER.filter(data);

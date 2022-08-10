@@ -29,8 +29,10 @@
 import VButton from "@/components/VButton.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
+
 import { pusher } from "@/plugins";
 import api from "@/plugins/api";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -46,6 +48,9 @@ export default {
     };
   },
   methods: {
+      ...mapMutations({
+      setLoading: "setLoading",
+    }),
     subscribe() {
       pusher.subscribe("campaigns");
       pusher.bind("send_mail", (data) => {
@@ -55,13 +60,16 @@ export default {
     },
     async fetchCampaigns() {
       try {
+        this.setLoading(true);
         let res = await api.CAMPAIGN.fetch();
         // console.log("res", res);
         if (res.status == 200) {
           this.list_campaign = res.data;
         }
+        this.setLoading(false);
       } catch (error) {
         console.log(error);
+        this.setLoading(false);
       }
     },
     handleUpdateListCampaign(data) {
@@ -84,6 +92,7 @@ export default {
   },
   mounted() {
     this.subscribe();
+    console.log('mounted')
   },
 };
 </script>

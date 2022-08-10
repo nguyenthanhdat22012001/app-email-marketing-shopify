@@ -95,6 +95,7 @@
                   }"
                 >
                   <button
+                  v-if="emailButton.label.length > 0"
                     style="
                       width: 100%;
                       line-height: 18px;
