@@ -32,7 +32,9 @@
       </div>
       <div class="flex justify-between items-center pt-2.5">
         <v-button variant="primary" @click="handEmitDataChange()">Ok</v-button>
-        <a class="cursor-pointer text-primary" @click="onClearInputs()">Clear</a>
+        <a class="cursor-pointer text-primary" @click="onClearInputs()"
+          >Clear</a
+        >
       </div>
     </div>
   </div>
@@ -50,13 +52,21 @@ export default {
       type: String,
       default: "",
     },
+    data_from: {
+      type: String,
+      default: "",
+    },
+    data_to: {
+      type: String,
+      default: "0",
+    },
   },
   data() {
     return {
       is_open: false,
       data_input: {
-        from: "",
-        to: "",
+        from: this.data_from,
+        to: this.data_to,
       },
     };
   },

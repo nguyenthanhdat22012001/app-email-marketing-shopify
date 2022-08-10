@@ -5,11 +5,11 @@
   >
     <span
       id="circle1"
-      class="w-[50px] h-[50px] border-[5px] border-solid border-primary rounded-full border-t-transparent translate-y-full-180deg"
+      class="w-[50px] h-[50px] border-[5px] border-solid border-primary rounded-full border-t-transparent translate-y-full-reverse"
     ></span>
     <span
       id="circle2"
-      class="w-[35px] h-[35px] border-[5px] border-solid border-primary rounded-full border-r-transparent absolute translate-y-full-180deg "
+      class="w-[35px] h-[35px] border-[5px] border-solid border-primary rounded-full border-r-transparent absolute translate-y-full-reverse "
     ></span>
   </div>
 </template>

@@ -34,10 +34,9 @@ VueRouter.prototype.push = function push(
 const router = new VueRouter({
   mode: 'history',
   hash: false,
-  base: '/',
+  base: '',
   routes,
   scrollBehavior: function () {
-    // arg: to, from, savedPosition
     return { x: 0, y: 0 };
   },
 })

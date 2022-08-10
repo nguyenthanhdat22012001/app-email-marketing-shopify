@@ -14,22 +14,38 @@
       <div class="flex">
         <v-date-range
           prop_label="Create date"
+          v-bind="{ date_from: filters.date_from, date_to: filters.date_to }"
           @emitVDateRangeRange="
-            (payload) =>
-              (filters.created_at = payload.start + '/' + payload.end)
+            (payload) => {
+              filters.date_from = payload.start;
+              filters.date_to = payload.end;
+            }
           "
         />
         <v-select-number-range
           prop_label="Total spent"
+          v-bind="{
+            data_from: filters.spent_from,
+            data_to: filters.spent_to,
+          }"
           @emitVSelectNumberRange="
-            (payload) => (filters.total_spent = payload.from + '-' + payload.to)
+            (payload) => {
+              filters.spent_from = payload.from;
+              filters.spent_to = payload.to;
+            }
           "
         />
         <v-select-number-range
           prop_label="Total order"
+          v-bind="{
+            data_from: filters.orders_from,
+            data_to: filters.orders_to,
+          }"
           @emitVSelectNumberRange="
-            (payload) =>
-              (filters.orders_count = payload.from + '-' + payload.to)
+            (payload) => {
+              filters.orders_from = payload.from;
+              filters.orders_to = payload.to;
+            }
           "
         />
       </div>
@@ -61,7 +77,7 @@ import VInputRadio from "@/components/VInputRadio.vue";
 import VSelectTypeCheck from "@/components/VSelectTypeCheck.vue";
 import VSelectNumberRange from "@/components/VSelectNumberRange.vue";
 import VDateRange from "@/components/VDateRange.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 export default {
   components: {
     VInput,
@@ -73,33 +89,49 @@ export default {
   data() {
     return {
       filters: {
-        keywords: "",
-        total_spent: "",
-        orders_count: "",
-        created_at: "",
-        sort: "ASC",
+        keywords: this.$route.query.keywords || "",
+        spent_from: this.$route.query.spent_from || "",
+        spent_to: this.$route.query.spent_to || "",
+        orders_from: this.$route.query.orders_from || "",
+        orders_to: this.$route.query.orders_to || "",
+        date_from: this.$route.query.date_from || "",
+        date_to: this.$route.query.date_to || "",
+        sort: this.$route.query.sort || "ASC",
       },
 
       debounce: null,
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     ...mapActions({
       filterCustomers: "customerStore/filterCustomers",
       fetchCustomers: "customerStore/fetchCustomers",
     }),
+    ...mapMutations({
+      setLoading: "customerStore/setLoading",
+    }),
   },
   watch: {
     filters: {
       handler(newVal) {
-        console.log(newVal);
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
-          this.filterCustomers({
-            ...newVal,
+          this.setLoading(true);
+          let query = {};
+          console.log(Object.entries(newVal));
+          for (let [key, value] of Object.entries(newVal)) {
+            if (value) {
+              query[key] = value;
+            }
+          }
+          console.log(query);
+          this.filterCustomers(query).finally(() => {
+            this.$router.push({ query });
+            this.setLoading(false);
           });
-        }, 300);
+        }, 500);
       },
       deep: true,
     },

@@ -1,10 +1,15 @@
 <template>
   <div :class="{ progressing: progress < 100 }" class="flex flex-col gap-5">
     <v-progress-loading
-      class="translate-y-full-180deg"
+      class="translate-y-full-reverse"
       v-model="progress"
       label="Syncing customers from Shopify"
-      v-if="progress < 100"
+      v-if="progress < 100 && !isError"
+    />
+    <v-show-error
+      class="translate-y-half-reverse"
+      message="Server Error!!!"
+      v-else-if="isError"
     />
     <div v-else class="flex-1 flex flex-col gap-5">
       <div
@@ -40,6 +45,7 @@
 
 <script>
 import VProgressLoading from "@/components/VProgressLoading.vue";
+import VShowError from "@/components/VShowError.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
 import CustomerContent from "../components/CustomerContent.vue";
 import VButton from "@/components/VButton.vue";
@@ -51,27 +57,48 @@ export default {
     CustomerFilter,
     CustomerContent,
     VButton,
+    VShowError,
   },
   data() {
     return {
       increaseProgress: null,
-      page: this.$route.query.page || 1,
+      page: Number(this.$route.query.page) || 1,
       size: 10,
       isDisabled: true,
     };
   },
   created() {
-    this.fetchCustomer(this.page);
+    if (Object.keys(this.$route.query).length) {
+      this.filterCustomers(this.$route.query).then(() => {
+        console.log(this.$route.query);
+        this.setProgress(100);
+        clearInterval(this.increaseProgress);
+      });
+    } else {
+      this.fetchCustomer(this.page);
+    }
   },
-  mounted() {},
+  mounted() {
+    if (this.progress < 95) {
+      this.increaseProgress = setInterval(() => {
+        const rand = 1 + Math.floor(Math.random() * 10);
+        if (this.progress + rand >= 100) {
+          this.setProgress(98);
+          clearInterval(this.increaseProgress);
+        } else this.setProgress(this.progress + rand);
+      }, 100);
+    }
+  },
   methods: {
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",
       fetchCustomers: "customerStore/fetchCustomers",
+      filterCustomers: "customerStore/filterCustomers",
     }),
 
     ...mapMutations({
       setLoading: "customerStore/setLoading",
+      setError: "customerStore/setError",
       setProgress: "setProgress",
     }),
 
@@ -89,16 +116,17 @@ export default {
     },
     fetchCustomer(page) {
       this.isDisabled = true;
+
       this.fetchCustomers(page)
         .then((res) => {
           if (res?.data) {
-            if (this.progress < 100) {
-              this.increaseProgress = setInterval(() => {
-                const rand = 1 + Math.floor(Math.random() * 10);
-                this.setProgress(this.progress + rand);
-              }, 100);
-            }
+            this.setProgress(100);
+            clearInterval(this.increaseProgress);
           }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.setError(true);
         })
         .finally(() => {
           this.isDisabled = false;
@@ -108,6 +136,7 @@ export default {
   computed: {
     ...mapGetters({
       progress: "getProgress",
+      isError: "customerStore/getError",
       customerCount: "customerStore/getCustomerCount",
       customerList: "customerStore/getCustomers",
     }),

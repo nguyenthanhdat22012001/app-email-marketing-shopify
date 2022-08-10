@@ -53,13 +53,21 @@ export default {
       type: String,
       default: "",
     },
+    date_from:{
+      type: String,
+      default:""
+    },
+    date_to:{
+      type: String,
+      default:""
+    }
   },
   data() {
     return {
       is_open: false,
       date_input: {
-        start: "",
-        end: "",
+        start: this.date_from,
+        end: this.date_to,
       },
     };
   },

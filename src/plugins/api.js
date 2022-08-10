@@ -71,7 +71,7 @@ export default {
       return api.get('api/campaign/get-campaigns-process')
     },
     postTestMail(payload) {
-      return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
+      return api.post('https://bf9d-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
     },
     postSendMail(payload) {
       return api.post('/api/campaign/save-campaign', payload)
