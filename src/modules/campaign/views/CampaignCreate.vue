@@ -41,18 +41,23 @@
             </div>
             <div class="text-sm mt-1 text-red" v-if="formstate">
               <template v-if="!validation.form.campaignName.required.valid">
-                {{ validation.form.campaignName.required.message }}
+                <p class="alert-error">
+                  {{ validation.form.campaignName.required.message }}
+                </p>
               </template>
               <template
                 v-else-if="!validation.form.campaignName.minLength.valid"
-                >{{ validation.form.campaignName.minLength.message }}
+              >
+                <p class="alert-error">
+                  {{ validation.form.campaignName.minLength.message }}
+                </p>
               </template>
             </div>
           </campaign-input>
           <campaign-input title="Send to customer?">
             <button
               class="w-full flex justify-center items-center border border-dashed border-light bg-[#FAFAFC] text-primary text-sm py-[13px]"
-              @click="visibleCustomerEmailModal = true"
+              @click="visible_customer_email_modal = true"
               v-if="data_customer.number_customer_select == 0"
             >
               + Add customer
@@ -73,20 +78,30 @@
                     :style="`z-index: ${index};--z-index:${index}`"
                   />
                 </div>
-                <span class="text-dark"
-                  >+ {{ data_customer.number_customer_select }} customers</span
+                <span
+                  class="text-dark"
+                  v-if="data_customer.number_customer_select > 3"
+                  >+
+                  {{
+                    data_customer.number_customer_select -
+                    data_customer.customers_avatar.length
+                  }}
+                  customers</span
                 >
+                <span class="text-dark" v-else>customers</span>
               </div>
               <button
                 class="outline-none text-primary"
-                @click="visibleCustomerEmailModal = true"
+                @click="visible_customer_email_modal = true"
               >
                 Manage
               </button>
             </div>
             <div class="text-sm mt-1 text-red" v-if="formstate">
               <template v-if="!validation.form.send_customer.required.valid">
-                {{ validation.form.send_customer.required.message }}
+                <p class="alert-error">
+                  {{ validation.form.send_customer.required.message }}
+                </p>
               </template>
             </div>
           </campaign-input>
@@ -99,8 +114,10 @@
             ></v-tiptap-editor-not-menu>
             <div class="text-sm mt-1 text-red" v-if="formstate">
               <template v-if="!validation.form.email_subject.required.valid">
-                {{ validation.form.email_subject.required.message }}
-              </template>
+                <p class="alert-error">
+                  {{ validation.form.email_subject.required.message }}p>
+                </p></template
+              >
             </div>
           </campaign-input>
           <campaign-input title="Email Content">
@@ -111,8 +128,10 @@
             ></v-tiptap-editor>
             <div class="text-sm mt-1 text-red" v-if="formstate">
               <template v-if="!validation.form.email_content.required.valid">
-                {{ validation.form.email_content.required.message }}
-              </template>
+                <p class="alert-error">
+                  {{ validation.form.email_content.required.message }}p>
+                </p></template
+              >
             </div>
           </campaign-input>
           <campaign-input title="Email footer">
@@ -122,7 +141,10 @@
             ></v-tiptap-editor>
           </campaign-input>
           <campaign-customize-email>
-            <campaign-banner-cover v-model="emailBanner" />
+            <campaign-banner-cover
+              v-model="banner_url"
+              @emitUpdateBannerEmail="(value) => (email_banner = value)"
+            />
             <campaign-background-customize-email v-model="emailBackground" />
             <campaign-button-customize-email v-model="emailButton" />
           </campaign-customize-email>
@@ -133,7 +155,7 @@
             :email-content="email_content"
             :email-footer="email_footer"
             :email-subject="email_subject"
-            :email-banner="emailBanner"
+            :email-banner="banner_url"
             :email-background="emailBackground"
             :email-button="emailButton"
             @emitChangeTextColorContent="
@@ -149,12 +171,13 @@
         <v-button variant="primary" class="py-1 px-7">Save</v-button>
       </div>
       <campaign-modal-select-customer
-        v-model="visibleCustomerEmailModal"
+        v-model="visible_customer_email_modal"
         @emitCloseModal="handleCloseModal"
         @emitHandleAddAvatarSendToCustomer="(data) => (data_customer = data)"
       >
       </campaign-modal-select-customer>
       <!-- <div>{{ opacity }}</div> -->
+      <div class="hidden">{{ validateScroll }}</div>
     </div>
   </Transition>
 </template>
@@ -175,7 +198,6 @@ import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeE
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 import { api } from "@/plugins";
-import { mapGetters } from "vuex";
 export default {
   components: {
     VButton,
@@ -197,8 +219,9 @@ export default {
       email_content: "",
       email_footer: `<p style="text-align: center">Copyright 2010-2022 Firegroup, all rights reserved.</p>`,
       email_subject: "",
-      visibleCustomerEmailModal: false,
-      emailBanner: "",
+      visible_customer_email_modal: false,
+      email_banner: "",
+      banner_url: "",
       emailBackground: {
         color: "#ffffff",
         opacity: 100,
@@ -230,7 +253,7 @@ export default {
         "eventBusReturnBackDataCustomerOld",
         this.data_customer
       );
-      this.visibleCustomerEmailModal = false;
+      this.visible_customer_email_modal = false;
     },
     checkValue(value) {
       if (value > 100) {
@@ -274,10 +297,9 @@ export default {
         subject: newSubject.innerText,
         content: this.email_content,
         footer: this.email_footer,
-        fileImage: this.fileImage,
         variant_name: [...variants_subject, ...variants_content],
         color_content: this.emailBackground.color_text,
-        background_banner: this.emailBanner ? this.emailBanner : "test",
+        background_banner: this.email_banner,
         background_color: this.emailBackground.color,
         background_radius: `${this.emailBackground.radius}px`,
         button_label: this.emailButton.label,
@@ -292,6 +314,7 @@ export default {
     // handle send mail
     async onSendMail() {
       this.formstate = true;
+      this.validateScroll();
       if (this.validation.valid) {
         let data = this.handleGetDataCreateCampaign();
         let newData = {
@@ -308,34 +331,39 @@ export default {
     },
     async handleSendMailApi(data) {
       try {
-        let res = api.CAMPAIGN.postSendMail(data);
-        console.log("res", res);
+        await api.CAMPAIGN.postSendMail(data);
       } catch (error) {
         console.log("error", error);
       }
     },
     // handle send test mail
     async onSendTestMail(email) {
-      let data = this.handleGetDataCreateCampaign();
-      let newData = { ...data, list_mail_customers: [email] };
-      await this.handleSendTestMailApi(newData);
-      console.log("onSendTestMail", { ...data, list_mail_customers: [email] });
+      this.formstate = true;
+      this.validateScroll();
+      if (this.validation.valid) {
+        let data = this.handleGetDataCreateCampaign();
+        let newData = { ...data, list_mail_customers: [email] };
+        await this.handleSendTestMailApi(newData);
+      }
     },
     async handleSendTestMailApi(data) {
       try {
-        let res = await api.CAMPAIGN.postTestMail(data);
+        await api.CAMPAIGN.postTestMail(data);
         this.$refs.ref_preview.$el.children[1].children[1].style.width =
           "unset";
-        console.log("res", res);
       } catch (error) {
         console.log("error", error);
       }
     },
+    // scroll when have error
+    validateScroll() {
+      const el = document.querySelectorAll(".alert-error");
+      if (el.length > 0) {
+        el[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    },
   },
   computed: {
-    ...mapGetters({
-      fileImage: "campaignStore/getFileImage",
-    }),
     validation() {
       const campaignName = {
         required: {
@@ -349,7 +377,7 @@ export default {
       };
       const email_subject = {
         required: {
-          valid: this.email_subject.length <= 7 ? false : true,
+          valid: this.email_subject.length > 7 ? true : false,
           message: "This field is required !",
         },
       };
@@ -361,7 +389,7 @@ export default {
       };
       const email_content = {
         required: {
-          valid: this.email_content.length <= 7 ? false : true,
+          valid: this.email_content.length > 7 ? true : false,
           message: "This field is required !",
         },
       };
@@ -377,7 +405,7 @@ export default {
           campaignName.minLength.valid &&
           email_subject.required.valid &&
           send_customer.required.valid &&
-          email_content,
+          email_content.required.valid,
       };
     },
   },

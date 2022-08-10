@@ -16,7 +16,7 @@
           >Accept JPG, PNG, JPEG, GIF file with max size of 5MB</span
         >
       </div>
-      <v-button variant="primary" class="relative py-[9px] px-4 font-medium">
+      <v-button variant="primary" class="relative py-[9px] px-4 font-medium cursor-pointer">
         Change
         <input
           type="file"
@@ -30,7 +30,6 @@
 <script>
 import VButton from "@/components/VButton.vue";
 import notify from "@/helper/notify";
-import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -39,17 +38,18 @@ export default {
   data() {
     return {
       url: null,
-      value: String,
+      base64: "",
     };
   },
   methods: {
-    onFileChange(e) {
+    async onFileChange(e) {
       const file = e.target.files[0];
       let is_image = this.validateFileImage(file);
       if (is_image) {
         this.url = URL.createObjectURL(file);
-        this.setFileImage(file);
+        let image = await this.getBase64FromUrl(file);
         this.$emit("input", this.url);
+        this.$emit("emitUpdateBannerEmail", image);
       } else {
         notify.showNotify(
           "error",
@@ -71,9 +71,17 @@ export default {
 
       return true;
     },
-    ...mapMutations({
-      setFileImage: "campaignStore/setFileImage",
-    }),
+    getBase64FromUrl(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onloadend = () => {
+          const base64data = reader.result;
+          resolve(base64data);
+        };
+      });
+    },
   },
 };
 </script>

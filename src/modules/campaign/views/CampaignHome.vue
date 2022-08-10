@@ -18,9 +18,24 @@
       >
         <campaign-filter
           @emitUpdateListCampaign="(value) => (list_campaign = value)"
+          @emitSetLoading="(value) => (is_loading = value)"
         />
-        <div class="pl-5">
-          <campaign-table :prop_list_campaign="list_campaign" />
+        <div class="pl-5 min-h-[300px]">
+          <template v-if="!is_loading">
+            <campaign-table
+              v-if="list_campaign.length > 0"
+              :prop_list_campaign="list_campaign"
+            />
+            <div
+              v-else
+              class="h-full flex justify-center items-center font-medium text-base text-muted"
+            >
+              No records
+            </div>
+          </template>
+          <template v-else>
+            <v-loading />
+          </template>
         </div>
       </div>
     </div>
@@ -31,6 +46,7 @@
 import VButton from "@/components/VButton.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
+import VLoading from "@/components/VLoading.vue";
 
 import { pusher } from "@/plugins";
 import api from "@/plugins/api";
@@ -41,10 +57,12 @@ export default {
     VButton,
     CampaignFilter,
     CampaignTable,
+    VLoading,
   },
   data() {
     return {
       list_campaign: [],
+      is_loading: false,
     };
   },
   methods: {
@@ -60,17 +78,15 @@ export default {
     },
     async fetchCampaigns() {
       try {
-        this.setLoading(true);
+        this.is_loading = true;
         let res = await api.CAMPAIGN.fetch();
-        // console.log("res", res);
         if (res.status == 200) {
           this.list_campaign = res.data;
         }
-        this.setLoading(false);
       } catch (error) {
         console.log(error);
-        this.setLoading(false);
       }
+      this.is_loading = false;
     },
     handleUpdateListCampaign(data) {
       let list_campaign = this.list_campaign;

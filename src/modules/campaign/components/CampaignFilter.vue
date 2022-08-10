@@ -59,7 +59,6 @@ import VSelectTypeCheck from "@/components/VSelectTypeCheck.vue";
 import api from "@/plugins/api";
 import { mapMutations } from "vuex";
 
-
 export default {
   components: {
     VInput,
@@ -85,7 +84,6 @@ export default {
       clearTimeout(this.debounce);
       this.debounce = setTimeout(async () => {
         await this.handleFiterCampaign();
-        // this.$emit("emitUpdatefilterSearch", text_search);
       }, 500);
     },
     // hanlde filter campaign
@@ -96,23 +94,22 @@ export default {
         keywords: this.keywords,
       };
       try {
-        this.setLoading(true);
+        this.$emit("emitSetLoading", true);
         let res = await api.CAMPAIGN.filter(payload);
         if (res.status) {
           this.$emit("emitUpdateListCampaign", res.data);
         }
-        this.setLoading(false);
       } catch (error) {
         console.log(error);
-        this.setLoading(false);
       }
+      this.$emit("emitSetLoading", false);
     },
   },
   watch: {
-   async sort(value) {
+    async sort(value) {
       await this.handleFiterCampaign();
     },
-   async status(value) {
+    async status(value) {
       await this.handleFiterCampaign();
     },
   },

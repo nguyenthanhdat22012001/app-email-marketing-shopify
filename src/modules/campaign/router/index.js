@@ -1,4 +1,4 @@
-import Auth from '@/middleware/Auth'
+// import Auth from '@/middleware/Auth'
 
 
 const campaignRouter = [
@@ -11,7 +11,7 @@ const campaignRouter = [
                 name: 'campaign',
                 component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignHome.vue"),
                 meta: {
-                    middleware: [Auth]
+                    // middleware: [Auth]
                 },
             },
             {
@@ -19,7 +19,7 @@ const campaignRouter = [
                 name: 'campaign/create',
                 component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignCreate.vue"),
                 meta: {
-                    middleware: [Auth]
+                    // middleware: [Auth]
                 },
             }
         ]
