@@ -2,8 +2,8 @@
   <div
     class="vue-sidebar w-[230px] h-screen text-white bg-gradient-to-br from-bg-primary to-bg-primary-light fixed top-0 left-0 flex flex-col gap-[22px]"
   >
-    <div class="logo flex justify-center pt-5 gap-[15px]">
-      <img src="@/assets/icons/logo-image.svg" alt="" class="logo-image" />
+    <div class="logo flex justify-start pt-5 gap-[15px] pl-[15px] ">
+      <img src="@/assets/icons/logo-image.svg" alt="" class="logo-image sticky" />
       <img
         src="@/assets/icons/logo-text.svg"
         alt=""
@@ -22,7 +22,7 @@
       <router-link :to="{ name: 'campaign' }" class="menu--item relative">
         <img src="@/assets/icons/Union.svg" class="object-cover" />
         <p class="nav-text">Campaign</p>
-        <div class="tooltip">Customer</div>
+        <div class="tooltip">Campaign</div>
       </router-link>
     </nav>
     <div class="footer-sidebar opacity-50 text-white flex gap-[10px] py-3 px-5">
@@ -46,9 +46,15 @@ export default {
   gap: 10px;
   padding: 12px 24px;
   height: 48px;
-  opacity: 0.5;
+  .nav-text,
+  img {
+    opacity: 0.5;
+  }
   &.router-link-active {
-    opacity: 1;
+    .nav-text,
+    img {
+      opacity: 1;
+    }
     &::before {
       content: "";
       position: absolute;
@@ -97,5 +103,7 @@ export default {
     }
   }
 }
-
+.toggle .menu--item:hover .tooltip {
+  visibility: visible;
+}
 </style>

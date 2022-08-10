@@ -55,19 +55,6 @@ const actions = {
             })
         })
     },
-    checkAuth({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            this.commit('setLoading', true)
-            api.AUTH.checkAuth(payload).then(res => {
-                resolve(res)
-            }).catch(err => {
-                reject(err)
-            }).finally(() => {
-                this.commit('setLoading', false)
-            })
-
-        })
-    },
     fetchUser({ commit }, payload) {
         return new Promise((resolve, reject) => {
             this.commit('setLoading', true)

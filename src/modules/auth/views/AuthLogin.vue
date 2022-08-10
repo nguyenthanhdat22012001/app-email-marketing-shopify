@@ -55,7 +55,9 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.toastMessageError();
+          this.toastMessageError({
+            message: "Server Error!! Try again",
+          });
         });
     },
   },
