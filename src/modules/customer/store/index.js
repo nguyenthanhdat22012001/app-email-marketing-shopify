@@ -4,6 +4,7 @@ const state = {
     customersList: [],
     selectedCustomers: [],
     isLoading: false,
+    isError: false,
 }
 const getters = {
     getCustomers(state) {
@@ -15,8 +16,11 @@ const getters = {
     getSelectedCustomers(state) {
         return state.selectedCustomers
     },
-    getIsLoading(state) {
+    getLoading(state) {
         return state.isLoading
+    },
+    getError(state) {
+        return state.isError
     }
 }
 const mutations = {
@@ -28,6 +32,9 @@ const mutations = {
     },
     setLoading(state, payload) {
         state.isLoading = payload
+    },
+    setError(state, payload) {
+        state.isError = payload
     }
 }
 const actions = {
@@ -67,6 +74,7 @@ const actions = {
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetchPagination(payload).then(res => {
+
                 if (res.data) {
                     commit('setCustomer', res.data);
                     resolve(res.data);
@@ -83,8 +91,8 @@ const actions = {
     filterCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.filter(payload).then(res => {
-                commit('setCustomer', res);
-                resolve(res)
+                commit('setCustomer', res.data);
+                resolve(res.data)
             }).catch(err => reject(err));
         })
     },

@@ -1,6 +1,6 @@
-<template >
+<template>
   <div class="flex-1">
-    <v-table align="center" class="h-full">
+    <v-table align="center" :class="{ 'h-full': isLoading }">
       <template #table_head_tr>
         <th
           :colspan="countSelectedCustomer ? 7 : 0"
@@ -129,7 +129,7 @@ export default {
   computed: {
     ...mapGetters({
       customerList: "customerStore/getCustomers",
-      isLoading: "customerStore/getIsLoading",
+      isLoading: "customerStore/getLoading",
     }),
     customerListId() {
       return this.customerList.data.map((item) => item.id);

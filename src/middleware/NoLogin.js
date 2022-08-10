@@ -1,5 +1,6 @@
 import { api, axios, mixin } from "@/plugins";
 export default async function ({ next, to, store }) {
+  // console.log('login')
   let token = store.getters['auth/getToken'];
   if (token) {
     next({ name: 'customer' })
@@ -44,5 +45,6 @@ export default async function ({ next, to, store }) {
   //   })
   //   return false
   // }
+  
   return true
 }

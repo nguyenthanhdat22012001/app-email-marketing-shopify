@@ -32,9 +32,9 @@ const api = {
     });
   },
 
-  put(url, data = {}) {},
+  put(url, data = {}) { },
 
-  delete(url, data = {}) {},
+  delete(url, data = {}) { },
 };
 
 export default {
@@ -68,13 +68,11 @@ export default {
       return api.get("api/campaign/get-campaigns-process");
     },
     filter(payload) {
-      return api.get("api/campaign/filterCampaign", {...payload});
+      return api.get("api/campaign/filterCampaign", { ...payload });
     },
     postTestMail(payload) {
-      return api.post(
-        "https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email",
-        payload
-      );
+      return api.post("https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email", payload);
+
     },
     postSendMail(payload) {
       return api.post("/api/campaign/save-campaign", payload);
