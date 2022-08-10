@@ -6,27 +6,27 @@
       <img src="@/assets/icons/search.svg" alt="" />
       <v-input
         placeholder="Search campaign..."
-        v-model="searchText"
+        @input="inputSearch"
         class="flex-1"
       />
     </div>
     <div class="flex gap-[10px] items-center">
       <!-- selecet default  -->
-      <v-select-type-check prop_label="Status" @emitClearForm="check_list = []">
+      <v-select-type-check prop_label="Status" @emitClearForm="status = []">
         <v-checkbox
           prop_label="Running"
-          prop_input_value="Running"
-          v-model="check_list"
+          prop_input_value="running"
+          v-model="status"
         ></v-checkbox>
         <v-checkbox
           prop_label="Completed"
-          prop_input_value="Completed"
-          v-model="check_list"
+          prop_input_value="completed"
+          v-model="status"
         ></v-checkbox>
         <v-checkbox
           prop_label="Paused"
           prop_input_value="Paused"
-          v-model="check_list"
+          v-model="status"
         ></v-checkbox>
       </v-select-type-check>
       <!-- select sort  -->
@@ -36,23 +36,13 @@
         @emitClearForm="sort = ''"
       >
         <v-input-radio
-          prop_label="Last created"
-          prop_input_value="Last created"
+          prop_label="Up"
+          prop_input_value="ASC"
           v-model="sort"
         ></v-input-radio>
         <v-input-radio
-          prop_label="First created"
-          prop_input_value="First created"
-          v-model="sort"
-        ></v-input-radio>
-        <v-input-radio
-          prop_label="Campaign name (A-Z)"
-          prop_input_value="Campaign name (A-Z)"
-          v-model="sort"
-        ></v-input-radio>
-        <v-input-radio
-          prop_label="Campaign name (Z-A)"
-          prop_input_value="Campaign name (Z-A)"
+          prop_label="Down"
+          prop_input_value="DESC"
           v-model="sort"
         ></v-input-radio>
       </v-select-type-check>
@@ -66,6 +56,10 @@ import VCheckbox from "@/components/VCheckbox.vue";
 import VInputRadio from "@/components/VInputRadio.vue";
 import VSelectTypeCheck from "@/components/VSelectTypeCheck.vue";
 
+import api from "@/plugins/api";
+import { mapMutations } from "vuex";
+
+
 export default {
   components: {
     VInput,
@@ -75,10 +69,52 @@ export default {
   },
   data() {
     return {
-      searchText: "",
-      check_list: [],
-      sort: '',
+      debounce: null,
+      sort: "",
+      status: [],
+      keywords: "",
     };
+  },
+  methods: {
+    ...mapMutations({
+      setLoading: "setLoading",
+    }),
+    // function delay get value for event input search
+    inputSearch(value) {
+      this.keywords = value.trim();
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(async () => {
+        await this.handleFiterCampaign();
+        // this.$emit("emitUpdatefilterSearch", text_search);
+      }, 500);
+    },
+    // hanlde filter campaign
+    async handleFiterCampaign() {
+      let payload = {
+        status: this.status.toString(),
+        sort: this.sort,
+        keywords: this.keywords,
+      };
+      try {
+        this.setLoading(true);
+        let res = await api.CAMPAIGN.filter(payload);
+        if (res.status) {
+          this.$emit("emitUpdateListCampaign", res.data);
+        }
+        this.setLoading(false);
+      } catch (error) {
+        console.log(error);
+        this.setLoading(false);
+      }
+    },
+  },
+  watch: {
+   async sort(value) {
+      await this.handleFiterCampaign();
+    },
+   async status(value) {
+      await this.handleFiterCampaign();
+    },
   },
 };
 </script>

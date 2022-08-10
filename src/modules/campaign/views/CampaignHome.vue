@@ -16,7 +16,9 @@
       <div
         class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5"
       >
-        <campaign-filter />
+        <campaign-filter
+          @emitUpdateListCampaign="(value) => (list_campaign = value)"
+        />
         <div class="pl-5">
           <campaign-table :prop_list_campaign="list_campaign" />
         </div>
@@ -42,13 +44,11 @@ export default {
   },
   data() {
     return {
-      page: 1,
-      size: 10,
       list_campaign: [],
     };
   },
   methods: {
-      ...mapMutations({
+    ...mapMutations({
       setLoading: "setLoading",
     }),
     subscribe() {
@@ -92,7 +92,6 @@ export default {
   },
   mounted() {
     this.subscribe();
-    console.log('mounted')
   },
 };
 </script>
