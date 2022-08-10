@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       increaseProgress: null,
-      page: 1,
+      page: this.$route.query.page || 1,
       size: 10,
       isDisabled: true,
     };
@@ -91,7 +91,7 @@ export default {
       this.isDisabled = true;
       this.fetchCustomers(page)
         .then((res) => {
-          if (res?.data?.length) {
+          if (res?.data) {
             if (this.progress < 100) {
               this.increaseProgress = setInterval(() => {
                 const rand = 1 + Math.floor(Math.random() * 10);

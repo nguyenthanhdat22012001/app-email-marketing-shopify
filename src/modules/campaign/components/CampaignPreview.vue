@@ -104,7 +104,6 @@
                       padding: 9px 0px;
                     "
                     :style="styleButton()"
-                    v-if="emailButton.label"
                   >
                     {{ emailButton.label }}
                   </button>

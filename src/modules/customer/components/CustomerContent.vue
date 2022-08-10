@@ -1,80 +1,82 @@
-<template>
-  <div>
-  <v-loading v-if="isLoading" />
-
-  <v-table align="center" v-else>
-    <template #table_head_tr>
-      <th
-        :colspan="countSelectedCustomer ? 7 : 0"
-        class="py-5 pl-[30px]"
-        :class="{ 'py-[9px] pl-5': countSelectedCustomer }"
-      >
-        <div class="flex gap-2">
-          <v-checkbox
-            :prop_is_checkbox_custom="true"
-            scope="col"
-            v-model="selectedAll"
-            prop_input_value="all"
-            :prop_label="
-              countSelectedCustomer ? countSelectedCustomer + ' Selected' : ''
-            "
-            :class="{
-              'border border-solid border-light p-[10px] rounded flex gap-4':
-                countSelectedCustomer,
-            }"
-          />
-          <v-button
-            v-if="countSelectedCustomer"
-            variant="secondary"
-            @click="visibleExportModal = true"
-          >
-            <img src="@/assets/icons/download.svg" />
-            Export CSV
-          </v-button>
-        </div>
-      </th>
-      <template v-if="countSelectedCustomer === 0">
-        <th scope="col" class="py-5 pr-3.5">Customer name</th>
-        <th scope="col" class="py-5 pr-3.5">Phone</th>
-        <th scope="col" class="py-5 pr-3.5">Email</th>
-        <th scope="col" class="py-5 pr-3.5">Orders</th>
-        <th scope="col" class="py-5 pr-3.5">Spent</th>
-        <th scope="col" class="py-5 pr-3.5">Create date</th>
+<template >
+  <div class="flex-1">
+    <v-table align="center" class="h-full">
+      <template #table_head_tr>
+        <th
+          :colspan="countSelectedCustomer ? 7 : 0"
+          class="py-5 pl-[30px]"
+          :class="{ 'py-[9px] pl-5': countSelectedCustomer }"
+        >
+          <div class="flex gap-2">
+            <v-checkbox
+              :prop_is_checkbox_custom="true"
+              scope="col"
+              v-model="selectedAll"
+              prop_input_value="all"
+              :prop_label="
+                countSelectedCustomer ? countSelectedCustomer + ' Selected' : ''
+              "
+              :class="{
+                'border border-solid border-light p-[10px] rounded flex gap-4':
+                  countSelectedCustomer,
+              }"
+            />
+            <v-button
+              v-if="countSelectedCustomer"
+              variant="secondary"
+              @click="visibleExportModal = true"
+            >
+              <img src="@/assets/icons/download.svg" />
+              Export CSV
+            </v-button>
+          </div>
+        </th>
+        <template v-if="countSelectedCustomer === 0">
+          <th scope="col" class="py-5 pr-3.5">Customer name</th>
+          <th scope="col" class="py-5 pr-3.5">Phone</th>
+          <th scope="col" class="py-5 pr-3.5">Email</th>
+          <th scope="col" class="py-5 pr-3.5">Orders</th>
+          <th scope="col" class="py-5 pr-3.5">Spent</th>
+          <th scope="col" class="py-5 pr-3.5">Create date</th>
+        </template>
       </template>
-    </template>
+      <template #table_body v-if="isLoading">
+        <tr>
+          <td colspan="10"><v-loading /></td>
+        </tr>
+      </template>
 
-    <template #table_body>
-      <tr
-        class="bg-white border-t border-[#EBEBF0]"
-        v-for="customer in customerList.data"
-        :key="customer.id"
-      >
-        <td>
-          <v-checkbox
-            scope="col"
-            v-model="selectedCustomers"
-            :prop_input_value="customer.id"
-            class="py-[22px] pl-[30px] translate-y-2/4"
-          />
-        </td>
-        <td class="py-5 pr-3.5">
-          <v-avatar
-            :name="getFullName(customer.first_name, customer.last_name)"
-            class="mr-3"
-          />{{ getFullName(customer.first_name, customer.last_name) }}
-        </td>
-        <td class="py-5 pr-3.5">{{ customer.phone }}</td>
-        <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
-        <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
-        <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
-        <td class="py-5 pr-3.5 text-muted">
-          {{ convertDateTime(customer.created_at) }}
-        </td>
-      </tr>
-    </template>
-    
-  </v-table>
-  <customer-modal-export v-model="visibleExportModal">
+      <template #table_body v-else>
+        <tr
+          class="bg-white border-t border-[#EBEBF0]"
+          v-for="customer in customerList.data"
+          :key="customer.id"
+        >
+          <td>
+            <v-checkbox
+              scope="col"
+              v-model="selectedCustomers"
+              :prop_input_value="customer.id"
+              class="py-[22px] pl-[30px] translate-y-2/4"
+            />
+          </td>
+          <td class="py-5 pr-3.5">
+            <v-avatar
+              :name="getFullName(customer.first_name, customer.last_name)"
+              class="mr-3"
+            />{{ getFullName(customer.first_name, customer.last_name) }}
+          </td>
+          <td class="py-5 pr-3.5">{{ customer.phone }}</td>
+          <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
+          <td class="py-5 pr-3.5">{{ customer.orders_count }} Orders</td>
+          <td class="py-5 pr-3.5">$ {{ customer.total_spent }}</td>
+          <td class="py-5 pr-3.5 text-muted">
+            {{ convertDateTime(customer.created_at) }}
+          </td>
+        </tr>
+      </template>
+    </v-table>
+    <customer-modal-export v-model="visibleExportModal">
       <template #message>
         <p>
           Export
