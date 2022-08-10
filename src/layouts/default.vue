@@ -48,13 +48,11 @@ $time: 0.8s;
   .vue-sidebar {
     width: 66px;
     transition: width $time;
+    
     .logo-text,
     .nav-text {
       opacity: 0;
       visibility: hidden;
-    }
-    .tooltip {
-      visibility: visible;
     }
     .logo-text {
       position: absolute;
