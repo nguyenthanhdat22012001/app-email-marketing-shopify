@@ -27,7 +27,7 @@
 <template>
   <table class="w-full text-left">
     <thead class="text-xs text-gray-light font-semibold">
-      <tr class="bg-white">
+      <tr class="bg-white sticky top-0 z-10 shadow-content">
         <slot name="table_head_tr"></slot>
       </tr>
     </thead>

@@ -16,7 +16,6 @@ export default async function ({ next, to, store }) {
     store.dispatch('auth/loginStore', {
       ...to.query,
     }).then(res => {
-      console.log(res)
       if (res.status) {
         store.commit('auth/setToken', res.data.original.access_token)
         next({ name: 'customer' })

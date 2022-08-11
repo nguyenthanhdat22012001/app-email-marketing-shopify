@@ -1,4 +1,4 @@
-import { pusher } from '@/plugins'
+import { mixin, pusher } from '@/plugins'
 import api from '@/plugins/api'
 const state = {
     customersList: [],
@@ -39,32 +39,41 @@ const mutations = {
 }
 const actions = {
     subscribe({ commit, dispatch }) {
-        const eventCustomersSync = (data) => {
-            console.log(this.getters.getProgress);
-            if (this.getters.getProgress < 100) {
-                this.commit('setProgress', Number(data.message));
+        return new Promise((resolve, reject) => {
+            const eventCustomersSync = (res) => {
+                console.log(res);
+                if (this.getters.getProgress < 100) {
+                    this.commit('setProgress', Number(res.payload.processing));
+                }
+                if (res.payload.status) {
+                    this.commit('setProgress', 100);
+                    pusher.unbind("syncing_customer", eventCustomersSync);
+                    resolve(res.payload.data)
+                }
             }
-            if (data.message >= 100) {
-                this.commit('setProgress', 100);
-                pusher.unbind("syncing_customer", eventCustomersSync);
-            }
-        }
-        this.commit('setProgress', 0);
-        pusher.subscribe("customers_syncing");
-        pusher.bind("syncing_customer", eventCustomersSync);
+            this.commit('setProgress', 0);
+            pusher.subscribe("customers_syncing");
+            pusher.bind("syncing_customer", eventCustomersSync);
+        })
+
     },
     fetchCustomersSync({ commit, dispatch }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetchSync().then(res => {
                 console.log(res)
-                dispatch('subscribe');
-                if (res.data) {
-                    resolve(res);
+                if (res.status) {
+                    dispatch('subscribe').then((data) => {
+                        commit('setCustomer', data)
+                        resolve(data)
+                    });
                 } else {
-                    reject(res)
+                    throw res
                 }
             }).catch(err => {
-                reject(err)
+                mixin.methods.toastMessageError({
+                    message: err.message
+                })
+                reject(err);
             })
         }).finally(() => {
             this.commit('setLoading', false)
@@ -74,7 +83,6 @@ const actions = {
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetchPagination(payload).then(res => {
-
                 if (res.data) {
                     commit('setCustomer', res.data);
                     resolve(res.data);

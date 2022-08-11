@@ -327,7 +327,12 @@ export default {
             "elva07@pagac.com",
           ]),
         };
-        await this.handleSendMailApi(newData);
+        const formData = new FormData();
+        for (let [key, value] of Object.entries(newData)) {
+          formData.append(key, value);
+        }
+        console.log(formData);
+        await this.handleSendMailApi(formData);
         this.$router.push({ name: "campaign" });
       }
     },

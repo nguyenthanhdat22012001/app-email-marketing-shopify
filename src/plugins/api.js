@@ -52,9 +52,8 @@ export default {
     fetchPagination(page) {
       return api.get("/api/customer", { page: page });
     },
-
     fetchSync() {
-      return api.get("/api/customer/sync");
+      return api.get("https://a793-113-161-32-170.ap.ngrok.io/api/customer/sync");
     },
     filter(payload) {
       return api.get("/api/customer/filterCustomer", payload);

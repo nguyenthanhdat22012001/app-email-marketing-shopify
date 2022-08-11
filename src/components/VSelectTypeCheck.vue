@@ -25,7 +25,7 @@
 -->
 
 <template>
-  <div class="relative">
+  <div class="relative z-20">
     <div
       @click="is_open = !is_open"
       class="z-0 inline-flex justify-center gap-x-2.5 cursor-pointer py-2 px-3.5 border border-[#EBEBF0] bg-secondary font-medium text-muted"

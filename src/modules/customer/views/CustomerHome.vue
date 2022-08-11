@@ -13,10 +13,10 @@
     />
     <div v-else class="flex-1 flex flex-col gap-5">
       <div
-        class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 shadow-content"
+        class="customer-content bg-secondary rounded h-[630px] w-full flex flex-col gap-6 shadow-content"
       >
         <customer-filter />
-        <customer-content :page="page" :size="size" />
+        <customer-content :page="page" class="overflow-auto"/>
       </div>
       <div class="flex justify-center items-center gap-2">
         <v-button
@@ -63,7 +63,6 @@ export default {
     return {
       increaseProgress: null,
       page: Number(this.$route.query.page) || 1,
-      size: 10,
       isDisabled: true,
     };
   },
@@ -72,6 +71,7 @@ export default {
       this.filterCustomers(this.$route.query).then(() => {
         console.log(this.$route.query);
         this.setProgress(100);
+        this.isDisabled = false;
         clearInterval(this.increaseProgress);
       });
     } else {
@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchCustomersSync: "customerStore/fetchCustomersSync",
       fetchCustomers: "customerStore/fetchCustomers",
       filterCustomers: "customerStore/filterCustomers",
     }),
@@ -116,7 +115,6 @@ export default {
     },
     fetchCustomer(page) {
       this.isDisabled = true;
-
       this.fetchCustomers(page)
         .then((res) => {
           if (res?.data) {
