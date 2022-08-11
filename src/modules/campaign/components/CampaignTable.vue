@@ -24,7 +24,7 @@
         </td>
         <td class="py-5 pr-3.5 text-gray-light">{{formatdateNameMonthDY(item.created_at) }}</td>
         <td class="py-5 pr-3.5">
-          <v-status :class="item.process == 100 ? 'text-success' : 'text-primary'" class="text-primary">{{item.process == 100 ? 'completed' : 'running' }}</v-status>
+          <v-status :class="item.process == 100 ? 'text-success' : 'text-primary'" class="text-primary">{{item.status }}</v-status>
         </td>
         <td width="100px" class="py-5 pr-3.5">
           <v-progress-bar :prop_percent="item.process"></v-progress-bar>
@@ -33,13 +33,13 @@
         <td class="py-5 pr-3.5 text-success font-bold">
           {{ item.send_email_done }}
           <span class="ml-1 font-normal text-gray-light"
-            >{{handlePercentByMath(item.total_customers ,item.send_email_done)}}</span
+            >{{item.mail_done_percentage ? item.mail_done_percentage : 0}}%</span
           >
         </td>
         <td class="py-5 pr-3.5 text-red font-bold">
           {{ item.send_email_fail }}
           <span class="ml-1 font-normal text-gray-light"
-            >{{handlePercentByMath(item.send_email_done ,item.send_email_fail)}}</span
+            >{{item.mail_failed_percentage ? item.mail_failed_percentage : 0}}%</span
           >
         </td>
       </tr>

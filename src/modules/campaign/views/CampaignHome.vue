@@ -72,8 +72,8 @@ export default {
     subscribe() {
       pusher.subscribe("campaigns");
       pusher.bind("send_mail", (data) => {
-        console.log("campaigns", data.message.original);
-        this.handleUpdateListCampaign(data.message.original);
+        console.log("campaigns", data);
+        this.handleUpdateListCampaign(data.payload.original);
       });
     },
     async fetchCampaigns() {
@@ -94,8 +94,11 @@ export default {
       for (let index = 0; index < list_campaign.length; index++) {
         if (list_campaign[index].id == data.campaignId) {
           list_campaign[index].process = data.processing;
+          list_campaign[index].status = data.status;
           list_campaign[index].send_email_done = data.mail_send_done;
+          list_campaign[index]['mail_done_percentage'] = data.mail_done_percentage ? data.mail_done_percentage : 0;
           list_campaign[index].send_email_fail = data.mail_send_failed;
+          list_campaign[index]['mail_failed_percentage'] = data.mail_failed_percentage ? data.mail_failed_percentage : 0;
           break;
         }
       }

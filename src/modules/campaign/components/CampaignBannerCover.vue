@@ -16,7 +16,10 @@
           >Accept JPG, PNG, JPEG, GIF file with max size of 5MB</span
         >
       </div>
-      <v-button variant="primary" class="relative py-[9px] px-4 font-medium cursor-pointer">
+      <v-button
+        variant="primary"
+        class="relative py-[9px] px-4 font-medium cursor-pointer"
+      >
         Change
         <input
           type="file"
@@ -47,9 +50,8 @@ export default {
       let is_image = this.validateFileImage(file);
       if (is_image) {
         this.url = URL.createObjectURL(file);
-        let image = await this.getBase64FromUrl(file);
         this.$emit("input", this.url);
-        this.$emit("emitUpdateBannerEmail", image);
+        this.$emit("emitUpdateBannerEmail", file);
       } else {
         notify.showNotify(
           "error",
@@ -71,17 +73,17 @@ export default {
 
       return true;
     },
-    getBase64FromUrl(file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+    // getBase64FromUrl(file) {
+    //   return new Promise((resolve) => {
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
 
-        reader.onloadend = () => {
-          const base64data = reader.result;
-          resolve(base64data);
-        };
-      });
-    },
+    //     reader.onloadend = () => {
+    //       const base64data = reader.result;
+    //       resolve(base64data);
+    //     };
+    //   });
+    // },
   },
 };
 </script>

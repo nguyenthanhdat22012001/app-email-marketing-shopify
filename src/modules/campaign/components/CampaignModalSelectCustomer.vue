@@ -28,16 +28,13 @@
         />
       </div>
       <div class="mt-[30px] overflow-auto flex-1">
-        <template v-if="!is_loading">
-          <campaign-table-modal-select
-            :prop_list_customer="list_customer"
-            :prop_total_customers="total_customers"
-            @emitHandleUpdateDataCustomerInModal="
-              handleUpdateDataCustomerInModal
-            "
-          />
-        </template>
-        <template v-else>
+        <campaign-table-modal-select
+          v-show="!is_loading"
+          :prop_list_customer="list_customer"
+          :prop_total_customers="total_customers"
+          @emitHandleUpdateDataCustomerInModal="handleUpdateDataCustomerInModal"
+        />
+        <template v-if="is_loading">
           <v-loading />
         </template>
       </div>
@@ -118,7 +115,7 @@ export default {
         prev_page_url: null,
         next_page_url: null,
         current_page: 1,
-        total_page: 7,
+        total_page: 0,
       },
       filters: {
         is_filter: false,
@@ -143,7 +140,7 @@ export default {
       this.data_customer = {
         ...this.data_customer,
       };
-      
+
       this.visible = false;
       this.setLoading(true);
       if (this.data_customer.number_customer_select > 0) {
@@ -215,6 +212,9 @@ export default {
           if (this.total_customers != res.total_customers) {
             this.total_customers = res.total_customers;
           }
+          if (this.page.total_page != res.totalPage) {
+            this.page.total_page = res.totalPage;
+          }
         }
       } catch (error) {
         console.log(error);
@@ -271,6 +271,9 @@ export default {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;
           this.page.next_page_url = res.data.next_page_url;
+          if (this.page.total_page != res.totalPage) {
+            this.page.total_page = res.totalPage;
+          }
         }
       } catch (error) {
         console.log(error);

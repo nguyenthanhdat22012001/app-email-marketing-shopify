@@ -76,6 +76,7 @@ export default {
   methods: {
     onClearInputs() {
       this.$emit("emitClearForm");
+      this.is_open = false;
     },
   },
   created: function () {
