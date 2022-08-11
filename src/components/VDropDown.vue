@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="w-[200px] bg-white border border-solid rounded border-[#EBEBF0] shadow-sm-light"
+    class="w-[200px] bg-white border border-solid rounded border-[#EBEBF0] shadow-sm-light z-2"
     v-if="isVisible"
     ref="dropdown"
   >

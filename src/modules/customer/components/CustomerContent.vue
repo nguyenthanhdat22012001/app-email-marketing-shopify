@@ -110,11 +110,9 @@ export default {
       default: 0,
       type: Number,
     },
-    size: {
-      default: 10,
-      type: Number,
-    },
+    
   },
+
   data() {
     return {
       visibleExportModal: false,
@@ -169,6 +167,19 @@ export default {
     },
     countSelectedCustomer() {
       return this.selectedCustomers.length;
+    },
+  },
+  watch: {
+    "customerList.current_page"(page) {
+      if (page > 1) {
+        const query = { ...this.$route.query };
+        query.page = page;
+        console.log(query);
+        this.$router.push({ query });
+      } else {
+        const { page, ...query } = this.$route.query;
+        this.$router.push({ query });
+      }
     },
   },
 };

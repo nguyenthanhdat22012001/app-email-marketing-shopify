@@ -1,5 +1,7 @@
 <template>
-  <router-view class="flex-1"></router-view>
+  <Transition>
+    <router-view class="flex-1"></router-view>
+  </Transition>
 </template>
 
 <script>
@@ -12,4 +14,5 @@ export default {
 .customer-layout {
   padding: 50px;
 }
+
 </style>

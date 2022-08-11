@@ -95,13 +95,14 @@
                   }"
                 >
                   <button
-                  v-if="emailButton.label.length > 0"
+                    v-if="emailButton.label.length > 0"
                     style="
                       width: 100%;
                       line-height: 18px;
                       font-size: 14px;
                       font-weight: bold;
                       padding: 9px 0px;
+                      cursor: pointer;
                     "
                     :style="styleButton()"
                   >
