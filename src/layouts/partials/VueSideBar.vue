@@ -1,6 +1,6 @@
 <template>
   <div
-    class="vue-sidebar w-[230px] h-screen text-white bg-gradient-to-br from-bg-primary to-bg-primary-light fixed top-0 left-0 flex flex-col gap-[22px]"
+    class="vue-sidebar w-[230px] h-screen text-white bg-gradient-to-br from-bg-primary to-bg-primary-light fixed top-0 left-0 flex flex-col gap-[22px] z-[999]"
   >
     <div class="logo flex justify-start pt-5 gap-[15px] pl-[15px] ">
       <img src="@/assets/icons/logo-image.svg" alt="" class="logo-image sticky" />

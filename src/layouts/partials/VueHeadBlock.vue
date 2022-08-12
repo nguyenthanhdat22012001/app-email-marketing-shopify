@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 bg-white flex justify-between shadow-sm relative">
+  <div class="w-100 bg-white sticky top-0 flex justify-between shadow-sm relative">
     <button @click="toggle">
       <img src="@/assets/icons/bars.svg" alt="" class="px-6" />
     </button>

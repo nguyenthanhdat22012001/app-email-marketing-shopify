@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ progressing: progress < 100 }" class="flex flex-col gap-5">
+  <div
+    :class="{ progressing: progress < 100 }"
+    class="flex flex-col justify-center gap-5"
+  >
     <v-progress-loading
       class="translate-y-full-reverse"
       v-model="progress"
@@ -11,12 +14,12 @@
       message="Server Error!!!"
       v-else-if="isError"
     />
-    <div v-else class="flex-1 flex flex-col gap-5">
+    <div v-else class="flex-1 flex flex-col gap-5 overflow-hidden">
       <div
-        class="customer-content bg-secondary rounded h-[630px] w-full flex flex-col gap-6 shadow-content"
+        class="customer-content bg-secondary rounded w-full flex flex-1 flex-col gap-6 shadow-content overflow-hidden"
       >
         <customer-filter />
-        <customer-content :page="page" class="overflow-auto"/>
+        <customer-content />
       </div>
       <div class="flex justify-center items-center gap-2">
         <v-button
@@ -62,21 +65,13 @@ export default {
   data() {
     return {
       increaseProgress: null,
-      page: Number(this.$route.query.page) || 1,
       isDisabled: true,
     };
   },
   created() {
-    if (Object.keys(this.$route.query).length) {
-      this.filterCustomers(this.$route.query).then(() => {
-        console.log(this.$route.query);
-        this.setProgress(100);
-        this.isDisabled = false;
-        clearInterval(this.increaseProgress);
-      });
-    } else {
-      this.fetchCustomer(this.page);
-    }
+    this.fetchCustomer({
+      ...this.$route.query,
+    })
   },
   mounted() {
     if (this.progress < 95) {
@@ -92,7 +87,6 @@ export default {
   methods: {
     ...mapActions({
       fetchCustomers: "customerStore/fetchCustomers",
-      filterCustomers: "customerStore/filterCustomers",
     }),
 
     ...mapMutations({
@@ -103,20 +97,23 @@ export default {
 
     nextPage() {
       this.setLoading(true);
-      this.fetchCustomers(this.customerList.current_page + 1).finally(() =>
-        this.setLoading(false)
-      );
+      this.fetchCustomers({
+        ...this.$route.query,
+        page: this.customerList.current_page + 1,
+      }).finally(() => this.setLoading(false));
     },
     previousPage() {
       this.setLoading(true);
-      this.fetchCustomers(this.customerList.current_page - 1).finally(() =>
-        this.setLoading(false)
-      );
+      this.fetchCustomers({
+        ...this.$route.query,
+        page: this.customerList.current_page - 1,
+      }).finally(() => this.setLoading(false));
     },
     fetchCustomer(page) {
       this.isDisabled = true;
       this.fetchCustomers(page)
         .then((res) => {
+          console.log(res);
           if (res?.data) {
             this.setProgress(100);
             clearInterval(this.increaseProgress);
@@ -128,6 +125,7 @@ export default {
         })
         .finally(() => {
           this.isDisabled = false;
+          this.setLoading(false);
         });
     },
   },

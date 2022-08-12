@@ -49,11 +49,11 @@ export default {
   },
 
   CUSTOMER: {
-    fetchPagination(page) {
-      return api.get("/api/customer", { page: page });
+    fetch(payload) {
+      return api.get("/api/customer", payload);
     },
     fetchSync() {
-      return api.get("https://a793-113-161-32-170.ap.ngrok.io/api/customer/sync");
+      return api.get("/api/customer/sync");
     },
     filter(payload) {
       return api.get("/api/customer/filterCustomer", payload);
@@ -70,11 +70,11 @@ export default {
       return api.get("api/campaign/filterCampaign", { ...payload });
     },
     postTestMail(payload) {
-      return api.post("https://ba13-113-161-32-170.ap.ngrok.io/api/campaign/save-campaign", payload);
+      return api.post("/api/campaign/save-campaign", payload);
 
     },
     postSendMail(payload) {
-      return api.post("https://c8d2-113-161-32-170.ap.ngrok.io/api/shopify/campaigns", payload);
+      return api.post("/api/shopify/campaigns", payload);
     },
   },
 };

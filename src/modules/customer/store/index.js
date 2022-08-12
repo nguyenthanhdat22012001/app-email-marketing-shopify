@@ -82,7 +82,7 @@ const actions = {
     },
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            api.CUSTOMER.fetchPagination(payload).then(res => {
+            api.CUSTOMER.fetch(payload).then(res => {
                 if (res.data) {
                     commit('setCustomer', res.data);
                     resolve(res.data);
@@ -96,14 +96,14 @@ const actions = {
             this.commit('setLoading', false)
         })
     },
-    filterCustomers({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            api.CUSTOMER.filter(payload).then(res => {
-                commit('setCustomer', res.data);
-                resolve(res.data)
-            }).catch(err => reject(err));
-        })
-    },
+    // filterCustomers({ commit }, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         api.CUSTOMER.filter(payload).then(res => {
+    //             commit('setCustomer', res.data);
+    //             resolve(res.data)
+    //         }).catch(err => reject(err));
+    //     })
+    // },
 
 }
 

@@ -25,9 +25,9 @@
 -->
 
 <template>
-  <table class="w-full text-left">
-    <thead class="text-xs text-gray-light font-semibold">
-      <tr class="bg-white sticky top-0 z-10 shadow-content">
+  <table class="w-full text-left relative">
+    <thead class="text-xs sticky top-0 text-gray-light bg-white font-semibold z-[1]">
+      <tr class="bg-white z-10 shadow-content">
         <slot name="table_head_tr"></slot>
       </tr>
     </thead>

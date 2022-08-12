@@ -1,9 +1,9 @@
 <template>
-  <div class="flex-1">
-    <v-table align="center" :class="{ 'h-full': isLoading }">
+  <div class="flex-1 overflow-auto">
+    <v-table align="center" class="relative" :class="{ 'h-full': isLoading }">
       <template #table_head_tr>
         <th
-          :colspan="countSelectedCustomer ? 7 : 0"
+          :colspan="countSelectedCustomer ? 7 : 1"
           class="py-5 pl-[30px]"
           :class="{ 'py-[9px] pl-5': countSelectedCustomer }"
         >
@@ -105,13 +105,6 @@ export default {
     VLoading,
     CustomerModalExport,
   },
-  props: {
-    page: {
-      default: 0,
-      type: Number,
-    },
-    
-  },
 
   data() {
     return {
@@ -171,18 +164,20 @@ export default {
   },
   watch: {
     "customerList.current_page"(page) {
-      if (page > 1) {
-        const query = { ...this.$route.query };
-        query.page = page;
-        console.log(query);
-        this.$router.push({ query });
-      } else {
-        const { page, ...query } = this.$route.query;
-        this.$router.push({ query });
-      }
+      this.$router.push({ query: { page } });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 100px;
+}
+table::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+</style>

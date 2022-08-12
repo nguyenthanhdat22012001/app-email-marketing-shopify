@@ -1,5 +1,8 @@
 <template>
-  <div class="default-layout flex" :class="isToggle ? 'toggle' : 'no-toggle'">
+  <div
+    class="default-layout h-screen flex"
+    :class="isToggle ? 'toggle' : 'no-toggle'"
+  >
     <vue-side-bar></vue-side-bar>
     <vue-block>
       <router-view></router-view>
@@ -19,6 +22,15 @@ export default {
     ...mapGetters({
       isToggle: "getToggle",
     }),
+  },
+  beforeRouteUpdate(to, from) {
+    console.log(to,from)
+    // let query = {};
+    // for (let [key, value] of Object.entries($)) {
+    //   if (value) {
+    //     query[key] = value;
+    //   }
+    // }
   },
 };
 </script>
@@ -48,7 +60,7 @@ $time: 0.8s;
   .vue-sidebar {
     width: 66px;
     transition: width $time;
-    
+
     .logo-text,
     .nav-text {
       opacity: 0;
