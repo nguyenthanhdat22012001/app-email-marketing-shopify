@@ -64,25 +64,17 @@ export default {
   },
   data() {
     return {
-      increaseProgress: null,
       isDisabled: true,
     };
   },
   created() {
+    this.setLoading(true)
     this.fetchCustomer({
       ...this.$route.query,
-    })
+    });
   },
   mounted() {
-    if (this.progress < 95) {
-      this.increaseProgress = setInterval(() => {
-        const rand = 1 + Math.floor(Math.random() * 10);
-        if (this.progress + rand >= 100) {
-          this.setProgress(98);
-          clearInterval(this.increaseProgress);
-        } else this.setProgress(this.progress + rand);
-      }, 100);
-    }
+ 
   },
   methods: {
     ...mapActions({
@@ -92,32 +84,32 @@ export default {
     ...mapMutations({
       setLoading: "customerStore/setLoading",
       setError: "customerStore/setError",
-      setProgress: "setProgress",
+      setProgress: "customerStore/setProgress",
     }),
 
     nextPage() {
-      this.setLoading(true);
-      this.fetchCustomers({
-        ...this.$route.query,
-        page: this.customerList.current_page + 1,
-      }).finally(() => this.setLoading(false));
+      if (this.customerList.next_page_url) {
+        this.setLoading(true);
+        this.fetchCustomers({
+          ...this.$route.query,
+          page: this.customerList.current_page + 1,
+        }).finally(() => this.setLoading(false));
+      }
     },
     previousPage() {
-      this.setLoading(true);
-      this.fetchCustomers({
-        ...this.$route.query,
-        page: this.customerList.current_page - 1,
-      }).finally(() => this.setLoading(false));
+      if (this.customerList.prev_page_url) {
+        this.setLoading(true);
+        this.fetchCustomers({
+          ...this.$route.query,
+          page: this.customerList.current_page - 1,
+        }).finally(() => this.setLoading(false));
+      }
     },
     fetchCustomer(page) {
       this.isDisabled = true;
       this.fetchCustomers(page)
         .then((res) => {
-          console.log(res);
-          if (res?.data) {
-            this.setProgress(100);
-            clearInterval(this.increaseProgress);
-          }
+         
         })
         .catch((err) => {
           console.log(err);
@@ -131,18 +123,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      progress: "getProgress",
+      progress: "customerStore/getProgress",
       isError: "customerStore/getError",
       customerCount: "customerStore/getCustomerCount",
       customerList: "customerStore/getCustomers",
     }),
   },
   watch: {
-    progress(value) {
-      if (value > 100) {
-        clearInterval(this.increaseProgress);
-      }
-    },
+    
   },
   beforeDestroy() {
     clearInterval(this.increaseProgress);

@@ -76,7 +76,7 @@
         </tr>
       </template>
     </v-table>
-    <customer-modal-export v-model="visibleExportModal">
+    <customer-modal-export :export-all="false" v-model="visibleExportModal">
       <template #message>
         <p>
           Export
@@ -163,8 +163,22 @@ export default {
     },
   },
   watch: {
-    "customerList.current_page"(page) {
-      this.$router.push({ query: { page } });
+    "customerList.current_page"(newPage) {
+      const { page, ...query } = this.$route.query;
+      if (newPage > 1) {
+        this.$router.push({
+          query: {
+            ...query,
+            page: newPage,
+          },
+        });
+      } else {
+        this.$router.push({
+          query: {
+            ...query,
+          },
+        });
+      }
     },
   },
 };

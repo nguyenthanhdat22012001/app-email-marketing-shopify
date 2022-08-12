@@ -198,6 +198,7 @@ import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeE
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 import { api } from "@/plugins";
+import { mapMutations } from "vuex";
 export default {
   components: {
     VButton,
@@ -248,6 +249,9 @@ export default {
   },
 
   methods: {
+    ...mapMutations({
+      setLoading: "setLoading",
+    }),
     handleCloseModal() {
       this.$eventBus.$emit(
         "eventBusReturnBackDataCustomerOld",
@@ -286,18 +290,15 @@ export default {
       const cloneNode = el_preview_content.cloneNode(true);
       const table = cloneNode.querySelector("table");
       table.style.width = "600px";
-      const parser = new DOMParser();
-      const newSubject = parser.parseFromString(
-        this.email_subject,
-        "text/html"
-      ).firstChild;
       let data = {
-        store_id: 1,
         name: this.campaignName,
-        subject: newSubject.innerText,
+        subject: this.email_subject,
         content: this.email_content,
         footer: this.email_footer,
-        variant_name: [...variants_subject, ...variants_content],
+        variant_name: JSON.stringify([
+          ...variants_subject,
+          ...variants_content,
+        ]),
         color_content: this.emailBackground.color_text,
         background_banner: this.email_banner,
         background_color: this.emailBackground.color,
@@ -306,7 +307,7 @@ export default {
         button_radius: `${this.emailButton.radius}px`,
         button_background_color: this.emailButton.backgroundColor,
         button_text_color: this.emailButton.textColor,
-        list_mail_customers: [],
+        list_mail_customers: JSON.stringify([]),
         preview_email: cloneNode.outerHTML,
       };
       return data;
@@ -319,11 +320,12 @@ export default {
         let data = this.handleGetDataCreateCampaign();
         let newData = {
           ...data,
-          list_mail_customers: [
+          store_id: 1,
+          list_mail_customers: JSON.stringify([
             "josephine19@gmail.com",
             "kautzer.cristian@gaylord.com",
             "elva07@pagac.com",
-          ],
+          ]),
         };
         const formData = new FormData();
         for (let [key, value] of Object.entries(newData)) {
@@ -335,11 +337,13 @@ export default {
       }
     },
     async handleSendMailApi(data) {
+      this.setLoading(true);
       try {
         await api.CAMPAIGN.postSendMail(data);
       } catch (error) {
         console.log("error", error);
       }
+      this.setLoading(false);
     },
     // handle send test mail
     async onSendTestMail(email) {

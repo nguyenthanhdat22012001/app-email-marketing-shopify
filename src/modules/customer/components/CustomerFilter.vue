@@ -118,10 +118,24 @@ export default {
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
           this.setLoading(true);
-          this.fetchCustomers(newVal).finally(() => {
-            this.$router.push({ newVal });
-            this.setLoading(false);
-          });
+          let query = {};
+          for (let [key, value] of Object.entries(newVal)) {
+            if (value) {
+              query[key] = value;
+            }
+          }
+
+          this.fetchCustomers(query)
+            .then(() => {
+              this.$router.push({
+                query: {
+                  ...query,
+                },
+              });
+            })
+            .finally(() => {
+              this.setLoading(false);
+            });
         }, 500);
       },
       deep: true,

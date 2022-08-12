@@ -19,10 +19,10 @@ const api = {
     });
   },
 
-  post(url, data = {}) {
+  post(url, data = {}, option) {
     return new Promise((resolve, reject) => {
       axios
-        .post(url, data)
+        .post(url, data, option)
         .then((res) => {
           resolve(res.data);
         })
@@ -61,6 +61,9 @@ export default {
     getCustomerShowAvatars(payload) {
       return api.get("/api/customer", { ...payload });
     },
+    exportCSV(payload) {
+      return api.get("https://12d7-113-161-32-170.ap.ngrok.io/api/customer/export", payload)
+    }
   },
   CAMPAIGN: {
     fetch() {
@@ -74,7 +77,11 @@ export default {
 
     },
     postSendMail(payload) {
-      return api.post("/api/shopify/campaigns", payload);
+      return api.post("/api/campaign/send-email-preview", payload, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
     },
   },
 };
