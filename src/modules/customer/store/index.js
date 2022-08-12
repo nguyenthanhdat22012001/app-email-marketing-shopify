@@ -3,8 +3,10 @@ import api from '@/plugins/api'
 const state = {
     customersList: [],
     selectedCustomers: [],
-    isLoading: false,
+    isLoading: true,
     isError: false,
+    progress: 100,
+
 }
 const getters = {
     getCustomers(state) {
@@ -21,6 +23,9 @@ const getters = {
     },
     getError(state) {
         return state.isError
+    },
+    getProgress(state) {
+        return state.progress;
     }
 }
 const mutations = {
@@ -35,29 +40,32 @@ const mutations = {
     },
     setError(state, payload) {
         state.isError = payload
+    },
+    setProgress(state, payload) {
+        state.progress = payload
     }
 }
 const actions = {
-    subscribe({ commit, dispatch }) {
+    subscribe({ commit, state }) {
         return new Promise((resolve, reject) => {
             const eventCustomersSync = (res) => {
                 console.log(res);
-                if (this.getters.getProgress < 100) {
-                    this.commit('setProgress', Number(res.payload.processing));
+                if (state.progress < 100) {
+                    commit('setProgress', Number(res.payload.processing));
                 }
                 if (res.payload.status) {
-                    this.commit('setProgress', 100);
+                    commit('setProgress', 100);
                     pusher.unbind("syncing_customer", eventCustomersSync);
                     resolve(res.payload.data)
                 }
             }
-            this.commit('setProgress', 0);
+            commit('setProgress', 0);
             pusher.subscribe("customers_syncing");
             pusher.bind("syncing_customer", eventCustomersSync);
         })
 
     },
-    fetchCustomersSync({ commit, dispatch }, payload) {
+    fetchCustomersSync({ commit, dispatch }) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetchSync().then(res => {
                 console.log(res)
@@ -82,7 +90,7 @@ const actions = {
     },
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            api.CUSTOMER.fetchPagination(payload).then(res => {
+            api.CUSTOMER.fetch(payload).then(res => {
                 if (res.data) {
                     commit('setCustomer', res.data);
                     resolve(res.data);
@@ -96,14 +104,33 @@ const actions = {
             this.commit('setLoading', false)
         })
     },
-    filterCustomers({ commit }, payload) {
+    // filterCustomers({ commit }, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         api.CUSTOMER.filter(payload).then(res => {
+    //             commit('setCustomer', res.data);
+    //             resolve(res.data)
+    //         }).catch(err => reject(err));
+    //     })
+    // },
+    exportCSV({ state }, payload) {
         return new Promise((resolve, reject) => {
-            api.CUSTOMER.filter(payload).then(res => {
-                commit('setCustomer', res.data);
-                resolve(res.data)
-            }).catch(err => reject(err));
+
+            if (payload?.length) {
+                payload = {
+                    list_customer: payload.toString()
+                }
+
+            }
+
+            api.CUSTOMER.exportCSV(payload)
+                .then((res) => {
+                    console.log(res)
+                    resolve(res)
+                })
+                .catch(err => reject(err))
         })
-    },
+
+    }
 
 }
 

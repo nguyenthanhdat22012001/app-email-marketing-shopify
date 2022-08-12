@@ -204,7 +204,8 @@ export default {
     async fetchCustomerPagination(page) {
       this.is_loading = true;
       try {
-        let res = await api.CUSTOMER.fetchPagination(page);
+        let res = await api.CUSTOMER.fetch({ page });
+        console.log(res)
         if (res.status) {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;

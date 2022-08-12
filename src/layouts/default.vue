@@ -1,5 +1,8 @@
 <template>
-  <div class="default-layout flex" :class="isToggle ? 'toggle' : 'no-toggle'">
+  <div
+    class="default-layout h-screen flex"
+    :class="isToggle ? 'toggle' : 'no-toggle'"
+  >
     <vue-side-bar></vue-side-bar>
     <vue-block>
       <router-view></router-view>
@@ -20,11 +23,20 @@ export default {
       isToggle: "getToggle",
     }),
   },
+  beforeRouteUpdate(to, from) {
+    console.log(to,from)
+    // let query = {};
+    // for (let [key, value] of Object.entries($)) {
+    //   if (value) {
+    //     query[key] = value;
+    //   }
+    // }
+  },
 };
 </script>
 
 <style lang="scss" scope>
-$time: 0.8s;
+$time: 0.4s;
 .no-toggle {
   padding-left: 230px;
   transition: all $time;
@@ -48,7 +60,7 @@ $time: 0.8s;
   .vue-sidebar {
     width: 66px;
     transition: width $time;
-    
+
     .logo-text,
     .nav-text {
       opacity: 0;

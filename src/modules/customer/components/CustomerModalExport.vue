@@ -5,7 +5,7 @@
       <slot name="message"></slot>
       <div class="flex justify-end gap-2 mt-auto items-end">
         <v-button variant="secondary" @click="visible = false">Cancel</v-button>
-        <v-button>Confirm</v-button>
+        <v-button @click="handleExportCSV">Confirm</v-button>
       </div>
     </div>
   </v-modal>
@@ -14,7 +14,8 @@
 <script>
 import VModal from "@/components/VModal.vue";
 import VButton from "@/components/VButton.vue";
-
+import notify from "@/helper/notify";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     VModal,
@@ -25,8 +26,39 @@ export default {
       type: Boolean,
       default: false,
     },
+    exportAll: {
+      type: Boolean,
+    },
+  },
+
+  methods: {
+    ...mapActions({
+      exportCSV: "customerStore/exportCSV",
+    }),
+    handleExportCSV() {
+      console.log(this.exportAll);
+      try {
+        if (this.exportAll) {
+          this.exportCSV().then((res) => {
+            notify.showNotify("success", "Success", res.message);
+          });
+        } else {
+          
+          this.exportCSV(this.selectedCustomers).then((res) => {
+            notify.showNotify("success", "Success", res.message);
+          });
+        }
+      } catch (error) {
+        notify.showNotify("error", "Error", error.message);
+      }
+
+      this.visible = false;
+    },
   },
   computed: {
+    ...mapGetters({
+      selectedCustomers: "customerStore/getSelectedCustomers",
+    }),
     visible: {
       get() {
         return this.value;

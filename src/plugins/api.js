@@ -32,9 +32,9 @@ const api = {
     });
   },
 
-  put(url, data = {}) {},
+  put(url, data = {}) { },
 
-  delete(url, data = {}) {},
+  delete(url, data = {}) { },
 };
 
 export default {
@@ -49,13 +49,11 @@ export default {
   },
 
   CUSTOMER: {
-    fetchPagination(page) {
-      return api.get("/api/customer", { page: page });
+    fetch(payload) {
+      return api.get("/api/customer", payload);
     },
     fetchSync() {
-      return api.get(
-        "https://a793-113-161-32-170.ap.ngrok.io/api/customer/sync"
-      );
+      return api.get("/api/customer/sync");
     },
     filter(payload) {
       return api.get("/api/customer/filterCustomer", payload);
@@ -63,6 +61,9 @@ export default {
     getCustomerShowAvatars(payload) {
       return api.get("/api/customer", { ...payload });
     },
+    exportCSV(payload) {
+      return api.get("https://12d7-113-161-32-170.ap.ngrok.io/api/customer/export", payload)
+    }
   },
   CAMPAIGN: {
     fetch() {
@@ -78,13 +79,6 @@ export default {
         },
       });
     },
-    // postSendMail(payload) {
-    //   return api.post("/api/campaign/save-campaign", payload, {
-    //     headers: {
-    //       "content-type": "multipart/form-data",
-    //     },
-    //   });
-    // },
     postSendMail(payload) {
       return api.post("/api/campaign/save-campaign", payload, {
         headers: {

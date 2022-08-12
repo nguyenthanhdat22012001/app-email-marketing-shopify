@@ -102,8 +102,7 @@ export default {
       debounce: null,
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     ...mapActions({
       filterCustomers: "customerStore/filterCustomers",
@@ -120,17 +119,23 @@ export default {
         this.debounce = setTimeout(() => {
           this.setLoading(true);
           let query = {};
-          console.log(Object.entries(newVal));
           for (let [key, value] of Object.entries(newVal)) {
             if (value) {
               query[key] = value;
             }
           }
-          console.log(query);
-          this.filterCustomers(query).finally(() => {
-            this.$router.push({ query });
-            this.setLoading(false);
-          });
+
+          this.fetchCustomers(query)
+            .then(() => {
+              this.$router.push({
+                query: {
+                  ...query,
+                },
+              });
+            })
+            .finally(() => {
+              this.setLoading(false);
+            });
         }, 500);
       },
       deep: true,

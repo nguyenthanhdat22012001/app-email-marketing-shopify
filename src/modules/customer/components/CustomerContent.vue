@@ -1,9 +1,9 @@
 <template>
-  <div class="flex-1">
-    <v-table align="center" :class="{ 'h-full': isLoading }">
+  <div class="flex-1 overflow-auto">
+    <v-table align="center" class="relative" :class="{ 'h-full': isLoading }">
       <template #table_head_tr>
         <th
-          :colspan="countSelectedCustomer ? 7 : 0"
+          :colspan="countSelectedCustomer ? 7 : 1"
           class="py-5 pl-[30px]"
           :class="{ 'py-[9px] pl-5': countSelectedCustomer }"
         >
@@ -76,7 +76,7 @@
         </tr>
       </template>
     </v-table>
-    <customer-modal-export v-model="visibleExportModal">
+    <customer-modal-export :export-all="false" v-model="visibleExportModal">
       <template #message>
         <p>
           Export
@@ -104,13 +104,6 @@ export default {
     VButton,
     VLoading,
     CustomerModalExport,
-  },
-  props: {
-    page: {
-      default: 0,
-      type: Number,
-    },
-    
   },
 
   data() {
@@ -170,19 +163,35 @@ export default {
     },
   },
   watch: {
-    "customerList.current_page"(page) {
-      if (page > 1) {
-        const query = { ...this.$route.query };
-        query.page = page;
-        console.log(query);
-        this.$router.push({ query });
+    "customerList.current_page"(newPage) {
+      const { page, ...query } = this.$route.query;
+      if (newPage > 1) {
+        this.$router.push({
+          query: {
+            ...query,
+            page: newPage,
+          },
+        });
       } else {
-        const { page, ...query } = this.$route.query;
-        this.$router.push({ query });
+        this.$router.push({
+          query: {
+            ...query,
+          },
+        });
       }
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+tbody {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 100px;
+}
+table::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+</style>

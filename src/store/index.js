@@ -12,7 +12,6 @@ export default new Vuex.Store({
   state: {
     isToggle: false,
     isLoading: false,
-    progress: 0,
   },
   getters: {
     getToggle(state) {
@@ -22,9 +21,7 @@ export default new Vuex.Store({
 
       return state.isLoading;
     },
-    getProgress(state) {
-      return state.progress;
-    }
+   
   },
   mutations: {
     toggle(state) {
@@ -33,9 +30,7 @@ export default new Vuex.Store({
     setLoading(state, payload) {
       state.isLoading = payload
     },
-    setProgress(state, payload) {
-      state.progress = payload
-    }
+   
   },
   actions: {
     timeoutError({ commit }) {

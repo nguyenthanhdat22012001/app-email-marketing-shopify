@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ progressing: progress < 100 }" class="flex flex-col gap-5">
+  <div
+    :class="{ progressing: progress < 100 }"
+    class="flex flex-col justify-center gap-5"
+  >
     <v-progress-loading
       class="translate-y-full-reverse"
       v-model="progress"
@@ -11,12 +14,12 @@
       message="Server Error!!!"
       v-else-if="isError"
     />
-    <div v-else class="flex-1 flex flex-col gap-5">
+    <div v-else class="flex-1 flex flex-col gap-5 overflow-hidden">
       <div
-        class="customer-content bg-secondary rounded h-[630px] w-full flex flex-col gap-6 shadow-content"
+        class="customer-content bg-secondary rounded w-full flex flex-1 flex-col gap-6 shadow-content overflow-hidden"
       >
         <customer-filter />
-        <customer-content :page="page" class="overflow-auto"/>
+        <customer-content />
       </div>
       <div class="flex justify-center items-center gap-2">
         <v-button
@@ -61,66 +64,52 @@ export default {
   },
   data() {
     return {
-      increaseProgress: null,
-      page: Number(this.$route.query.page) || 1,
       isDisabled: true,
     };
   },
   created() {
-    if (Object.keys(this.$route.query).length) {
-      this.filterCustomers(this.$route.query).then(() => {
-        console.log(this.$route.query);
-        this.setProgress(100);
-        this.isDisabled = false;
-        clearInterval(this.increaseProgress);
-      });
-    } else {
-      this.fetchCustomer(this.page);
-    }
+    this.setLoading(true)
+    this.fetchCustomer({
+      ...this.$route.query,
+    });
   },
   mounted() {
-    if (this.progress < 95) {
-      this.increaseProgress = setInterval(() => {
-        const rand = 1 + Math.floor(Math.random() * 10);
-        if (this.progress + rand >= 100) {
-          this.setProgress(98);
-          clearInterval(this.increaseProgress);
-        } else this.setProgress(this.progress + rand);
-      }, 100);
-    }
+ 
   },
   methods: {
     ...mapActions({
       fetchCustomers: "customerStore/fetchCustomers",
-      filterCustomers: "customerStore/filterCustomers",
     }),
 
     ...mapMutations({
       setLoading: "customerStore/setLoading",
       setError: "customerStore/setError",
-      setProgress: "setProgress",
+      setProgress: "customerStore/setProgress",
     }),
 
     nextPage() {
-      this.setLoading(true);
-      this.fetchCustomers(this.customerList.current_page + 1).finally(() =>
-        this.setLoading(false)
-      );
+      if (this.customerList.next_page_url) {
+        this.setLoading(true);
+        this.fetchCustomers({
+          ...this.$route.query,
+          page: this.customerList.current_page + 1,
+        }).finally(() => this.setLoading(false));
+      }
     },
     previousPage() {
-      this.setLoading(true);
-      this.fetchCustomers(this.customerList.current_page - 1).finally(() =>
-        this.setLoading(false)
-      );
+      if (this.customerList.prev_page_url) {
+        this.setLoading(true);
+        this.fetchCustomers({
+          ...this.$route.query,
+          page: this.customerList.current_page - 1,
+        }).finally(() => this.setLoading(false));
+      }
     },
     fetchCustomer(page) {
       this.isDisabled = true;
       this.fetchCustomers(page)
         .then((res) => {
-          if (res?.data) {
-            this.setProgress(100);
-            clearInterval(this.increaseProgress);
-          }
+         
         })
         .catch((err) => {
           console.log(err);
@@ -128,23 +117,20 @@ export default {
         })
         .finally(() => {
           this.isDisabled = false;
+          this.setLoading(false);
         });
     },
   },
   computed: {
     ...mapGetters({
-      progress: "getProgress",
+      progress: "customerStore/getProgress",
       isError: "customerStore/getError",
       customerCount: "customerStore/getCustomerCount",
       customerList: "customerStore/getCustomers",
     }),
   },
   watch: {
-    progress(value) {
-      if (value > 100) {
-        clearInterval(this.increaseProgress);
-      }
-    },
+    
   },
   beforeDestroy() {
     clearInterval(this.increaseProgress);
