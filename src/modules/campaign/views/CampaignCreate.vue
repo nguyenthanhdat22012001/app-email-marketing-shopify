@@ -199,6 +199,7 @@ import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustom
 
 import { api } from "@/plugins";
 import { mapMutations } from "vuex";
+import notify from "@/helper/notify";
 export default {
   components: {
     VButton,
@@ -290,6 +291,13 @@ export default {
       const cloneNode = el_preview_content.cloneNode(true);
       const table = cloneNode.querySelector("table");
       table.style.width = "600px";
+      let el_preview_content_childs =
+        cloneNode.querySelectorAll(".tiptap_variant");
+      for (let i = 0; i < el_preview_content_childs.length; i++) {
+        el_preview_content_childs[i].style =
+          "color: #28293D; font-weight: 600; margin: 0 3px";
+      }
+      console.log(cloneNode);
       let data = {
         name: this.campaignName,
         subject: this.email_subject,
@@ -321,19 +329,15 @@ export default {
         let newData = {
           ...data,
           store_id: 1,
-          list_mail_customers: JSON.stringify([
-            "josephine19@gmail.com",
-            "kautzer.cristian@gaylord.com",
-            "elva07@pagac.com",
-          ]),
+          list_mail_customers: JSON.stringify([1, 2, 3, 4, 5]),
         };
-        const formData = new FormData();
-        for (let [key, value] of Object.entries(newData)) {
-          formData.append(key, value);
-        }
-        console.log(formData);
-        await this.handleSendMailApi(formData);
-        this.$router.push({ name: "campaign" });
+        // const formData = new FormData();
+        // for (let [key, value] of Object.entries(newData)) {
+        //   formData.append(key, value);
+        // }
+        // console.log(formData);
+        await this.handleSendMailApi(newData);
+        // this.$router.push({ name: "campaign" });
       }
     },
     async handleSendMailApi(data) {
@@ -351,18 +355,23 @@ export default {
       this.validateScroll();
       if (this.validation.valid) {
         let data = this.handleGetDataCreateCampaign();
-        let newData = { ...data, list_mail_customers: [email] };
+        let newData = { ...data, send_email: email };
         await this.handleSendTestMailApi(newData);
       }
     },
     async handleSendTestMailApi(data) {
+      this.setLoading(true);
       try {
-        await api.CAMPAIGN.postTestMail(data);
+        let res = await api.CAMPAIGN.postTestMail(data);
         this.$refs.ref_preview.$el.children[1].children[1].style.width =
           "unset";
+        if (this.status) {
+          notify.showNotify("success", "Send mail success !");
+        }
       } catch (error) {
         console.log("error", error);
       }
+      this.setLoading(false);
     },
     // scroll when have error
     validateScroll() {

@@ -140,6 +140,7 @@
                       display: block;
                       text-align: center;
                       text-decoration: underline;
+                      color: #555770;
                     "
                     >Unsubscribe here</a
                   >

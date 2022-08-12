@@ -53,7 +53,9 @@ export default {
       return api.get("/api/customer", { page: page });
     },
     fetchSync() {
-      return api.get("https://a793-113-161-32-170.ap.ngrok.io/api/customer/sync");
+      return api.get(
+        "https://a793-113-161-32-170.ap.ngrok.io/api/customer/sync"
+      );
     },
     filter(payload) {
       return api.get("/api/customer/filterCustomer", payload);
@@ -70,10 +72,11 @@ export default {
       return api.get("api/campaign/filterCampaign", { ...payload });
     },
     postTestMail(payload) {
-      return api.post(
-        "https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email",
-        payload
-      );
+      return api.post("/api/campaign/send-email-preview", payload, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
     },
     // postSendMail(payload) {
     //   return api.post("/api/campaign/save-campaign", payload, {
@@ -83,10 +86,9 @@ export default {
     //   });
     // },
     postSendMail(payload) {
-      return api.post("/api/campaign/send-email-preview", payload, {
+      return api.post("/api/campaign/save-campaign", payload, {
         headers: {
           "content-type": "multipart/form-data",
-          // "content-type": "multipart/form-data",
         },
       });
     },

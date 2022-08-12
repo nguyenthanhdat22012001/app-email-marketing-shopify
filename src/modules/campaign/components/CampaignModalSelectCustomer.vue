@@ -212,8 +212,8 @@ export default {
           if (this.total_customers != res.total_customers) {
             this.total_customers = res.total_customers;
           }
-          if (this.page.total_page != res.totalPage) {
-            this.page.total_page = res.totalPage;
+          if (this.page.total_page != res.data.per_page) {
+            this.page.total_page = res.data.per_page;
           }
         }
       } catch (error) {
@@ -271,8 +271,8 @@ export default {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;
           this.page.next_page_url = res.data.next_page_url;
-          if (this.page.total_page != res.totalPage) {
-            this.page.total_page = res.totalPage;
+          if (this.page.total_page != res.data.per_page) {
+            this.page.total_page = res.data.per_page;
           }
         }
       } catch (error) {
