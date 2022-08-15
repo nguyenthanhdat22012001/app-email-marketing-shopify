@@ -23,6 +23,18 @@
           v-model="input_email"
           placeholder="Enter your email"
         ></v-input>
+        <div class="text-sm mt-1 text-red" v-if="formstate">
+          <template v-if="!validation.form.email.required.valid">
+            <p >
+              {{ validation.form.email.required.message }}
+            </p>
+          </template>
+          <template v-else-if="!validation.form.email.is_email.valid">
+            <p>
+              {{ validation.form.email.is_email.message }}
+            </p>
+          </template>
+        </div>
       </div>
       <div class="mt-[59px] mb-[18px] flex justify-end gap-4">
         <v-button
@@ -46,6 +58,8 @@ import VModal from "@/components/VModal.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 
+import { validateEmail } from "@/helper/validates";
+
 export default {
   components: {
     VModal,
@@ -60,12 +74,16 @@ export default {
   data() {
     return {
       input_email: "",
+      formstate: false,
     };
   },
   methods: {
     onSendTestMail() {
-      this.$eventBus.$emit("emitSendTestMail",this.input_email);
-      this.visible = false;
+      this.formstate = true;
+      if (this.validation.valid) {
+        this.$eventBus.$emit("emitSendTestMail", this.input_email);
+        this.visible = false;
+      }
     },
   },
   computed: {
@@ -76,6 +94,24 @@ export default {
       set(value) {
         this.$emit("input", value);
       },
+    },
+    validation() {
+      const email = {
+        required: {
+          valid: this.input_email ? true : false,
+          message: "This field is required !",
+        },
+        is_email: {
+          valid: validateEmail(this.input_email) ? true : false,
+          message: "This field not is email !",
+        },
+      };
+      return {
+        form: {
+          email,
+        },
+        valid: email.required.valid && email.is_email.valid,
+      };
     },
   },
 };
