@@ -1,4 +1,6 @@
-export default async function ({ next, to, store }) {
+import { mixin } from "@/plugins";
+import notify from "@/helper/notify";
+export default async function ({ next, from, store }) {
     let token = store.getters['auth/getToken']
     if (token) {
         let user = store.getters['auth/getUser']
@@ -7,15 +9,18 @@ export default async function ({ next, to, store }) {
                 const { user } = await store.dispatch('auth/fetchUser')
                 if (user) {
                     store.commit('auth/setUser', user)
+                    from.path == '/login' && notify.showNotify("success", "Success", "Login Successfully!!")
                     return true
+                } else {
+                    throw {
+                        message: "Session expired"
+                    }
                 }
-                store.dispatch('auth/logout')
-                next({
-                    name: 'login'
-                })
-                return false
             } catch (error) {
-                store.dispatch('auth/logout')
+                store.dispatch('auth/logout');
+                mixin.methods.toastMessageError({
+                    message: error.message
+                })
                 next({
                     name: 'login'
                 })
@@ -29,6 +34,6 @@ export default async function ({ next, to, store }) {
     next({
         name: 'login'
     })
-    return false
+    return false;
     // return true;
 }

@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
+  <div
+    class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
+  >
     <div>
       <div class="flex justify-between w-full items-center">
         <h1 class="font-extrabold text-xl lead-6">Campaign</h1>

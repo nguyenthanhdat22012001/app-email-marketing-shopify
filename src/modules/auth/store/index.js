@@ -1,6 +1,4 @@
 
-import notify from "@/helper/notify";
-import { mixin } from "@/plugins";
 import api from "@/plugins/api";
 import cookie from "@/plugins/cookie";
 let token = cookie.get('access_token');
