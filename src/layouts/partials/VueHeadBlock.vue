@@ -18,10 +18,10 @@
         class="absolute before:content-[''] bottom-1 right-2 translate-y-full"
         id="dropdown-user"
       >
-        <a href="#" class="text-dark"
+        <a class="text-dark"
           ><img src="@/assets/icons/shopify.svg" alt="" />Back to Shopify</a
         >
-        <a href="#" class="text-red" @click="handleLogout"
+        <a class="text-red" @click="handleLogout"
           ><img src="@/assets/icons/logout.svg" alt="" />Logout</a
         >
       </v-dropdown>
@@ -32,6 +32,7 @@
 <script>
 import VDropdown from "@/components/VDropDown.vue";
 import { mapMutations, mapActions, mapGetters } from "vuex";
+import notify from '@/helper/notify';
 export default {
   components: {
     VDropdown,
@@ -52,6 +53,7 @@ export default {
     handleLogout() {
       this.logout();
       this.$router.push({ name: "login" });
+      notify.showNotify("success", "Success", "Logout Successfully!!");
     },
   },
   computed: {

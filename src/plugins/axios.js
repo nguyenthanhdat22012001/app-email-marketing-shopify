@@ -25,6 +25,7 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log(error.response.status)
     if (error.response.status === 401) {
       store.dispatch("auth/logout");
     }

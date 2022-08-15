@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
+  <div
+    class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
+  >
     <div>
       <div class="flex justify-between w-full items-center">
         <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
@@ -96,9 +98,11 @@ export default {
           list_campaign[index].process = data.processing;
           list_campaign[index].status = data.status;
           list_campaign[index].send_email_done = data.mail_send_done;
-          list_campaign[index]['mail_done_percentage'] = data.mail_done_percentage ? data.mail_done_percentage : 0;
+          list_campaign[index]["mail_done_percentage"] =
+            data.mail_done_percentage ? data.mail_done_percentage : 0;
           list_campaign[index].send_email_fail = data.mail_send_failed;
-          list_campaign[index]['mail_failed_percentage'] = data.mail_failed_percentage ? data.mail_failed_percentage : 0;
+          list_campaign[index]["mail_failed_percentage"] =
+            data.mail_failed_percentage ? data.mail_failed_percentage : 0;
           break;
         }
       }

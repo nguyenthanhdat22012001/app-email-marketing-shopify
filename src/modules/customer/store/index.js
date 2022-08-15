@@ -1,3 +1,4 @@
+import notify from '@/helper/notify'
 import { mixin, pusher } from '@/plugins'
 import api from '@/plugins/api'
 const state = {
@@ -70,6 +71,11 @@ const actions = {
             api.CUSTOMER.fetchSync().then(res => {
                 console.log(res)
                 if (res.status) {
+                    notify.showNotify(
+                        "success",
+                        "Success",
+                        "Start Sync Customers"
+                    );
                     dispatch('subscribe').then((data) => {
                         commit('setCustomer', data)
                         resolve(data)
@@ -78,9 +84,7 @@ const actions = {
                     throw res
                 }
             }).catch(err => {
-                mixin.methods.toastMessageError({
-                    message: err.message
-                })
+                8
                 reject(err);
             })
         }).finally(() => {
@@ -119,9 +123,7 @@ const actions = {
                 payload = {
                     list_customer: payload.toString()
                 }
-
             }
-
             api.CUSTOMER.exportCSV(payload)
                 .then((res) => {
                     console.log(res)

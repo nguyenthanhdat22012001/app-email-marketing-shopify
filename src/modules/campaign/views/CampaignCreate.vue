@@ -453,6 +453,7 @@ export default {
 }
 .v-leave-active {
   animation: show 0.4s ease forwards reverse;
+  z-index: 1;
 }
 @keyframes show {
   0% {

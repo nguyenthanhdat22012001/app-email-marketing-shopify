@@ -8,15 +8,17 @@
         <v-button
           variant="secondary"
           @click="visibleModalExportAll = true"
-          :disabled="progress < 100"
+          :disabled="isDisabled"
+          :class="{ disabled: isDisabled }"
         >
           <img src="@/assets/icons/download.svg" />
           Export CSV
         </v-button>
         <v-button
           variant="primary"
-          @click="fetchCustomersSync"
-          :disabled="progress < 100"
+          @click="handleFetchCustomersSync"
+          :disabled="isDisabled"
+          :class="{ disabled: isDisabled }"
         >
           <img src="@/assets/icons/async.svg" />
           Manual sync
@@ -36,6 +38,7 @@
 import VButton from "@/components/VButton.vue";
 import CustomerModalExport from "../components/CustomerModalExport.vue";
 import { mapActions, mapGetters } from "vuex";
+import notify from "@/helper/notify";
 export default {
   components: {
     VButton,
@@ -44,20 +47,40 @@ export default {
   data() {
     return {
       visibleModalExportAll: false,
+      isDisabled: false,
     };
   },
-  
+
   methods: {
-    ...mapGetters({
-      progress: "customerStore/getProgress",
-    }),
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",
     }),
-   
+    handleFetchCustomersSync() {
+      this.isDisabled = true;
+      this.$router.push({ query: {} });
+
+      this.fetchCustomersSync()
+        .then(() => {
+          notify.showNotify(
+            "success",
+            "Success",
+            "Sync Customers Successfully!!"
+          );
+        })
+        .catch((err) => {
+          this.toastMessageError({
+            message: "Server Error!! Try Again",
+          });
+        })
+        .finally(() => {
+          this.isDisabled = false;
+        });
+    },
   },
   computed: {
-    mapGetters,
+    ...mapGetters({
+      progress: "customerStore/getProgress",
+    }),
   },
 };
 </script>

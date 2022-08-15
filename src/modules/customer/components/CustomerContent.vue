@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 overflow-auto">
+  <div class="customer-list flex-1 overflow-auto">
     <v-table align="center" class="relative" :class="{ 'h-full': isLoading }">
       <template #table_head_tr>
         <th
@@ -191,7 +191,8 @@ tbody {
   overflow: auto;
   height: 100px;
 }
-table::-webkit-scrollbar {
-  display: none; /* for Chrome, Safari, and Opera */
+
+.customer-list::-webkit-scrollbar {
+  display: none;
 }
 </style>
