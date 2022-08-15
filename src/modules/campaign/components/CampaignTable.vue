@@ -1,45 +1,45 @@
 <template>
   <v-table align="center">
     <template #table_head_tr>
-      <th scope="col" class="py-5 pr-3.5">Campaign name</th>
-      <th scope="col" class="py-5 pr-3.5">Create date</th>
-      <th scope="col" class="py-5 pr-3.5">Status</th>
-      <th scope="col" class="py-5 pr-3.5">Progress</th>
-      <th scope="col" class="py-5 pr-3.5">Total customers</th>
-      <th scope="col" class="py-5 pr-3.5">Sent</th>
-      <th scope="col" class="py-5 pr-3.5">Fail</th>
+      <th scope="col" class="pl-5 py-5 pr-3.5">Campaign name</th>
+      <th scope="col" class="py-5 px-3.5">Create date</th>
+      <th scope="col" class="py-5 px-3.5">Status</th>
+      <th scope="col" class="py-5 px-3.5">Progress</th>
+      <th scope="col" class="py-5 px-3.5">Total customers</th>
+      <th scope="col" class="py-5 px-3.5">Sent</th>
+      <th scope="col" class="py-5 px-3.5">Fail</th>
     </template>
 
     <template #table_body v-if="prop_list_campaign.length > 0">
       <tr
-        class="bg-white border-t border-[#EBEBF0]"
+        class="bg-white border-b border-[#EBEBF0]"
         v-for="item in prop_list_campaign"
         :key="item.id"
       >
-        <td class="py-5 pr-3.5">
+        <td class="pl-5 py-5 pr-3.5">
           <div class="flex items-center gap-3 font-semibold">
             <img src="@/assets/icons/envelope-open.svg" alt="" />
             {{ item.name }}
           </div>
         </td>
-        <td class="py-5 pr-3.5 text-gray-light">{{formatdateNameMonthDY(item.created_at) }}</td>
-        <td class="py-5 pr-3.5">
-          <v-status :class="item.process == 100 ? 'text-success' : 'text-primary'" class="text-primary">{{item.status }}</v-status>
+        <td class="py-5 px-3.5 text-gray-light border-r border-[#EBEBF0]">{{formatdateNameMonthDY(item.created_at) }}</td>
+        <td class="py-5 px-3.5">
+          <v-status :class="item.process == 100 ? 'text-success bg-[#E3FFF1]' : 'text-primary bg-[#FAFAFC]'">{{item.status }}</v-status>
         </td>
-        <td width="100px" class="py-5 pr-3.5">
+        <td width="100px" class="py-5 px-3.5">
           <v-progress-bar :prop_percent="item.process"></v-progress-bar>
         </td>
-        <td class="py-5 pr-3.5">{{ item.total_customers }}</td>
-        <td class="py-5 pr-3.5 text-success font-bold">
+        <td class="py-5 px-3.5">{{ item.total_customers }}</td>
+        <td class="py-5 px-3.5 text-success font-bold">
           {{ item.send_email_done }}
           <span class="ml-1 font-normal text-gray-light"
-            >{{item.mail_done_percentage ? item.mail_done_percentage : 0}}%</span
+            >{{handlePercentByMath(item.total_customers,item.send_email_done)}}</span
           >
         </td>
-        <td class="py-5 pr-3.5 text-red font-bold">
+        <td class="py-5 px-3.5 text-red font-bold">
           {{ item.send_email_fail }}
           <span class="ml-1 font-normal text-gray-light"
-            >{{item.mail_failed_percentage ? item.mail_failed_percentage : 0}}%</span
+            >{{handlePercentByMath(item.total_customers,item.send_email_fail)}}</span
           >
         </td>
       </tr>

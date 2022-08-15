@@ -37,7 +37,7 @@ export default Heading.extend({
       },
     ];
     let get_heading = arr_heading.find((item) => item.level == level);
-    this.options.HTMLAttributes.style = `font-size: ${get_heading.font_size};`;
+    this.options.HTMLAttributes.style = `font-size: ${get_heading.font_size}; line-height: 1.4; font-weight: 500`;
     return [
       `h${level}`,
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
