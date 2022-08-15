@@ -118,9 +118,14 @@ export default {
       };
       this.$emit("emitVSelectNumberRange", this.data_input);
     },
+    handleSetABSInput(from, to) {
+      this.data_input.from = Math.abs(from);
+      this.data_input.to = Math.abs(to);
+    },
   },
   computed: {
     validation() {
+      this.handleSetABSInput(this.data_input.from, this.data_input.to);
       const input_from = {
         required: {
           valid: this.data_input.from ? true : false,
@@ -143,7 +148,7 @@ export default {
         },
         is_bigger: {
           valid: function () {
-            if (input_to.is_number.valid) {
+            if (input_from.required.valid && input_to.is_number.valid) {
               if (this.input_from > this.input_to) {
                 return false;
               }
