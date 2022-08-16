@@ -22,6 +22,12 @@ axios.interceptors.request.use(function (config) {
 });
 axios.interceptors.response.use(
   function (response) {
+    if (response.data.status === 401) {
+      store.dispatch("auth/logout");
+      return {
+        data: "Session expired!! Please login again"
+      };
+    }
     return response;
   },
   function (error) {

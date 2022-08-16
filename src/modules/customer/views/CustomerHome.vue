@@ -68,14 +68,14 @@ export default {
     };
   },
   created() {
-    this.setLoading(true)
-    this.fetchCustomer({
-      ...this.$route.query,
-    });
+    if (this.progress >= 100) {
+      this.setLoading(true);
+      this.fetchCustomer({
+        ...this.$route.query,
+      });
+    }
   },
-  mounted() {
- 
-  },
+  mounted() {},
   methods: {
     ...mapActions({
       fetchCustomers: "customerStore/fetchCustomers",
@@ -108,9 +108,7 @@ export default {
     fetchCustomer(page) {
       this.isDisabled = true;
       this.fetchCustomers(page)
-        .then((res) => {
-         
-        })
+        .then((res) => {})
         .catch((err) => {
           console.log(err);
           this.setError(true);
@@ -129,9 +127,7 @@ export default {
       customerList: "customerStore/getCustomers",
     }),
   },
-  watch: {
-    
-  },
+  watch: {},
   beforeDestroy() {
     clearInterval(this.increaseProgress);
   },

@@ -66,9 +66,9 @@ const actions = {
         })
 
     },
-    fetchCustomersSync({ commit, dispatch }) {
+    fetchCustomersSync({ commit, dispatch },payload) {
         return new Promise((resolve, reject) => {
-            api.CUSTOMER.fetchSync().then(res => {
+            api.CUSTOMER.fetchSync(payload).then(res => {
                 console.log(res)
                 if (res.status) {
                     notify.showNotify(

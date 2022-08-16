@@ -50,7 +50,9 @@ export default {
       isDisabled: false,
     };
   },
-
+  created(){
+    this.isDisabled = this.progress < 100
+  },
   methods: {
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",
@@ -59,7 +61,9 @@ export default {
       this.isDisabled = true;
       this.$router.push({ query: {} });
 
-      this.fetchCustomersSync()
+      this.fetchCustomersSync({
+        shop: this.user.domain
+      })
         .then(() => {
           notify.showNotify(
             "success",
@@ -80,6 +84,7 @@ export default {
   computed: {
     ...mapGetters({
       progress: "customerStore/getProgress",
+      user:"auth/getUser"
     }),
   },
 };
