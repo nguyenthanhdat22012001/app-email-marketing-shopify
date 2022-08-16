@@ -37,9 +37,10 @@
 
     <template #table_body v-if="prop_list_customer.length > 0">
       <tr
-        class="bg-white border-t border-[#EBEBF0]"
+        class="border-b border-[#EBEBF0]"
         v-for="customer in prop_list_customer"
         :key="customer.id"
+        :class="handleReturnBackground(customer.id)"
       >
         <td>
           <template v-if="select_all">
@@ -48,7 +49,7 @@
               :prop_input_value="customer.id"
               class="py-[22px] pl-[30px] translate-y-2/4"
               :dataId="customer.id"
-              :value="handleCheckCustomerExectHasInCustomers(customer.id)"
+              :value="!handleCheckCustomerHasCustomerExect(customer.id)"
               @input="(value) => hanldeAddCustomerExect(value, customer.id)"
             />
           </template>
@@ -126,10 +127,15 @@ export default {
       }
       this.handleUpdateDataCustomerInModal();
     },
-    handleCheckCustomerExectHasInCustomers(id) {
+    handleCheckCustomerHasCustomerExect(id) {
       let list_customer_exect = this.list_customer_exect;
       let is_check = list_customer_exect.find((item) => item == id);
-      return is_check ? false : true;
+      return is_check ? true : false;
+    },
+    handleCheckCustomerHasCustomerSelected(id) {
+      let list_customer_selected = this.list_customer_selected;
+      let is_check = list_customer_selected.find((item) => item == id);
+      return is_check ? true : false;
     },
     handleClearCustomers() {
       this.list_customer_selected = [];
@@ -164,6 +170,22 @@ export default {
       if (data.number_customer_select.length > 0) {
         if (!this.select_any) {
           this.select_any = true;
+        }
+      }
+    },
+    handleReturnBackground(id) {
+      if (this.select_all) {
+        let is_unselected = this.handleCheckCustomerHasCustomerExect(id);
+        if (is_unselected) {
+          return "bg-white";
+        }
+        return "bg-blues-light";
+      } else {
+        let is_selected = this.handleCheckCustomerHasCustomerSelected(id);
+        if (is_selected) {
+          return "bg-blues-light";
+        } else {
+          return "bg-white";
         }
       }
     },

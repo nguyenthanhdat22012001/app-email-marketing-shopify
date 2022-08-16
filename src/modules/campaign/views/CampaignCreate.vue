@@ -35,7 +35,7 @@
               {{ campaignName.length }}/255
             </p>
           </div>
-          <div class="text-sm mt-1 text-red" v-if="formstate">
+          <div class="text-[12px] leading-5 mt-1 text-red" v-if="formstate">
             <template v-if="!validation.form.campaignName.required.valid">
               <p class="alert-error">
                 {{ validation.form.campaignName.required.message }}
@@ -91,7 +91,7 @@
               Manage
             </button>
           </div>
-          <div class="text-sm mt-1 text-red" v-if="formstate">
+          <div class="text-[12px] leading-5 mt-1 text-red" v-if="formstate">
             <template v-if="!validation.form.send_customer.required.valid">
               <p class="alert-error">
                 {{ validation.form.send_customer.required.message }}
@@ -106,7 +106,7 @@
             @emitUpdateEmailContent="(value) => (email_subject = value)"
             maxlength="78"
           ></v-tiptap-editor-not-menu>
-          <div class="text-sm mt-1 text-red" v-if="formstate">
+          <div class="text-[12px] leading-5 mt-1 text-red" v-if="formstate">
             <template v-if="!validation.form.email_subject.required.valid">
               <p class="alert-error">
                 {{ validation.form.email_subject.required.message }}p>
@@ -120,10 +120,10 @@
             :prop_email_content="email_content"
             @emitUpdateEmailContent="(value) => (email_content = value)"
           ></v-tiptap-editor>
-          <div class="text-sm mt-1 text-red" v-if="formstate">
+          <div class="text-[12px] leading-5 mt-1 text-red" v-if="formstate">
             <template v-if="!validation.form.email_content.required.valid">
               <p class="alert-error">
-                {{ validation.form.email_content.required.message }}p>
+                {{ validation.form.email_content.required.message }}
               </p></template
             >
           </div>
@@ -277,6 +277,7 @@ export default {
     //   return newVariants;
     // },
     handleGetDataCreateCampaign() {
+      console.log(this.$store.state.auth.user);
       let el_preview_body = this.$refs.ref_preview.$el.children[1];
       let el_preview_content = el_preview_body.children[1];
       // let variants_subject = this.handleGetVariantInString(this.email_subject);
@@ -308,6 +309,7 @@ export default {
         button_background_color: this.emailButton.backgroundColor,
         button_text_color: this.emailButton.textColor,
         preview_email: cloneNode.outerHTML,
+        domain: "manh-store123.myshopify.com",
       };
       return data;
     },
@@ -347,7 +349,7 @@ export default {
       if (this.validation.valid) {
         let data = this.handleGetDataCreateCampaign();
         let newData = { ...data, send_email: email };
-      let res =  await this.handleSendTestMailApi(newData);
+        let res = await this.handleSendTestMailApi(newData);
         if (res.status) {
           notify.showNotify("success", "Create campaign success !");
         }

@@ -1,54 +1,65 @@
-import { Extension } from "@tiptap/core";
+import {
+  Mark,
+  mergeAttributes,
+} from "@tiptap/core";
 
-/**
- * FontSize - Custom Extension
- *   this.editor.chain().focus().setFontSize(value).run();
- */
+export default Mark.create({
+  name: "font_size",
 
-export default Extension.create({
-  name: "fontSize",
+  content: "inline*",
+  group: "block",
+  draggable: false,
+
   addOptions() {
     return {
-      types: ["textStyle"],
+      HTMLAttributes: {},
     };
   },
-  addGlobalAttributes() {
+
+  addAttributes() {
+    return {
+      size: {
+        default: null,
+        renderHTML: (attributes) => {
+          if (!attributes.size) {
+            return {};
+          }
+
+          return {
+            style: `font-size: ${attributes.size}px; line-height: 1.4`,
+          };
+        },
+      },
+    };
+  },
+
+  parseHTML() {
     return [
       {
-        types: this.options.types,
-        attributes: {
-          fontSize: {
-            default: null,
-            parseHTML: (element) =>
-              element.style.fontSize.replace(/['"]+/g, ""),
-            renderHTML: (attributes) => {
-              if (!attributes.fontSize) {
-                return {};
-              }
-              return {
-                style: `font-size: ${attributes.fontSize}`,
-              };
-            },
-          },
-        },
+        tag: "span",
       },
     ];
   },
+
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "span",
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      0,
+    ];
+  },
+
   addCommands() {
     return {
       setFontSize:
-        (fontSize) =>
+        (attributes) =>
         ({ commands }) => {
-          commands.setMark("textStyle", {
-            fontSize: fontSize + "px",
-          });
+          return commands.setMark(this.name, attributes);
         },
       unsetFontSize:
         () =>
         ({ commands }) => {
-          return commands
-            .setMark("textStyle", { fontSize: null })
-            .removeEmptyTextStyle();
+          return commands.unsetMark(this.name);
         },
     };
   },

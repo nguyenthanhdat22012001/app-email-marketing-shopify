@@ -1,5 +1,7 @@
 <template>
-  <router-view class="flex-1 overflow-auto"></router-view>
+  <Transition>
+    <router-view class="flex-1 overflow-auto"></router-view>#
+  </Transition>
 </template>
 
 <script>

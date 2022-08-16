@@ -23,7 +23,7 @@
           v-model="input_email"
           placeholder="Enter your email"
         ></v-input>
-        <div class="text-sm mt-1 text-red" v-if="formstate">
+        <div class="text-[12px] leading-5 mt-1 text-red" v-if="formstate">
           <template v-if="!validation.form.email.required.valid">
             <p >
               {{ validation.form.email.required.message }}

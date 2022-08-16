@@ -2,7 +2,7 @@
   <div
     class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
   >
-    <div>
+    <div class="flex flex-col overflow-hidden">
       <div class="flex justify-between w-full items-center">
         <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
         <div class="flex gap-[10px]">
@@ -16,13 +16,13 @@
         </div>
       </div>
       <div
-        class="bg-secondary rounded h-[500px] w-full flex flex-col gap-6 mt-5 shadow-content"
+        class="bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5 shadow-content"
       >
         <campaign-filter
           @emitUpdateListCampaign="(value) => (list_campaign = value)"
           @emitSetLoading="(value) => (is_loading = value)"
         />
-        <div class="h-full overflow-auto">
+        <div class="campamgn-list h-full overflow-auto">
           <template v-if="!is_loading">
             <campaign-table
               v-if="list_campaign.length > 0"
@@ -30,7 +30,7 @@
             />
             <div
               v-else
-              class="h-full flex justify-center items-center font-medium text-base text-muted"
+              class="h-[200px] flex justify-center items-center font-medium text-base text-muted"
             >
               No records
             </div>
@@ -120,5 +120,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.campamgn-list::-webkit-scrollbar {
+  display: none;
 }
 </style>

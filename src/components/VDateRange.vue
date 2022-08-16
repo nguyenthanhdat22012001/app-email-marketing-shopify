@@ -14,7 +14,7 @@
     <div
       v-show="is_open"
       id="dropdown"
-      class="z-10 absolute right-0 top-full w-[300px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary"
+      class="z-10 absolute right-0 top-full w-[300px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary shadow-notify"
     >
       <div class="flex gap-2">
         <input
