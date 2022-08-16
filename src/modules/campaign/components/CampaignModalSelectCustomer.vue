@@ -205,7 +205,6 @@ export default {
       this.is_loading = true;
       try {
         let res = await api.CUSTOMER.fetch({ page });
-        console.log(res)
         if (res.status) {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;
@@ -259,7 +258,7 @@ export default {
         }
       }, 500);
     },
-    // fetch customer
+    // filter customer
     async fetchFilterCustomerPagination(page) {
       let data = {
         keywords: this.filters.keywords,
@@ -267,7 +266,7 @@ export default {
       };
       this.is_loading = true;
       try {
-        let res = await api.CUSTOMER.filter(data);
+        let res = await api.CUSTOMER.fetch(data);
         if (res.status) {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;

@@ -16,13 +16,13 @@
         </div>
       </div>
       <div
-        class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5"
+        class="bg-secondary rounded h-[500px] w-full flex flex-col gap-6 mt-5 shadow-content"
       >
         <campaign-filter
           @emitUpdateListCampaign="(value) => (list_campaign = value)"
           @emitSetLoading="(value) => (is_loading = value)"
         />
-        <div class="pl-5 min-h-[300px]">
+        <div class="h-full overflow-auto">
           <template v-if="!is_loading">
             <campaign-table
               v-if="list_campaign.length > 0"
@@ -98,11 +98,7 @@ export default {
           list_campaign[index].process = data.processing;
           list_campaign[index].status = data.status;
           list_campaign[index].send_email_done = data.mail_send_done;
-          list_campaign[index]["mail_done_percentage"] =
-            data.mail_done_percentage ? data.mail_done_percentage : 0;
           list_campaign[index].send_email_fail = data.mail_send_failed;
-          list_campaign[index]["mail_failed_percentage"] =
-            data.mail_failed_percentage ? data.mail_failed_percentage : 0;
           break;
         }
       }
