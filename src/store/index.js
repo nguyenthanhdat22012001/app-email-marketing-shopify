@@ -24,8 +24,8 @@ export default new Vuex.Store({
    
   },
   mutations: {
-    toggle(state) {
-      state.isToggle = !state.isToggle;
+    setToggle(state,payload) {
+      state.isToggle = payload;
     },
     setLoading(state, payload) {
       state.isLoading = payload

@@ -24,14 +24,14 @@ axios.interceptors.response.use(
   function (response) {
     if (response.data.status === 401) {
       store.dispatch("auth/logout");
-      return {
-        data: "Session expired!! Please login again"
-      };
+      return Promise.reject({
+        message: "Session expired!! Please login again",
+        status: 401
+      });
     }
     return response;
   },
   function (error) {
-    console.log(error.response.status)
     if (error.response.status === 401) {
       store.dispatch("auth/logout");
     }

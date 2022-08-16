@@ -1,5 +1,5 @@
 <template>
-  <router-view class="flex-1 overflow-auto"></router-view>
+    <router-view class="flex-1 overflow-auto"></router-view>
 </template>
 
 <script>
@@ -13,15 +13,5 @@ export default {
   padding: 50px;
 }
 
-.v-leave-active,
-.v-enter-active {
-  transition: 0.5s ease-out;
-}
-.v-enter {
-  transform: translate(100%, 0);
-}
-.v-leave-to {
-  transform: translate(-100%, 0);
-  display: none;
-}
+
 </style>

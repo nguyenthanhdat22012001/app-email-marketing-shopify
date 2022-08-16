@@ -1,7 +1,7 @@
 <template>
   <div
     id="loading"
-    class="w-full h-full flex items-center justify-center"
+    class="w-full h-full flex items-center justify-center relative"
   >
     <span
       id="circle1"

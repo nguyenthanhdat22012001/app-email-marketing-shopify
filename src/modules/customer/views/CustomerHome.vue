@@ -110,7 +110,11 @@ export default {
       this.fetchCustomers(page)
         .then((res) => {})
         .catch((err) => {
-          console.log(err);
+          if (err.status == 401) {
+            this.toastMessageError(err.message);
+            this.$router.push({ name: "login" });
+          }
+
           this.setError(true);
         })
         .finally(() => {

@@ -51,6 +51,7 @@ export default {
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })
         .then((res) => {
+          // console.log(res)
           window.location = res;
         })
         .catch((err) => {

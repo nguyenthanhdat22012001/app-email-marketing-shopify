@@ -23,15 +23,7 @@ export default {
       isToggle: "getToggle",
     }),
   },
-  beforeRouteUpdate(to, from) {
-    console.log(to,from)
-    // let query = {};
-    // for (let [key, value] of Object.entries($)) {
-    //   if (value) {
-    //     query[key] = value;
-    //   }
-    // }
-  },
+
 };
 </script>
 

@@ -2,6 +2,7 @@
 module.exports = {
   content: [],
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     colors: {
       'red': '#FF3B3B',
@@ -19,7 +20,7 @@ module.exports = {
       'bg-primary': '#003085',
       "bg-primary-light": '#0294D7',
       "light": '#EBEBF0',
-      "transparent":"transparent"
+      "transparent": "transparent"
 
     },
     backgroundColor: {
@@ -30,6 +31,8 @@ module.exports = {
       'gray-light': "#F2F2F5",
       'white': '#ffffff',
       'muted': '#555770',
+      'dark': '#28293D',
+
     },
     boxShadow: {
       'sm': '0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)',
