@@ -37,7 +37,7 @@
 <script>
 import VButton from "@/components/VButton.vue";
 import CustomerModalExport from "../components/CustomerModalExport.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import notify from "@/helper/notify";
 export default {
   components: {
@@ -47,19 +47,22 @@ export default {
   data() {
     return {
       visibleModalExportAll: false,
-      isDisabled: false,
     };
   },
-
+  created() {},
   methods: {
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",
     }),
+    ...mapMutations({
+      setProgress: "customerStore/setProgress",
+    }),
     handleFetchCustomersSync() {
-      this.isDisabled = true;
       this.$router.push({ query: {} });
-
-      this.fetchCustomersSync()
+      this.setProgress(0);
+      this.fetchCustomersSync({
+        shop: this.user.domain,
+      })
         .then(() => {
           notify.showNotify(
             "success",
@@ -73,14 +76,18 @@ export default {
           });
         })
         .finally(() => {
-          this.isDisabled = false;
+          this.setProgress(100);
         });
     },
   },
   computed: {
     ...mapGetters({
       progress: "customerStore/getProgress",
+      user: "auth/getUser",
     }),
+    isDisabled() {
+      return this.progress < 100;
+    },
   },
 };
 </script>

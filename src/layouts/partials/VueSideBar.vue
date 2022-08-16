@@ -1,9 +1,13 @@
 <template>
   <div
-    class="vue-sidebar w-[230px] h-screen text-white bg-gradient-to-br from-bg-primary to-bg-primary-light fixed top-0 left-0 flex flex-col gap-[22px] z-[999]"
+    class="vue-sidebar max-w-[230px] h-screen text-white bg-gradient-to-br from-bg-primary to-bg-primary-light fixed top-0 left-0 flex flex-col gap-[22px] z-[999] "
   >
-    <div class="logo flex justify-start pt-5 gap-[15px] pl-[15px] ">
-      <img src="@/assets/icons/logo-image.svg" alt="" class="logo-image sticky" />
+    <div class="logo flex justify-start pt-5 gap-[15px] pl-[15px] overflow-hidden">
+      <img
+        src="@/assets/icons/logo-image.svg"
+        alt=""
+        class="logo-image sticky"
+      />
       <img
         src="@/assets/icons/logo-text.svg"
         alt=""
@@ -29,12 +33,54 @@
       <img src="@/assets/icons/help-center.svg" alt="" />
       <p class="nav-text">Help center</p>
     </div>
+    <span
+      class="resizable"
+      @mousedown="handleMouseDown"
+      ref="refResizable"
+    ></span>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   components: {},
+  data() {
+    return {
+      isResize: false,
+      defaultLayout: null,
+    };
+  },
+  mounted() {
+    document.addEventListener("mouseup", this.handleMouseUp);
+    this.defaultLayout = document.querySelector(".default-layout");
+  },
+  methods: {
+    ...mapMutations(["setToggle"]),
+
+    handleResize(e) {
+      e.preventDefault();
+
+      const resizable = this.$refs.refResizable;
+      const block = document.querySelector(".default-layout");
+
+      const percentage = (e.pageX / window.innerWidth) * 100;
+      if (e.pageX >= 66 && e.pageX <= 230) {
+        const dividerPosition = percentage.toFixed(2);
+        this.defaultLayout.style.paddingLeft = dividerPosition + "%";
+        this.defaultLayout.style.transition = "unset";
+        this.$refs.refResizable.parentNode.style.transition = "unset";
+        this.$refs.refResizable.parentNode.style.width = dividerPosition + "%";
+      }
+      e.pageX >= 150 ? this.setToggle(false) : this.setToggle(true);
+    },
+    handleMouseUp() {
+      document.removeEventListener("mousemove", this.handleResize);
+    },
+    handleMouseDown(e) {
+      document.addEventListener("mousemove", this.handleResize);
+    },
+  },
 };
 </script>
 
@@ -105,5 +151,14 @@ export default {
 }
 .toggle .menu--item:hover .tooltip {
   visibility: visible;
+}
+.resizable {
+  position: absolute;
+  cursor: e-resize;
+  height: 100%;
+  width: 4px;
+  content: "";
+  top: 0;
+  right: 0;
 }
 </style>

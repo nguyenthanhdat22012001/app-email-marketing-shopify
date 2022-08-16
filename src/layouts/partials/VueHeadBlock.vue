@@ -1,8 +1,8 @@
 <template>
   <div
-    class="w-100 bg-white sticky top-0 flex justify-between shadow-sm relative"
+    class="w-100 bg-white dark:bg-dark sticky top-0 flex justify-between shadow-sm relative"
   >
-    <button @click="toggle">
+    <button @click="handleToggleSideBar">
       <img src="@/assets/icons/bars.svg" alt="" class="px-6" />
     </button>
     <div
@@ -32,7 +32,6 @@
 <script>
 import VDropdown from "@/components/VDropDown.vue";
 import { mapMutations, mapActions, mapGetters } from "vuex";
-import notify from '@/helper/notify';
 export default {
   components: {
     VDropdown,
@@ -42,23 +41,29 @@ export default {
       isShowDropDown: false,
     };
   },
+
   methods: {
-    toggleDropdownUser() {
-      this.isShowDropDown = !this.isShowDropDown;
-    },
     ...mapActions({
       logout: "auth/logout",
     }),
-    ...mapMutations(["toggle"]),
+    ...mapMutations(["setToggle"]),
+    toggleDropdownUser() {
+      this.isShowDropDown = !this.isShowDropDown;
+    },
     handleLogout() {
       this.logout();
       this.$router.push({ name: "login" });
-      notify.showNotify("success", "Success", "Logout Successfully!!");
+    },
+    handleToggleSideBar() {
+      this.setToggle(!this.toggle);
+      document.querySelector(".vue-sidebar").removeAttribute("style");
+      document.querySelector(".default-layout").removeAttribute("style");
     },
   },
   computed: {
     ...mapGetters({
       store: "auth/getUser",
+      toggle: "getToggle",
     }),
   },
 };

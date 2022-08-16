@@ -4,8 +4,8 @@ export default {
     fetch(payload) {
         return api.get("/api/customer", payload);
     },
-    fetchSync() {
-        return api.get("/api/customer/sync");
+    fetchSync(payload) {
+        return api.get("/api/customer/sync",payload);
     },
     filter(payload) {
         return api.get("/api/customer/filterCustomer", payload);

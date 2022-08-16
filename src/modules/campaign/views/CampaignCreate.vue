@@ -1,4 +1,6 @@
 <template>
+  <transition>
+
   <div
     class="campaign--create-page flex flex-col bg-gray-light gap-[30px] pb-[60px]"
   >
@@ -173,6 +175,8 @@
     <!-- <div>{{ opacity }}</div> -->
     <div class="hidden">{{ validateScroll }}</div>
   </div>
+  </transition>
+
 </template>
 
 <script>
@@ -322,8 +326,8 @@ export default {
         let newData = {
           ...data,
           store_id: 1,
-          list_customer_exect: JSON.stringify(
-            this.data_customer.list_customer_exect
+          list_customer_except: JSON.stringify(
+            this.data_customer.list_customer_except
           ),
           list_mail_customers: JSON.stringify(
             this.data_customer.list_customer_selected
@@ -448,5 +452,16 @@ export default {
   transform: translateX(calc(-5px * var(--z-index)));
   border-left: 2px solid;
   box-sizing: unset;
+}
+.v-leave-active,
+.v-enter-active {
+  transition: 0.4s ease;
+}
+.v-enter {
+  transform: translate(100%, 0);
+}
+.v-leave-to {
+  transform: translate(100%, 0);
+  /* display: none; */
 }
 </style>

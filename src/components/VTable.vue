@@ -29,7 +29,7 @@
     <thead
       class="text-xs sticky top-0 text-gray-light bg-white font-semibold z-[1]"
     >
-      <tr class="bg-white z-10 shadow-content">
+      <tr class="bg-white z-10 ">
         <slot name="table_head_tr"></slot>
       </tr>
     </thead>

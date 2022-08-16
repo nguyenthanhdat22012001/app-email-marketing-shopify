@@ -66,9 +66,9 @@ const actions = {
         })
 
     },
-    fetchCustomersSync({ commit, dispatch }) {
+    fetchCustomersSync({ commit, dispatch }, payload) {
         return new Promise((resolve, reject) => {
-            api.CUSTOMER.fetchSync().then(res => {
+            api.CUSTOMER.fetchSync(payload).then(res => {
                 console.log(res)
                 if (res.status) {
                     notify.showNotify(
@@ -84,22 +84,22 @@ const actions = {
                     throw res
                 }
             }).catch(err => {
-                8
+
                 reject(err);
             })
         }).finally(() => {
             this.commit('setLoading', false)
-
         })
     },
     fetchCustomers({ commit }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetch(payload).then(res => {
-                if (res.data) {
+                if (res.status == 401) {
+                    reject(res)
+                }
+                if (res.status === true) {
                     commit('setCustomer', res.data);
                     resolve(res.data);
-                } else {
-                    reject(res)
                 }
             }).catch(err => {
                 reject(err)
@@ -108,14 +108,7 @@ const actions = {
             this.commit('setLoading', false)
         })
     },
-    // filterCustomers({ commit }, payload) {
-    //     return new Promise((resolve, reject) => {
-    //         api.CUSTOMER.filter(payload).then(res => {
-    //             commit('setCustomer', res.data);
-    //             resolve(res.data)
-    //         }).catch(err => reject(err));
-    //     })
-    // },
+
     exportCSV({ state }, payload) {
         return new Promise((resolve, reject) => {
 

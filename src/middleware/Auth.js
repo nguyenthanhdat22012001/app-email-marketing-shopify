@@ -9,7 +9,7 @@ export default async function ({ next, from, store }) {
                 const { user } = await store.dispatch('auth/fetchUser')
                 if (user) {
                     store.commit('auth/setUser', user)
-                    from.path == '/login' && notify.showNotify("success", "Success", "Login Successfully!!")
+                    
                     return true
                 } else {
                     throw {
@@ -34,6 +34,7 @@ export default async function ({ next, from, store }) {
     next({
         name: 'login'
     })
+    notify.showNotify("error","Error","Please login!!")
     return false;
     // return true;
 }
