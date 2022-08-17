@@ -3,7 +3,7 @@
     <div
       class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
     >
-      <div class="flex flex-col overflow-hidden">
+      <div class="flex flex-1 flex-col overflow-hidden">
         <div class="flex justify-between w-full items-center">
           <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
           <div class="flex gap-[10px]">
@@ -76,7 +76,6 @@ export default {
     subscribe() {
       pusher.subscribe("campaigns");
       pusher.bind("send_mail", (data) => {
-        console.log("campaigns", data);
         this.handleUpdateListCampaign(data.payload.original);
       });
     },

@@ -36,13 +36,23 @@
         @emitClearForm="sort = ''"
       >
         <v-input-radio
-          prop_label="Up"
+          prop_label="Last created"
+          prop_input_value="DESC"
+          v-model="sort"
+        ></v-input-radio>
+        <v-input-radio
+          prop_label="First created"
           prop_input_value="ASC"
           v-model="sort"
         ></v-input-radio>
         <v-input-radio
-          prop_label="Down"
-          prop_input_value="DESC"
+          prop_label="Campaign name (A-Z)"
+          prop_input_value="A-Z"
+          v-model="sort"
+        ></v-input-radio>
+        <v-input-radio
+          prop_label="Campaign name (Z-A)"
+          prop_input_value="Z-A"
           v-model="sort"
         ></v-input-radio>
       </v-select-type-check>

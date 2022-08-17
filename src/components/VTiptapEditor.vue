@@ -313,7 +313,6 @@ export default {
       get() {
         for (let i = 11; i <= 56; i++) {
           let is_fontSize = this.editor.isActive("font_size", { size: i });
-          console.log("áda", is_fontSize);
           if (is_fontSize) {
             return i;
           }
@@ -321,7 +320,7 @@ export default {
         return 14;
       },
       set(value) {
-        console.log(value)
+        console.log(value);
         this.hanldeSetFontSize(value);
         this.$emit("input", value);
       },
@@ -364,7 +363,12 @@ export default {
     });
 
     this.editor.on("update", ({ editor }) => {
-      let newString = editor.getHTML();
+      let string = editor.getHTML();
+      let htmlObject = document.createElement("div");
+      htmlObject.style = "white-space: pre-wrap;";
+      htmlObject.innerHTML = string;
+      let newString = htmlObject.outerHTML;
+      console.log(newString.length);
       this.$emit("emitUpdateEmailContent", newString);
     });
   },
