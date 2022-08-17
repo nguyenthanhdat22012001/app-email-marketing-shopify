@@ -3,7 +3,7 @@ import cookie from '@/plugins/cookie'
 import store from '@/store'
 let axios = instance.create({
   baseURL: process.env.VUE_APP_API,
-  timeout: 60 * 1000,
+  timeout: 20 * 1000,
   validateStatus: function (status) {
     return status >= 200 && status < 400;
   },
@@ -22,7 +22,7 @@ axios.interceptors.request.use(function (config) {
 });
 axios.interceptors.response.use(
   function (response) {
-    if (response.data.status === 401) {
+    if (response?.data?.status === 401) {
       store.dispatch("auth/logout");
       return Promise.reject({
         message: "Session expired!! Please login again",
@@ -32,7 +32,7 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       store.dispatch("auth/logout");
     }
     return Promise.reject(error.response);

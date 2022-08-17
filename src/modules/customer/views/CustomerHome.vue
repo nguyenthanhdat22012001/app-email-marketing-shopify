@@ -75,7 +75,9 @@ export default {
       });
     }
   },
-  mounted() {},
+  mounted() {
+    // console.log
+  },
   methods: {
     ...mapActions({
       fetchCustomers: "customerStore/fetchCustomers",
@@ -131,10 +133,6 @@ export default {
       customerList: "customerStore/getCustomers",
     }),
   },
-  watch: {},
-  beforeDestroy() {
-    clearInterval(this.increaseProgress);
-  },
 };
 </script>
 
@@ -143,5 +141,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.v-enter-active {
+  transition: 0.4s ease;
+  display: none;
 }
 </style>

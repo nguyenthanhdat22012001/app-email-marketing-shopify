@@ -1,7 +1,7 @@
 <template>
   <div class="customer-content--head px-5 pt-5 flex gap-5">
     <div
-      class="search-bar flex gap-[10px] rounded border border-solid border-light p-[10px] flex-1"
+      class="search-bar flex gap-[10px] rounded border border-solid border-light p-[10px] flex-1 overflow-hidden"
     >
       <img src="@/assets/icons/search.svg" alt="" />
       <v-input

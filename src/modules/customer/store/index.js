@@ -6,6 +6,7 @@ const state = {
     selectedCustomers: [],
     isLoading: true,
     isError: false,
+    isProgress: false,
     progress: 100,
 
 }
@@ -27,6 +28,9 @@ const getters = {
     },
     getProgress(state) {
         return state.progress;
+    },
+    getIsProgress(state) {
+        return state.isProgress;
     }
 }
 const mutations = {
@@ -44,6 +48,9 @@ const mutations = {
     },
     setProgress(state, payload) {
         state.progress = payload
+    },
+    setIsProgress(state, payload) {
+        state.isProgress = payload
     }
 }
 const actions = {
@@ -71,14 +78,14 @@ const actions = {
             api.CUSTOMER.fetchSync(payload).then(res => {
                 console.log(res)
                 if (res.status) {
-                    notify.showNotify(
-                        "success",
-                        "Success",
-                        "Start Sync Customers"
-                    );
+                    resolve(res.status)
                     dispatch('subscribe').then((data) => {
                         commit('setCustomer', data)
-                        resolve(data)
+                        notify.showNotify(
+                            "success",
+                            "Success",
+                            "Sync Customers Successfully!!"
+                        );
                     });
                 } else {
                     throw res

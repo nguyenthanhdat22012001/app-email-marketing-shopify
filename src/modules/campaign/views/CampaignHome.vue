@@ -1,5 +1,4 @@
 <template>
-  <transition>
     <div
       class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
     >
@@ -23,7 +22,7 @@
             @emitUpdateListCampaign="(value) => (list_campaign = value)"
             @emitSetLoading="(value) => (is_loading = value)"
           />
-          <div class="campamgn-list h-full overflow-auto">
+          <div class="campaign-list h-full overflow-auto">
             <template v-if="!is_loading">
               <campaign-table
                 v-if="list_campaign.length > 0"
@@ -43,7 +42,6 @@
         </div>
       </div>
     </div>
-  </transition>
 </template>
 
 <script>
@@ -123,11 +121,19 @@ export default {
   align-items: center;
 }
 
-.v-enter-active {
+/* .v-enter-active {
   transition: 0.4s ease;
   display: none;
-}
-.campamgn-list::-webkit-scrollbar {
+} */
+.campaign-list::-webkit-scrollbar {
   display: none;
 }
+/* .v-enter {
+  transform: translateX(-100%);
+  position: relative;
+}
+.v-leave-to {
+  transform: translate(-100%, 0);
+  opacity: 0;
+} */
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <transition>
     <div
       class="campaign--create-page flex flex-col bg-gray-light gap-[30px] pb-[60px]"
     >
@@ -196,7 +195,6 @@
       <!-- <div>{{ opacity }}</div> -->
       <div class="hidden">{{ validateScroll }}</div>
     </div>
-  </transition>
 </template>
 
 <script>
@@ -469,15 +467,11 @@ export default {
   border-left: 2px solid;
   box-sizing: unset;
 }
-.v-leave-active,
-.v-enter-active {
-  transition: 0.4s ease;
-}
-.v-enter {
+
+/* .v-enter {
   transform: translate(100%, 0);
 }
 .v-leave-to {
   transform: translate(100%, 0);
-  /* display: none; */
-}
+} */
 </style>

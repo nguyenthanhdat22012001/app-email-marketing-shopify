@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="relative">
+  <div id="app" class="relative overflow-hidden">
     <v-notify></v-notify>
-    <vue-extend-layouts />
+    <vue-extend-layouts loading="default"/>
     <v-loading-app></v-loading-app>
   </div>
 </template>
