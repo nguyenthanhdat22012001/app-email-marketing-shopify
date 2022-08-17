@@ -8,8 +8,7 @@ export default async function ({ next, from, store }) {
             try {
                 const { user } = await store.dispatch('auth/fetchUser')
                 if (user) {
-                    store.commit('auth/setUser', user)
-                    
+                    store.commit('auth/setUser', user)  
                     return true
                 } else {
                     throw {

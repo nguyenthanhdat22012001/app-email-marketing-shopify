@@ -313,7 +313,6 @@ export default {
       get() {
         for (let i = 11; i <= 56; i++) {
           let is_fontSize = this.editor.isActive("font_size", { size: i });
-          console.log("áda", is_fontSize);
           if (is_fontSize) {
             return i;
           }

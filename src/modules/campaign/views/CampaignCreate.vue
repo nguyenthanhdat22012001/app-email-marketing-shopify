@@ -1,8 +1,6 @@
 <template>
-  <transition>
-
   <div
-    class="campaign--create-page flex flex-col bg-gray-light gap-[30px] pb-[60px]"
+    class="campaign--create-page flex flex-col bg-gray-light gap-[30px] pb-[60px] overflow-x-hidden"
   >
     <div
       class="campaign-create-page--head flex justify-between py-4 pl-[30px] pr-5 bg-white"
@@ -175,8 +173,6 @@
     <!-- <div>{{ opacity }}</div> -->
     <div class="hidden">{{ validateScroll }}</div>
   </div>
-  </transition>
-
 </template>
 
 <script>
@@ -222,7 +218,8 @@ export default {
       email_banner: "",
       banner_url: "",
       emailBackground: {
-        color: "#ffffff",
+        color:
+          "#                                                                                                                              ",
         opacity: 100,
         radius: 3,
         color_text: "#28293D",
@@ -453,15 +450,11 @@ export default {
   border-left: 2px solid;
   box-sizing: unset;
 }
-.v-leave-active,
-.v-enter-active {
-  transition: 0.4s ease;
-}
-.v-enter {
+
+/* .v-enter {
   transform: translate(100%, 0);
 }
 .v-leave-to {
   transform: translate(100%, 0);
-  /* display: none; */
-}
+} */
 </style>

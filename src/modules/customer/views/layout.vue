@@ -1,37 +1,39 @@
 <template>
-  <div
-    class="customer-layout flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light overflow-hidden"
-  >
-    <div class="flex justify-between w-full items-center">
-      <h1 class="font-extrabold text-xl lead-6">Customer</h1>
-      <div class="flex gap-[10px]">
-        <v-button
-          variant="secondary"
-          @click="visibleModalExportAll = true"
-          :disabled="isDisabled"
-          :class="{ disabled: isDisabled }"
-        >
-          <img src="@/assets/icons/download.svg" />
-          Export CSV
-        </v-button>
-        <v-button
-          variant="primary"
-          @click="handleFetchCustomersSync"
-          :disabled="isDisabled"
-          :class="{ disabled: isDisabled }"
-        >
-          <img src="@/assets/icons/async.svg" />
-          Manual sync
-        </v-button>
-      </div>
-    </div>
-    <router-view class="flex-1 overflow-hidden"></router-view>
-    <customer-modal-export :export-all="true" v-model="visibleModalExportAll">
-      <template #message>
-        <p>Export all customers to your email!!</p>
-      </template></customer-modal-export
+  <transition>
+    <div
+      class="customer-layout flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light overflow-hidden"
     >
-  </div>
+      <div class="flex justify-between w-full items-center">
+        <h1 class="font-extrabold text-xl lead-6">Customer</h1>
+        <div class="flex gap-[10px]">
+          <v-button
+            variant="secondary"
+            @click="visibleModalExportAll = true"
+            :disabled="isProgress"
+            :class="{ disabled: isProgress }"
+          >
+            <img src="@/assets/icons/download.svg" />
+            Export CSV
+          </v-button>
+          <v-button
+            variant="primary"
+            @click="handleFetchCustomersSync"
+            :disabled="isProgress"
+            :class="{ disabled: isProgress }"
+          >
+            <img src="@/assets/icons/async.svg" />
+            Manual sync
+          </v-button>
+        </div>
+      </div>
+      <router-view class="flex-1 overflow-hidden"></router-view>
+      <customer-modal-export :export-all="true" v-model="visibleModalExportAll">
+        <template #message>
+          <p>Export all customers to your email!!</p>
+        </template></customer-modal-export
+      >
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -56,44 +58,43 @@ export default {
     }),
     ...mapMutations({
       setProgress: "customerStore/setProgress",
+      setIsProgress: "customerStore/setIsProgress",
     }),
     handleFetchCustomersSync() {
       this.$router.push({ query: {} });
-      this.setProgress(0);
+      this.setIsProgress(true);
+
       this.fetchCustomersSync({
         shop: this.user.domain,
       })
         .then(() => {
-          notify.showNotify(
-            "success",
-            "Success",
-            "Sync Customers Successfully!!"
-          );
+          this.setProgress(0);
+          notify.showNotify("success", "Success", "Start Sync Customers");
         })
         .catch((err) => {
           this.toastMessageError({
             message: "Server Error!! Try Again",
           });
-        })
-        .finally(() => {
           this.setProgress(100);
+          this.setIsProgress(false);
         });
     },
   },
   computed: {
     ...mapGetters({
       progress: "customerStore/getProgress",
+      isProgress: "customerStore/getIsProgress",
       user: "auth/getUser",
     }),
-    isDisabled() {
-      return this.progress < 100;
+  },
+  watch: {
+    progress(val) {
+      if (val >= 100) {
+        this.setIsProgress(false);
+      }
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.customer-layout {
-  padding: 50px;
-}
-</style>
+<style lang="scss" scoped></style>

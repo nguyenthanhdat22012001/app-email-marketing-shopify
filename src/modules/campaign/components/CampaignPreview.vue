@@ -150,78 +150,6 @@
           </table>
         </div>
       </div>
-
-      <!-- <div
-        class="sticky top-5"
-        style="display: flex; flex-direction: column; gap: 20px"
-        ref="sticky"
-        v-show="hideBoxPreview"
-      >
-        <div
-          class="preview-content"
-          :style="'border-radius:' + emailBackground.radius + 'px'"
-        >
-          <img
-            :src="emailBanner"
-            alt=""
-            style="width: 100%; object-fit: cover"
-          />
-          <div
-            class="preview-email-content"
-            style="
-              background: #ffffff;
-              padding: 28px 30px 36px;
-              display: flex;
-              flex-direction: column;
-              gap: 30px;
-            "
-            :style="{
-              backgroundColor: backgroundColor,
-              borderRadius: emailBackground.radius + 'px',
-              color: emailBackground.color_text,
-            }"
-          >
-            <div
-              class="email--content"
-              style="line-break: anywhere"
-              v-html="emailContent"
-            ></div>
-            <button
-              style="
-                width: 100%;
-                line-height: 18px;
-                font-size: 14px;
-                font-weight: bold;
-                padding: 9px 0px;
-              "
-              :style="styleButton()"
-            >
-              {{ emailButton.label }}
-            </button>
-          </div>
-        </div>
-
-        <div
-          class="preview--footer"
-          style="
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 18px;
-            color: #555770;
-          "
-        >
-          <div v-html="emailFooter"></div>
-          <a
-            href="#"
-            style="
-              display: block;
-              text-align: center;
-              text-decoration: underline;
-            "
-            >Unsubscribe here</a
-          >
-        </div>
-      </div> -->
     </div>
 
     <campaign-modal-send-mail v-model="visibleSendTestMailModal" />
@@ -273,8 +201,8 @@ export default {
       return `background:${this.emailButton.backgroundColor};color:${this.emailButton.textColor};border-radius:${this.emailButton.radius}px`;
     },
     checkBackgroundLightDark(rgba = "#ffffff") {
-      let string_lenght = rgba?.length - 1;
-      let new_string = rgba.substring(5, string_lenght);
+      let string_length = rgba?.length - 1;
+      let new_string = rgba.substring(5, string_length);
       let rgba_arr = new_string.split(",");
       if (
         rgba_arr[0] * 0.2126 + rgba_arr[1] * 0.7152 + rgba_arr[2] * 0.0722 <
