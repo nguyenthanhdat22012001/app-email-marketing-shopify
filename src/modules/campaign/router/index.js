@@ -19,7 +19,7 @@ const campaignRouter = [
                 name: 'campaign/create',
                 component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignCreate.vue"),
                 meta: {
-                    // middleware: [Auth]
+                    middleware: [Auth]
                 },
             }
         ]
