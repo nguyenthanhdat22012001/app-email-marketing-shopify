@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      isDisabled: true,
+      isDisabled: false,
     };
   },
   created() {},
@@ -131,6 +131,7 @@ export default {
       customerList: "customerStore/getCustomers",
     }),
   },
+  
 };
 </script>
 

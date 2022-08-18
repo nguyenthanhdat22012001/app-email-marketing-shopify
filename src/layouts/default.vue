@@ -12,7 +12,7 @@
         <router-view
           :style="{ '--top': `${top}px`, '--width': `${sidebar}px` }"
           appear
-          :key="$route.fullPath"
+          :key="$route.path"
         >
         </router-view>
       </transition>
@@ -60,7 +60,6 @@ export default {
   watch: {
     $route: {
       handler(newRoute, oldRoute) {
-        // console.log(newRoute);
         this.sidebar = this.elSidebar.offsetWidth;
         this.top = document.querySelector(".head-block").offsetHeight;
 
@@ -79,7 +78,6 @@ export default {
           this.enterClass == "animate__fadeInLeft"
             ? "animate__fadeOutRight"
             : "animate__fadeOutLeft";
-        // console.log(this.enterClass, this.leaveClass);
       },
     },
   },

@@ -138,10 +138,8 @@ export default {
 
     selectedAll: {
       get() {
-        return Boolean(
-          this.selectedCustomers.filter((id) =>
-            this.customerListId.includes(id)
-          ).length
+        return this.selectedCustomers.some((id) =>
+          this.customerListId.includes(id)
         );
       },
       set(val) {

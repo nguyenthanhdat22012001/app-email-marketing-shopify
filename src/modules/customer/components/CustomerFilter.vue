@@ -96,7 +96,7 @@ export default {
         orders_to: this.$route.query.orders_to || "",
         date_from: this.$route.query.date_from || "",
         date_to: this.$route.query.date_to || "",
-        sort: this.$route.query.sort || "ASC",
+        sort: this.$route.query.sort || "",
       },
 
       debounce: null,
@@ -105,11 +105,11 @@ export default {
   mounted() {},
   methods: {
     ...mapActions({
-      filterCustomers: "customerStore/filterCustomers",
       fetchCustomers: "customerStore/fetchCustomers",
     }),
     ...mapMutations({
       setLoading: "customerStore/setLoading",
+      setCustomer: "customerStore/setCustomer",
     }),
   },
   watch: {
@@ -140,6 +140,14 @@ export default {
       },
       deep: true,
     },
+  },
+  beforeDestroy() {
+    for (let [key, value] of Object.entries(this.filters)) {
+      if (value) {
+        console.log(value)
+        this.setCustomer([])
+      }
+    }
   },
 };
 </script>
