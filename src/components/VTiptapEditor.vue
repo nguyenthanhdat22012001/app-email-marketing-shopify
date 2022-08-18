@@ -9,7 +9,7 @@
           class="absolute z-1 w-[1px] h-4 top-[50%] translate-y-[-50%] right-0 bg-[#E5E8EF]"
         ></div>
         <v-select-editor v-model="select_heading" class="font-bold">
-          <option value="">Paragraph</option>
+          <option :value="0">Paragraph</option>
           <option
             v-for="n in 6"
             :key="n"
@@ -29,7 +29,9 @@
             v-for="n in Array.from({ length: 56 }, (_, i) => i + 1).slice(10)"
             :key="n"
             :value="n"
-            :class="{ 'is-active': editor.isActive('heading', { level: n }) }"
+            :class="{
+              'is-active': editor.isActive('font_size', { size: n }),
+            }"
           >
             {{ n }}px
           </option>
@@ -228,7 +230,7 @@
     </div>
     <editor-content
       :editor="editor"
-      class="editor-field border border-[#EBEBF0] rounded-b"
+      class="editor-field max-h-80 overflow-auto border border-[#EBEBF0] rounded-b"
     />
     <div v-if="prop_open_variant" class="mt-4">
       <v-dropdown-variant @emitClickVariant="onClickVariant" />
@@ -274,25 +276,54 @@ export default {
   data() {
     return {
       editor: null,
-      select_heading: "",
-      select_font_size: "14",
     };
   },
   methods: {
     onClickVariant(value) {
       this.editor.chain().focus().setVariant({ id: value }).run();
     },
-  },
-  watch: {
-    select_heading(value) {
+    hanldeSetHeading(value) {
       if (value == "") {
         this.editor.chain().focus().setParagraph().run();
       } else {
         this.editor.chain().focus().toggleHeading({ level: value }).run();
       }
     },
-    select_font_size(value) {
-      this.editor.chain().focus().setFontSize(value).run();
+    hanldeSetFontSize(value) {
+      this.editor.chain().focus().setFontSize({ size: value }).run();
+    },
+  },
+  computed: {
+    select_heading: {
+      get() {
+        for (let i = 1; i < 6; i++) {
+          let is_heading = this.editor.isActive("heading", { level: i });
+          if (is_heading) {
+            return i;
+          }
+        }
+        return 0;
+      },
+      set(value) {
+        this.hanldeSetHeading(value);
+        this.$emit("input", value);
+      },
+    },
+    select_font_size: {
+      get() {
+        for (let i = 11; i <= 56; i++) {
+          let is_fontSize = this.editor.isActive("font_size", { size: i });
+          if (is_fontSize) {
+            return i;
+          }
+        }
+        return 14;
+      },
+      set(value) {
+        console.log(value);
+        this.hanldeSetFontSize(value);
+        this.$emit("input", value);
+      },
     },
   },
   mounted() {
@@ -332,7 +363,12 @@ export default {
     });
 
     this.editor.on("update", ({ editor }) => {
-      let newString = editor.getHTML();
+      let string = editor.getHTML();
+      let htmlObject = document.createElement("div");
+      htmlObject.style = "white-space: pre-wrap;";
+      htmlObject.innerHTML = string;
+      let newString = htmlObject.outerHTML;
+      console.log(newString.length);
       this.$emit("emitUpdateEmailContent", newString);
     });
   },

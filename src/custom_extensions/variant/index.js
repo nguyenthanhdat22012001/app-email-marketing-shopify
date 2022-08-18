@@ -10,7 +10,9 @@ export default Node.create({
   addOptions() {
     return {
       HTMLAttributes: {
-        style: "background:#003084;padding:2px;border-radius:4px;color: #ffffff",
+        style:
+          "background:#003084;padding:2px; margin:0 3px;border-radius:4px;color: #ffffff",
+        class: "tiptap_variant",
       },
     };
   },
@@ -41,8 +43,26 @@ export default Node.create({
   },
 
   renderHTML({ node, HTMLAttributes }) {
-    return ["span", mergeAttributes(this.options.HTMLAttributes,HTMLAttributes), `${node.attrs.id}`];
+    return [
+      "span",
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      `${node.attrs.id}`,
+    ];
   },
+
+  // addNodeView() {
+  //   return ({ node }) => {
+  //     const dom = document.createElement("span");
+  //     // dom.setAttribute("id", `${node.attrs.id}`);
+  //     dom.style =
+  //       "background:#003084;padding:2px;border-radius:4px;color: #ffffff";
+  //     dom.innerHTML = `${node.attrs.id}`;
+
+  //     return {
+  //       dom,
+  //     };
+  //   };
+  // },
 
   addCommands() {
     return {

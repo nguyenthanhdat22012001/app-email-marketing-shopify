@@ -1,68 +1,93 @@
 <template>
-  <div class="flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light">
-    <div>
-      <div class="flex justify-between w-full items-center">
-        <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
-        <div class="flex gap-[10px]">
-          <v-button
-            variant="primary"
-            @click="$router.push({ name: 'campaign/create' })"
-          >
-            <img src="@/assets/icons/plus.svg" />
-            Create new campaign
-          </v-button>
+    <div
+      class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
+    >
+      <div class="flex flex-1 flex-col overflow-hidden">
+        <div class="flex justify-between w-full items-center">
+          <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
+          <div class="flex gap-[10px]">
+            <v-button
+              variant="primary"
+              @click="$router.push({ name: 'campaign/create' })"
+            >
+              <img src="@/assets/icons/plus.svg" />
+              Create new campaign
+            </v-button>
+          </div>
         </div>
-      </div>
-      <div
-        class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5"
-      >
-        <campaign-filter />
-        <div class="pl-5">
-          <campaign-table :prop_list_campaign="list_campaign" />
+        <div
+          class="bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5 shadow-content"
+        >
+          <campaign-filter
+            @emitUpdateListCampaign="(value) => (list_campaign = value)"
+            @emitSetLoading="(value) => (is_loading = value)"
+          />
+          <div class="campaign-list h-full overflow-auto">
+            <template v-if="!is_loading">
+              <campaign-table
+                v-if="list_campaign.length > 0"
+                :prop_list_campaign="list_campaign"
+              />
+              <div
+                v-else
+                class="h-[200px] flex justify-center items-center font-medium text-base text-muted"
+              >
+                No records
+              </div>
+            </template>
+            <template v-else>
+              <v-loading />
+            </template>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import VButton from "@/components/VButton.vue";
 import CampaignFilter from "../components/CampaignFilter.vue";
 import CampaignTable from "../components/CampaignTable.vue";
+import VLoading from "@/components/VLoading.vue";
+
 import { pusher } from "@/plugins";
 import api from "@/plugins/api";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
     VButton,
     CampaignFilter,
     CampaignTable,
+    VLoading,
   },
   data() {
     return {
-      page: 1,
-      size: 10,
       list_campaign: [],
+      is_loading: false,
     };
   },
   methods: {
+    ...mapMutations({
+      setLoading: "setLoading",
+    }),
     subscribe() {
       pusher.subscribe("campaigns");
       pusher.bind("send_mail", (data) => {
-        console.log("campaigns", data.message.original);
-        this.handleUpdateListCampaign(data.message.original);
+        this.handleUpdateListCampaign(data.payload.original);
       });
     },
     async fetchCampaigns() {
       try {
+        this.is_loading = true;
         let res = await api.CAMPAIGN.fetch();
-        // console.log("res", res);
         if (res.status == 200) {
           this.list_campaign = res.data;
         }
       } catch (error) {
         console.log(error);
       }
+      this.is_loading = false;
     },
     handleUpdateListCampaign(data) {
       let list_campaign = this.list_campaign;
@@ -70,6 +95,7 @@ export default {
       for (let index = 0; index < list_campaign.length; index++) {
         if (list_campaign[index].id == data.campaignId) {
           list_campaign[index].process = data.processing;
+          list_campaign[index].status = data.status;
           list_campaign[index].send_email_done = data.mail_send_done;
           list_campaign[index].send_email_fail = data.mail_send_failed;
           break;
@@ -94,4 +120,20 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+/* .v-enter-active {
+  transition: 0.4s ease;
+  display: none;
+} */
+.campaign-list::-webkit-scrollbar {
+  display: none;
+}
+/* .v-enter {
+  transform: translateX(-100%);
+  position: relative;
+}
+.v-leave-to {
+  transform: translate(-100%, 0);
+  opacity: 0;
+} */
 </style>

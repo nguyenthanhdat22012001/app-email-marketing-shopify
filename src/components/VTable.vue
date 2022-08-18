@@ -25,14 +25,16 @@
 -->
 
 <template>
-  <table class="w-full text-left">
-    <thead class="text-xs text-gray-light font-semibold">
-      <tr class="bg-white">
+  <table class="w-full border-collapse text-left relative">
+    <thead
+      class="text-xs sticky top-0 text-gray-light bg-white font-semibold z-[1]"
+    >
+      <tr class="bg-white z-10 ">
         <slot name="table_head_tr"></slot>
       </tr>
     </thead>
 
-    <tbody>
+    <tbody class="">
       <slot name="table_body"></slot>
     </tbody>
   </table>

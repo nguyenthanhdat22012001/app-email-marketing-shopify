@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="relative">
+  <div id="app" class="relative overflow-hidden">
     <v-notify></v-notify>
-    <vue-extend-layouts />
+    <vue-extend-layouts loading="default"/>
     <v-loading-app></v-loading-app>
   </div>
 </template>
@@ -40,4 +40,30 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* # custom scroll # */
+
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px; 
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
 </style>

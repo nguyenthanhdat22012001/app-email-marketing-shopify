@@ -14,6 +14,7 @@ const routes = [
     path: "/",
     redirect: "/customer",
   },
+  { path: '*', redirect: '/' },
   ...authRouter,
   ...customerRouter,
   ...campaignRouter
@@ -34,8 +35,7 @@ const router = new VueRouter({
   mode: 'history',
   base: '/',
   routes,
-  scrollBehavior: function () {
-    // arg: to, from, savedPosition
+  scrollBehavior: function (to, from, savedPosition) {
     return { x: 0, y: 0 };
   },
 })

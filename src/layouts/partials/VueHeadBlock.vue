@@ -1,6 +1,8 @@
 <template>
-  <div class="w-100 bg-white flex justify-between shadow-sm relative">
-    <button @click="toggle">
+  <div
+    class="head-block w-100 bg-white dark:bg-dark sticky top-0 flex justify-between shadow-sm relative z-[1]"
+  >
+    <button @click="handleToggleSideBar">
       <img src="@/assets/icons/bars.svg" alt="" class="px-6" />
     </button>
     <div
@@ -16,10 +18,10 @@
         class="absolute before:content-[''] bottom-1 right-2 translate-y-full"
         id="dropdown-user"
       >
-        <a href="#" class="text-dark"
+        <a class="text-dark"
           ><img src="@/assets/icons/shopify.svg" alt="" />Back to Shopify</a
         >
-        <a href="#" class="text-red" @click="handleLogout"
+        <a class="text-red" @click="handleLogout"
           ><img src="@/assets/icons/logout.svg" alt="" />Logout</a
         >
       </v-dropdown>
@@ -39,22 +41,29 @@ export default {
       isShowDropDown: false,
     };
   },
+
   methods: {
-    toggleDropdownUser() {
-      this.isShowDropDown = !this.isShowDropDown;
-    },
     ...mapActions({
       logout: "auth/logout",
     }),
-    ...mapMutations(["toggle"]),
+    ...mapMutations(["setToggle"]),
+    toggleDropdownUser() {
+      this.isShowDropDown = !this.isShowDropDown;
+    },
     handleLogout() {
       this.logout();
       this.$router.push({ name: "login" });
+    },
+    handleToggleSideBar() {
+      this.setToggle(!this.toggle);
+      document.querySelector(".vue-sidebar").removeAttribute("style");
+      document.querySelector(".default-layout").removeAttribute("style");
     },
   },
   computed: {
     ...mapGetters({
       store: "auth/getUser",
+      toggle: "getToggle",
     }),
   },
 };

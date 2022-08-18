@@ -3,7 +3,9 @@
 -->
 
 <template lang="">
-  <div class="text-[10px] uppercase font-bold text-center">
+  <div
+    class="inline text-[10px] uppercase font-bold text-center rounded p-[4px]"
+  >
     <slot></slot>
   </div>
 </template>

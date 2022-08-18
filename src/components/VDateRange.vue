@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="relative">
+  <div class="relative z-20">
     <div
       @click="is_open = !is_open"
       class="z-0 inline-flex justify-center gap-x-2.5 cursor-pointer py-2 px-3.5 border border-[#EBEBF0] bg-secondary font-medium text-muted"
@@ -14,7 +14,7 @@
     <div
       v-show="is_open"
       id="dropdown"
-      class="z-10 absolute right-0 top-full w-[300px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary"
+      class="z-10 absolute right-0 top-full w-[300px] border border-[#EBEBF0] rounded py-3.5 pl-3 pr-4 bg-secondary shadow-notify"
     >
       <div class="flex gap-2">
         <input
@@ -53,13 +53,21 @@ export default {
       type: String,
       default: "",
     },
+    date_from:{
+      type: String,
+      default:""
+    },
+    date_to:{
+      type: String,
+      default:""
+    }
   },
   data() {
     return {
       is_open: false,
       date_input: {
-        start: "",
-        end: "",
+        start: this.date_from,
+        end: this.date_to,
       },
     };
   },

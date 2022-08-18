@@ -1,6 +1,4 @@
 
-import notify from "@/helper/notify";
-import { mixin } from "@/plugins";
 import api from "@/plugins/api";
 import cookie from "@/plugins/cookie";
 let token = cookie.get('access_token');
@@ -53,19 +51,6 @@ const actions = {
                 this.commit('setLoading', false)
 
             })
-        })
-    },
-    checkAuth({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            this.commit('setLoading', true)
-            api.AUTH.checkAuth(payload).then(res => {
-                resolve(res)
-            }).catch(err => {
-                reject(err)
-            }).finally(() => {
-                this.commit('setLoading', false)
-            })
-
         })
     },
     fetchUser({ commit }, payload) {

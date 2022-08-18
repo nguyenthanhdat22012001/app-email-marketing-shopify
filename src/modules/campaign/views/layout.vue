@@ -1,5 +1,10 @@
 <template>
-  <router-view class="flex-1"></router-view>
+  <transition
+    enter-active-class="animate__animated animate__fadeInLeft"
+    leave-active-class="animate__animated animate__fadeOutRight"
+  >
+    <router-view class="flex-1 overflow-auto relative z-0"> </router-view>
+  </transition>
 </template>
 
 <script>

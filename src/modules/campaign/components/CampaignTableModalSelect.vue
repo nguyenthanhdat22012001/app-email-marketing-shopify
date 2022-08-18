@@ -37,9 +37,10 @@
 
     <template #table_body v-if="prop_list_customer.length > 0">
       <tr
-        class="bg-white border-t border-[#EBEBF0]"
+        class="border-b border-[#EBEBF0]"
         v-for="customer in prop_list_customer"
         :key="customer.id"
+        :class="handleReturnBackground(customer.id)"
       >
         <td>
           <template v-if="select_all">
@@ -48,7 +49,7 @@
               :prop_input_value="customer.id"
               class="py-[22px] pl-[30px] translate-y-2/4"
               :dataId="customer.id"
-              :value="handleCheckCustomerExectHasInCustomers(customer.id)"
+              :value="!handleCheckCustomerHasCustomerExect(customer.id)"
               @input="(value) => hanldeAddCustomerExect(value, customer.id)"
             />
           </template>
@@ -81,6 +82,7 @@
 import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
+
 export default {
   components: {
     VTable,
@@ -117,24 +119,29 @@ export default {
           this.list_customer_exect = newData;
         }
       }
-      this.handleUpdateTotalCustomerSelect();
+      this.handleUpdateDataCustomerInModal();
     },
-    handleClearCustomerExect(value) {
+    handleClearCustomerExect() {
       if (this.list_customer_exect.length != 0) {
         this.list_customer_exect = [];
       }
-      this.handleUpdateTotalCustomerSelect();
+      this.handleUpdateDataCustomerInModal();
     },
-    handleCheckCustomerExectHasInCustomers(id) {
+    handleCheckCustomerHasCustomerExect(id) {
       let list_customer_exect = this.list_customer_exect;
       let is_check = list_customer_exect.find((item) => item == id);
-      return is_check ? false : true;
+      return is_check ? true : false;
+    },
+    handleCheckCustomerHasCustomerSelected(id) {
+      let list_customer_selected = this.list_customer_selected;
+      let is_check = list_customer_selected.find((item) => item == id);
+      return is_check ? true : false;
     },
     handleClearCustomers() {
       this.list_customer_selected = [];
-      this.handleUpdateTotalCustomerSelect();
+      this.handleUpdateDataCustomerInModal();
     },
-    handleUpdateTotalCustomerSelect() {
+    handleUpdateDataCustomerInModal() {
       let total = 0;
       if (this.select_all) {
         total = this.prop_total_customers - this.list_customer_exect.length;
@@ -145,21 +152,44 @@ export default {
       if (this.select_any) {
         total = this.list_customer_selected.length;
       }
-
-      this.$emit("emitUpdateTotalCustomerSelect", total);
-      this.handleUpdateDataCustomerInModal(total);
-    },
-    handleUpdateDataCustomerInModal(total) {
       let data = {
         number_customer_select: total,
         list_customer_selected: this.list_customer_selected,
         list_customer_exect: this.list_customer_exect,
         select_all: this.select_all,
       };
+
       this.$emit("emitHandleUpdateDataCustomerInModal", data);
     },
+
+    hanldeReturnBackDataCustomerOld(data) {
+      this.list_customer_selected = data.list_customer_selected;
+      this.list_customer_exect = data.list_customer_exect;
+      this.number_customer_select = data.number_customer_select;
+      this.select_all = data.select_all;
+      if (data.number_customer_select.length > 0) {
+        if (!this.select_any) {
+          this.select_any = true;
+        }
+      }
+    },
+    handleReturnBackground(id) {
+      if (this.select_all) {
+        let is_unselected = this.handleCheckCustomerHasCustomerExect(id);
+        if (is_unselected) {
+          return "bg-white";
+        }
+        return "bg-blues-light";
+      } else {
+        let is_selected = this.handleCheckCustomerHasCustomerSelected(id);
+        if (is_selected) {
+          return "bg-blues-light";
+        } else {
+          return "bg-white";
+        }
+      }
+    },
   },
-  computed: {},
   watch: {
     list_customer_selected(value) {
       if (value.length > 0) {
@@ -169,11 +199,20 @@ export default {
       } else {
         this.select_any = false;
       }
-      this.handleUpdateTotalCustomerSelect();
+      this.handleUpdateDataCustomerInModal();
     },
-    select_all() {
-      this.handleUpdateTotalCustomerSelect();
-    },
+  },
+  mounted() {
+    this.$eventBus.$on(
+      "eventBusReturnBackDataCustomerOld",
+      this.hanldeReturnBackDataCustomerOld
+    );
+  },
+  beforeDestroy() {
+    this.$eventBus.$off(
+      "eventBusReturnBackDataCustomerOld",
+      this.hanldeReturnBackDataCustomerOld
+    );
   },
 };
 </script>

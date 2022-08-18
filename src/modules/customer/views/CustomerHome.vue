@@ -1,17 +1,25 @@
 <template>
-  <div :class="{ progressing: progress < 100 }" class="flex flex-col gap-5">
+  <div
+    :class="{ progressing: progress < 100 }"
+    class="flex flex-col justify-center gap-5"
+  >
     <v-progress-loading
-      class="translate-y-full-180deg"
+      class="translate-y-full-reverse"
       v-model="progress"
       label="Syncing customers from Shopify"
-      v-if="progress < 100"
+      v-if="progress < 100 && !isError"
     />
-    <div v-else class="flex-1 flex flex-col gap-5">
+    <v-show-error
+      class="translate-y-half-reverse"
+      message="Server Error!!!"
+      v-else-if="isError"
+    />
+    <div v-else class="flex-1 flex flex-col gap-5 overflow-hidden">
       <div
-        class="customer-content bg-secondary rounded h-full w-full flex flex-col gap-6 shadow-content"
+        class="customer-content bg-secondary rounded w-full flex flex-1 flex-col gap-6 shadow-content overflow-hidden"
       >
         <customer-filter />
-        <customer-content :page="page" :size="size" />
+        <customer-content />
       </div>
       <div class="flex justify-center items-center gap-2">
         <v-button
@@ -40,6 +48,7 @@
 
 <script>
 import VProgressLoading from "@/components/VProgressLoading.vue";
+import VShowError from "@/components/VShowError.vue";
 import CustomerFilter from "../components/CustomerFilter.vue";
 import CustomerContent from "../components/CustomerContent.vue";
 import VButton from "@/components/VButton.vue";
@@ -51,70 +60,76 @@ export default {
     CustomerFilter,
     CustomerContent,
     VButton,
+    VShowError,
   },
   data() {
     return {
-      increaseProgress: null,
-      page: 1,
-      size: 10,
       isDisabled: true,
     };
   },
-  created() {
-    this.fetchCustomer(this.page);
+  created() {},
+  mounted() {
+    if (!this.customerList?.data?.length) {
+      this.setLoading(true);
+      this.fetchCustomer({
+        ...this.$route.query,
+      });
+    }
   },
-  mounted() {},
   methods: {
     ...mapActions({
-      fetchCustomersSync: "customerStore/fetchCustomersSync",
       fetchCustomers: "customerStore/fetchCustomers",
     }),
 
     ...mapMutations({
-      setProgress: "setProgress",
+      setLoading: "customerStore/setLoading",
+      setError: "customerStore/setError",
+      setProgress: "customerStore/setProgress",
     }),
 
     nextPage() {
-      this.fetchCustomer(this.customerList.current_page + 1);
+      if (this.customerList.next_page_url) {
+        this.setLoading(true);
+        this.fetchCustomers({
+          ...this.$route.query,
+          page: this.customerList.current_page + 1,
+        }).finally(() => this.setLoading(false));
+      }
     },
     previousPage() {
-      this.fetchCustomer(this.customerList.current_page - 1);
+      if (this.customerList.prev_page_url) {
+        this.setLoading(true);
+        this.fetchCustomers({
+          ...this.$route.query,
+          page: this.customerList.current_page - 1,
+        }).finally(() => this.setLoading(false));
+      }
     },
     fetchCustomer(page) {
       this.isDisabled = true;
       this.fetchCustomers(page)
-        .then((res) => {
-          console.log(res);
-          if (res?.data?.length) {
-            if (this.progress < 100) {
-              this.increaseProgress = setInterval(() => {
-                const rand = 1 + Math.floor(Math.random() * 10);
-                this.setProgress(this.progress + rand);
-              }, 100);
-            }
+        .then((res) => {})
+        .catch((err) => {
+          if (err.status == 401) {
+            this.toastMessageError(err.message);
+            this.$router.push({ name: "login" });
           }
+
+          this.setError(true);
         })
         .finally(() => {
           this.isDisabled = false;
+          this.setLoading(false);
         });
     },
   },
   computed: {
     ...mapGetters({
-      progress: "getProgress",
+      progress: "customerStore/getProgress",
+      isError: "customerStore/getError",
       customerCount: "customerStore/getCustomerCount",
       customerList: "customerStore/getCustomers",
     }),
-  },
-  watch: {
-    progress(value) {
-      if (value > 100) {
-        clearInterval(this.increaseProgress);
-      }
-    },
-  },
-  beforeDestroy() {
-    clearInterval(this.increaseProgress);
   },
 };
 </script>
@@ -124,5 +139,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.v-enter-active {
+  transition: 0.4s ease;
+  display: none;
 }
 </style>

@@ -13,7 +13,7 @@
       </h2>
       <a
         class="absolute cursor-pointer top-0 right-0 pt-6 pr-[22px]"
-        @click="visible = false"
+        @click="handleClickCancel"
       >
         <img src="@/assets/icons/close.svg" alt="" />
       </a>
@@ -24,17 +24,19 @@
         <v-input
           placeholder="Search customers by name, phone, email..."
           class="flex-1"
+          @input="inpputSearchCustomer"
         />
       </div>
       <div class="mt-[30px] overflow-auto flex-1">
         <campaign-table-modal-select
+          v-show="!is_loading"
           :prop_list_customer="list_customer"
           :prop_total_customers="total_customers"
-          @emitUpdateTotalCustomerSelect="
-            (value) => (data_customer.number_customer_select = value)
-          "
           @emitHandleUpdateDataCustomerInModal="handleUpdateDataCustomerInModal"
         />
+        <template v-if="is_loading">
+          <v-loading />
+        </template>
       </div>
       <div class="pr-[22px] pl-[30px] mt-6 flex justify-between items-center">
         <div class="text-gray-light">
@@ -45,7 +47,7 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
-            :disabled="page.prev_page_url == null ? true : false"
+            :disabled="is_loading || page.prev_page_url == null ? true : false"
             @click="previousPage()"
           >
             <img src="@/assets/icons/arrow-left.svg" />
@@ -54,7 +56,7 @@
           <v-button
             variant="secondary"
             class="py-[9px] px-[18px] text-sm font-medium"
-            :disabled="page.next_page_url == null ? true : false"
+            :disabled="is_loading || page.next_page_url == null ? true : false"
             @click="nextPage()"
           >
             Next
@@ -72,7 +74,7 @@
             variant="primary"
             class="py-[6px] px-[22px] text-sm font-medium"
             @click="handleClickInsert"
-            >Inserrt</v-button
+            >Insert</v-button
           >
         </div>
       </div>
@@ -84,22 +86,28 @@ import VModal from "@/components/VModal.vue";
 import VInput from "@/components/VInput.vue";
 import VButton from "@/components/VButton.vue";
 import CampaignTableModalSelect from "./CampaignTableModalSelect.vue";
+import VLoading from "@/components/VLoading.vue";
+
 import api from "@/plugins/api";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
     VModal,
     VInput,
     VButton,
+    VLoading,
     CampaignTableModalSelect,
   },
   data() {
     return {
+      is_loading: false,
       list_customer: [],
       data_customer: {
         number_customer_select: 0,
         list_customer_selected: [],
         list_customer_exect: [],
+        customers_avatar: [],
         select_all: false,
       },
       total_customers: 0,
@@ -107,6 +115,12 @@ export default {
         prev_page_url: null,
         next_page_url: null,
         current_page: 1,
+        total_page: 0,
+      },
+      filters: {
+        is_filter: false,
+        debounce: null,
+        keywords: "",
       },
     };
   },
@@ -116,35 +130,81 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setLoading: "setLoading",
+    }),
     handleClickCancel() {
       this.$emit("emitCloseModal");
     },
-    handleClickInsert() {
-      let customers_avatar = [
-        this.list_customer[0],
-        this.list_customer[1],
-        this.list_customer[2],
-      ];
-      let data = { ...this.data_customer, customers_avatar: customers_avatar };
-      this.$emit("emitHandleAddAvatarSendToCustomer", data);
-      this.$emit("emitCloseModal");
-    },
+    async handleClickInsert() {
+      this.data_customer = {
+        ...this.data_customer,
+      };
 
+      this.visible = false;
+      this.setLoading(true);
+      if (this.data_customer.number_customer_select > 0) {
+        await this.fetchCustomerShowAvatars();
+      } else {
+        this.data_customer.customers_avatar = [];
+      }
+      this.setLoading(false);
+
+      this.$emit("emitHandleAddAvatarSendToCustomer", this.data_customer);
+    },
+    // fetch customer
+    async fetchCustomerShowAvatars() {
+      let data = {
+        limit: 3,
+      };
+      if (this.data_customer.select_all) {
+        data = {
+          ...data,
+          except_customer: this.data_customer.list_customer_exect.toString(),
+        };
+      } else {
+        data = {
+          ...data,
+          list_customer: this.data_customer.list_customer_selected.toString(),
+        };
+      }
+      try {
+        let res = await api.CUSTOMER.getCustomerShowAvatars(data);
+        if (res.status) {
+          this.data_customer.customers_avatar = res.data.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     //handle pagination
     async nextPage() {
       let current_page = this.page.current_page + 1;
-      this.page.current_page = current_page;
-      await this.fetchCustomerPagination(current_page);
+      if (current_page <= this.page.total_page) {
+        this.page.current_page = current_page;
+        if (this.filters.is_filter) {
+          await this.fetchFilterCustomerPagination(current_page);
+        } else {
+          await this.fetchCustomerPagination(current_page);
+        }
+      }
     },
     async previousPage() {
       let current_page = this.page.current_page - 1;
-      this.page.current_page = current_page;
-      await this.fetchCustomerPagination(current_page);
+      if (current_page >= 1) {
+        this.page.current_page = current_page;
+        if (this.filters.is_filter) {
+          await this.fetchFilterCustomerPagination(current_page);
+        } else {
+          await this.fetchCustomerPagination(current_page);
+        }
+      }
     },
     // fetch customer
     async fetchCustomerPagination(page) {
+      this.is_loading = true;
       try {
-        let res = await api.CUSTOMER.fetchPagination(page);
+        let res = await api.CUSTOMER.fetch({ page });
         if (res.status) {
           this.list_customer = res.data.data;
           this.page.prev_page_url = res.data.prev_page_url;
@@ -152,27 +212,73 @@ export default {
           if (this.total_customers != res.total_customers) {
             this.total_customers = res.total_customers;
           }
+          if (this.page.total_page != res.data.per_page) {
+            this.page.total_page = res.data.per_page;
+          }
         }
       } catch (error) {
         console.log(error);
       }
+      this.is_loading = false;
     },
     //handle update  data_customer
     handleUpdateDataCustomerInModal(payload) {
-      if (
-        this.data_customer.number_customer_select !=
-        payload.number_customer_select
-      ) {
-        this.data_customer.number_customer_select =
-          payload.number_customer_select;
+      this.data_customer = payload;
+    },
+    // hanlde validate input search
+    handleValidateSearch(value) {
+      let text_search = value.trim();
+      if (text_search.length != 0) {
+        if (!this.filters.is_filter) {
+          this.filters.is_filter = true;
+        }
+      } else {
+        if (this.filters.is_filter) {
+          this.filters.is_filter = false;
+        }
       }
-      if (this.data_customer.select_all != payload.select_all) {
-        this.data_customer.select_all = payload.select_all;
-      }
-      this.data_customer.list_customer_selected =
-        payload.list_customer_selected;
-      this.data_customer.list_customer_exect = payload.list_customer_exect;
+      this.filters.keywords = text_search;
+    },
+    // function delay get value for event input search
+    async inpputSearchCustomer(value) {
+      clearTimeout(this.filters.debounce);
+      this.filters.debounce = setTimeout(async () => {
+        this.handleValidateSearch(value);
 
+        this.page = {
+          prev_page_url: null,
+          next_page_url: null,
+          current_page: 1,
+        };
+
+        if (this.filters.is_filter) {
+          await this.fetchFilterCustomerPagination(this.current_page);
+        } else {
+          await this.fetchCustomerPagination(this.current_page);
+        }
+      }, 500);
+    },
+    // filter customer
+    async fetchFilterCustomerPagination(page) {
+      let data = {
+        keywords: this.filters.keywords,
+        page: page,
+      };
+      this.is_loading = true;
+      try {
+        let res = await api.CUSTOMER.fetch(data);
+        if (res.status) {
+          this.list_customer = res.data.data;
+          this.page.prev_page_url = res.data.prev_page_url;
+          this.page.next_page_url = res.data.next_page_url;
+          if (this.page.total_page != res.data.per_page) {
+            this.page.total_page = res.data.per_page;
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      this.is_loading = false;
     },
   },
   computed: {

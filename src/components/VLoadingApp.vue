@@ -2,16 +2,17 @@
   <div
     id="loading"
     v-if="isLoading"
-    class="w-screen h-screen absolute bg-muted top-0 left-0 bg-opacity-40 flex items-center justify-center"
+    class="w-screen h-screen absolute bg-white top-0 left-0 bg-opacity-30 flex items-center justify-center"
   >
     <span
       id="circle1"
-      class="w-[60px] h-[60px] border-[6px] border-solid border-primary rounded-full border-t-transparent translate-y-full-180deg"
+      class="w-[80px] h-[80px] border-[6px] border-solid border-primary rounded-full border-t-transparent translate-y-full-reverse"
     ></span>
     <span
       id="circle2"
-      class="w-[40px] h-[40px] border-[6px] border-solid border-primary rounded-full border-r-transparent absolute translate-y-full-180deg"
+      class="w-[60px] h-[60px] border-[6px] border-solid border-primary rounded-full border-r-transparent absolute translate-y-full-reverse"
     ></span>
+    <img src="@/assets/images/logo-app.png" class="absolute translate-y-full-reverse w-[30px]">
   </div>
 </template>
 

@@ -1,5 +1,8 @@
 import axios from "./axios";
-const api = {
+import campaignAPI from "../modules/campaign/api"
+import authAPI from "../modules/auth/api"
+import customerAPI from "../modules/customer/api"
+export const api = {
   get(url, params = {}, cancel_token = null) {
     return new Promise((resolve, reject) => {
       axios
@@ -7,10 +10,10 @@ const api = {
           params,
           cancelToken: cancel_token ? cancel_token.token : null,
         })
-        .then(res => {
+        .then((res) => {
           resolve(res.data);
         })
-        .catch(err => {
+        .catch((err) => {
           if (axios.isCancel(err)) {
             return reject("canceled");
           }
@@ -19,14 +22,14 @@ const api = {
     });
   },
 
-  post(url, data = {}) {
+  post(url, data = {}, option) {
     return new Promise((resolve, reject) => {
       axios
-        .post(url, data)
-        .then(res => {
+        .post(url, data, option)
+        .then((res) => {
           resolve(res.data);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -38,40 +41,14 @@ const api = {
 };
 
 export default {
-
   AUTH: {
-    loginStore(payload) {
-      return api.post('/api/login', payload)
-    },
-
-    fetchUser() {
-      return api.get('/api/auth/getUser')
-    }
+    ...authAPI
   },
-
 
   CUSTOMER: {
-    fetchPagination(page) {
-      return api.get('/api/customer/get-all', { page: page })
-    },
-
-    fetchSync() {
-      return api.get('/api/customer/sync')
-    },
-    filter(payload) {
-      return api.post('/api/auth/filterCustomer', payload);
-    }
-
+    ...customerAPI
   },
   CAMPAIGN: {
-    fetch() {
-      return api.get('/api/get-campaigns-process')
-    },
-    postTestMail(payload) {
-      return api.post('https://803a-113-161-32-170.ap.ngrok.io/api/shopify/preview-email', payload)
-    },
-    postSendMail(payload) {
-      return api.post('/api/save-campaign ', payload)
-    },
+    ...campaignAPI
   },
 };

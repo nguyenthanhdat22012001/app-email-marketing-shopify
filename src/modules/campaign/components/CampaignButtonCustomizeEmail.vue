@@ -12,7 +12,7 @@
               type="text"
               placeholder="TRY FREE NOW"
               class="w-[100%] focus:outline-0 py-[1px]"
-              v-model="emailButton.label"
+              v-model="email_button.label"
             />
           </div>
         </div>
@@ -27,7 +27,7 @@
             <input
               type="number"
               class="w-[100%] focus:outline-0 py-[1px]"
-              v-model="emailButton.radius"
+              v-model="email_button.radius"
             />
           </div>
           <span class="w-[40px] text-center text-xs">Px</span>
@@ -45,11 +45,11 @@
             <input
               type="color"
               id="color"
-              v-model="emailButton.backgroundColor"
+              v-model="email_button.background_color"
             />
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
-              v-model="emailButton.backgroundColor"
+              v-model="email_button.background_color"
               maxlength="7"
             />
           </div>
@@ -57,7 +57,7 @@
             <input
               min="1"
               max="100"
-              v-model="emailButton.backgroundOpacity"
+              v-model="email_button.background_opacity"
               type="number"
               class="w-[24px] text-center text-xs outline-none"
             />%
@@ -70,10 +70,10 @@
           <div
             class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input type="color" id="color" v-model="emailButton.textColor" />
+            <input type="color" id="color" v-model="email_button.text_color" />
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
-              v-model="emailButton.textColor"
+              v-model="email_button.text_color"
               maxlength="7"
             />
           </div>
@@ -81,7 +81,7 @@
             <input
               min="1"
               max="100"
-              v-model="emailButton.textOpacity"
+              v-model="email_button.text_opacity"
               type="number"
               class="w-[24px] text-center text-xs outline-none"
             />%
@@ -97,7 +97,7 @@ export default {
     value: Object,
   },
   computed: {
-    emailButton: {
+    email_button: {
       get() {
         return this.value;
       },

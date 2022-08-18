@@ -6,7 +6,9 @@
         class="flex-1 editor-field bg-white p-3 border-r border-light"
       />
       <span class="text-gray-light w-[60px] text-center"
-        >{{editor ?  editor.storage.characterCount.characters() : 0}}/{{limit}}</span
+        >{{ editor ? editor.storage.characterCount.characters() : 0 }}/{{
+          limit
+        }}</span
       >
     </div>
 
@@ -43,7 +45,7 @@ export default {
   data() {
     return {
       editor: null,
-       limit: 78,
+      limit: 78,
     };
   },
   methods: {
@@ -66,7 +68,11 @@ export default {
     });
 
     this.editor.on("update", ({ editor }) => {
-      let newString = editor.getHTML();
+      let string = editor.getHTML();
+      let htmlObject = document.createElement("div");
+      htmlObject.style = "white-space: pre-wrap;";
+      htmlObject.innerHTML = string;
+      let newString = htmlObject.outerHTML;
       this.$emit("emitUpdateEmailContent", newString);
     });
   },
