@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-100 bg-white dark:bg-dark sticky top-0 flex justify-between shadow-sm relative"
+    class="head-block w-100 bg-white dark:bg-dark sticky top-0 flex justify-between shadow-sm relative z-[1]"
   >
     <button @click="handleToggleSideBar">
       <img src="@/assets/icons/bars.svg" alt="" class="px-6" />

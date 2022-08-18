@@ -127,7 +127,6 @@ export default {
     },
     selectedCustomers: {
       get() {
-        // console.log(this.$store.getters["customerStore/getSelectedCustomers"]);
         return this.$store.getters["customerStore/getSelectedCustomers"];
       },
       set(val) {
@@ -136,6 +135,7 @@ export default {
         });
       },
     },
+
     selectedAll: {
       get() {
         return Boolean(

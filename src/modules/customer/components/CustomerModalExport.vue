@@ -36,15 +36,18 @@ export default {
       exportCSV: "customerStore/exportCSV",
     }),
     handleExportCSV() {
-      console.log(this.exportAll);
       try {
         if (this.exportAll) {
-          this.exportCSV().then((res) => {
+          this.exportCSV({
+            shop: this.user.domain,
+          }).then((res) => {
             notify.showNotify("success", "Success", res.message);
           });
         } else {
-          
-          this.exportCSV(this.selectedCustomers).then((res) => {
+          this.exportCSV({
+            shop: this.user.domain,
+            list_customer: this.selectedCustomers,
+          }).then((res) => {
             notify.showNotify("success", "Success", res.message);
           });
         }
@@ -58,6 +61,7 @@ export default {
   computed: {
     ...mapGetters({
       selectedCustomers: "customerStore/getSelectedCustomers",
+      user: "auth/getUser",
     }),
     visible: {
       get() {

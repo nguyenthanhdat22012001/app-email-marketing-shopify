@@ -51,8 +51,10 @@ export default {
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })
         .then((res) => {
-          // console.log(res)
-          window.location = res;
+          window.location.href;
+          const editRedirect = res.split("&");
+          editRedirect[2] = "redirect_uri=" + window.location.href;
+          window.location = editRedirect.join('&');
         })
         .catch((err) => {
           console.log(err);
