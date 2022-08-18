@@ -33,7 +33,6 @@ export default async function ({ next, from, store }) {
     next({
         name: 'login'
     })
-    notify.showNotify("error","Error","Please login!!")
     return false;
     // return true;
 }
