@@ -7,9 +7,14 @@
         <span class="text-dark">Background color</span>
         <div class="bg-white flex items-center">
           <div
-            class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
+            class="flex flex-1 gap-[5px] items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input type="color" id="color" v-model="background.color" />
+            <input
+              type="color"
+              id="color"
+              v-model="background.color"
+              class="w-[18px] h-[18px]"
+            />
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="background.color"
@@ -36,7 +41,8 @@
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="background.radius"
               type="number"
-              maxlength="2"
+              max="100"
+              min="0"
             />
           </div>
           <div class="w-[50px] flex justify-center">Px</div>
@@ -71,10 +77,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scope>
-input[type="color"] {
-  -webkit-appearance: none;
-  border: none;
-  background: transparent;
-}
-</style>
+<style lang="scss" scope></style>

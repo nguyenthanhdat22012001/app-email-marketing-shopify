@@ -27,7 +27,7 @@ export default {
   font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 1.4;
 }
 
 input::-webkit-outer-spin-button,
@@ -51,7 +51,7 @@ input[type="number"] {
   
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #ffffff;
     border-radius: 10px; 
 }
    
@@ -66,4 +66,19 @@ input[type="number"] {
     background: #555; 
 }
 
+/* input color */
+
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+   border-radius: 3px;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+   border-radius: 3px;
+   padding: 0;
+}
 </style>

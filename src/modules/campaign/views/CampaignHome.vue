@@ -16,7 +16,7 @@
           </div>
         </div>
         <div
-          class="bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5 shadow-content"
+          class="overflow-hidden bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5 shadow-content"
         >
           <campaign-filter
             @emitUpdateListCampaign="(value) => (list_campaign = value)"
@@ -120,20 +120,4 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
-/* .v-enter-active {
-  transition: 0.4s ease;
-  display: none;
-} */
-.campaign-list::-webkit-scrollbar {
-  display: none;
-}
-/* .v-enter {
-  transform: translateX(-100%);
-  position: relative;
-}
-.v-leave-to {
-  transform: translate(-100%, 0);
-  opacity: 0;
-} */
 </style>

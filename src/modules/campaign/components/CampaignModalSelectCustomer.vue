@@ -294,6 +294,9 @@ export default {
   created() {
     this.fetchCustomerPagination(this.page.current_page);
   },
+  beforeDestroy(){
+    console.log('beforeDestroy')
+  }
 };
 </script>
 <style></style>

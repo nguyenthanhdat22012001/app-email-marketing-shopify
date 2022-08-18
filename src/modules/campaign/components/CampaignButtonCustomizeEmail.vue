@@ -28,6 +28,8 @@
               type="number"
               class="w-[100%] focus:outline-0 py-[1px]"
               v-model="email_button.radius"
+              max="100"
+              min="0"
             />
           </div>
           <span class="w-[40px] text-center text-xs">Px</span>
@@ -40,11 +42,12 @@
         <span class="text-dark">Background color</span>
         <div class="bg-white flex items-center">
           <div
-            class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
+            class="flex flex-1 gap-[5px] items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
             <input
               type="color"
               id="color"
+              class="w-[18px] h-[18px]"
               v-model="email_button.background_color"
             />
             <input
@@ -68,9 +71,14 @@
         <span class="text-dark">Text color</span>
         <div class="bg-white flex items-center">
           <div
-            class="flex flex-1 items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
+            class="flex flex-1 gap-[5px] items-center py-[11px] px-[11px] border-r border-[#EBEBF0]"
           >
-            <input type="color" id="color" v-model="email_button.text_color" />
+            <input
+              type="color"
+              id="color"
+              class="w-[18px] h-[18px]"
+              v-model="email_button.text_color"
+            />
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="email_button.text_color"

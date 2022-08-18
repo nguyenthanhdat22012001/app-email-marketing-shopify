@@ -27,7 +27,7 @@
       >
         <div style="display: flex; gap: 5px">
           <span style="color: #555770">Subject: </span>
-          <span v-html="emailSubject" style="line-break: anywhere"></span>
+          <span v-html="prop_email_subject" style="line-break: anywhere"></span>
         </div>
         <div class="flex gap-5">
           <img
@@ -62,12 +62,12 @@
               <tr>
                 <td
                   :style="{
-                    borderRadius: ` ${emailBackground.radius}px ${emailBackground.radius}px 0px 0px`,
+                    borderRadius: ` ${prop_email_background.radius}px ${prop_email_background.radius}px 0px 0px`,
                     overflow: 'hidden',
                   }"
                 >
                   <img
-                    :src="emailBanner"
+                    :src="prop_email_banner"
                     alt=""
                     style="width: 100%; object-fit: cover"
                   />
@@ -77,13 +77,13 @@
                 class="preview-email-content"
                 :style="{
                   backgroundColor: backgroundColor,
-                  color: emailBackground.color_text,
+                  color: prop_email_background.color_text,
                 }"
               >
                 <td
                   class="email--content"
                   style="line-break: anywhere; padding: 28px 30px 25px"
-                  v-html="emailContent"
+                  v-html="prop_email_content"
                 ></td>
               </tr>
               <tr>
@@ -91,11 +91,11 @@
                   style="padding: 0px 30px 36px"
                   :style="{
                     backgroundColor: backgroundColor,
-                    borderRadius: `0px 0px ${emailBackground.radius}px ${emailBackground.radius}px`,
+                    borderRadius: `0px 0px ${prop_email_background.radius}px ${prop_email_background.radius}px`,
                   }"
                 >
                   <button
-                    v-if="emailButton.label.length > 0"
+                    v-if="prop_email_button.label.length > 0"
                     style="
                       width: 100%;
                       line-height: 18px;
@@ -106,7 +106,7 @@
                     "
                     :style="styleButton()"
                   >
-                    {{ emailButton.label }}
+                    {{ prop_email_button.label }}
                   </button>
                 </td>
               </tr>
@@ -121,7 +121,7 @@
                     display: block;
                     margin-top: 20px;
                   "
-                  v-html="emailFooter"
+                  v-html="prop_email_footer"
                 ></td>
               </tr>
               <tr>
@@ -165,12 +165,12 @@ export default {
     CampaignModalSendMail,
   },
   props: {
-    emailSubject: String,
-    emailContent: String,
-    emailFooter: String,
-    emailBanner: String,
-    emailBackground: Object,
-    emailButton: Object,
+    prop_email_subject: String,
+    prop_email_content: String,
+    prop_email_footer: String,
+    prop_email_banner: String,
+    prop_email_background: Object,
+    prop_email_button: Object,
   },
   data() {
     return {
@@ -198,7 +198,13 @@ export default {
       }
     },
     styleButton() {
-      return `background:${this.emailButton.backgroundColor};color:${this.emailButton.textColor};border-radius:${this.emailButton.radius}px`;
+      return `background:${this.hexToRgbA(
+        this.prop_email_button.background_color,
+        this.prop_email_button.background_opacity
+      )};color:${this.hexToRgbA(
+        this.prop_email_button.text_color,
+        this.prop_email_button.text_opacity
+      )};border-radius:${this.prop_email_button.radius}px`;
     },
     checkBackgroundLightDark(rgba = "#ffffff") {
       let string_length = rgba?.length - 1;
@@ -231,19 +237,19 @@ export default {
   computed: {
     backgroundColor() {
       let rgba = this.hexToRgbA(
-        this.emailBackground.color,
-        this.emailBackground.opacity
+        this.prop_email_background.color,
+        this.prop_email_background.opacity
       );
       this.handleChangeColorText(rgba);
       return rgba;
     },
     hideBoxPreview() {
-      if (this.emailBanner != "") {
+      if (this.prop_email_banner != "") {
         return true;
       }
 
-      if (this.emailContent != "") {
-        if (this.emailContent.length <= 7) {
+      if (this.prop_email_content != "") {
+        if (this.prop_email_content.length <= 7) {
           return false;
         }
         return true;

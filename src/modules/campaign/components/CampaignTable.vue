@@ -27,7 +27,7 @@
           <v-status :class="item.process == 100 ? 'text-success bg-[#E3FFF1]' : 'text-primary bg-[#FAFAFC]'">{{item.status }}</v-status>
         </td>
         <td class="py-5 px-3.5">
-          <v-progress-bar class="w-[100px]" :prop_percent="item.process"></v-progress-bar>
+          <v-progress-bar class="w-[100px]" :prop_status="item.status" :prop_percent="item.process"></v-progress-bar>
         </td>
         <td class="py-5 px-3.5">{{handleFormatNumberCommas(item.total_customers) }}</td>
         <td class="py-5 px-3.5 text-success font-bold">
