@@ -67,16 +67,14 @@ export default {
       isDisabled: true,
     };
   },
-  created() {
-    if (this.progress >= 100) {
+  created() {},
+  mounted() {
+    if (!this.customerList?.data?.length) {
       this.setLoading(true);
       this.fetchCustomer({
         ...this.$route.query,
       });
     }
-  },
-  mounted() {
-    // console.log
   },
   methods: {
     ...mapActions({

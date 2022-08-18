@@ -118,12 +118,6 @@ const actions = {
 
     exportCSV({ state }, payload) {
         return new Promise((resolve, reject) => {
-
-            if (payload?.length) {
-                payload = {
-                    list_customer: payload.toString()
-                }
-            }
             api.CUSTOMER.exportCSV(payload)
                 .then((res) => {
                     console.log(res)
