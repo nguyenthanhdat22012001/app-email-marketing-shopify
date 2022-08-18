@@ -12,6 +12,7 @@
         <router-view
           :style="{ '--top': `${top}px`, '--width': `${sidebar}px` }"
           appear
+          :key="$route.fullPath"
         >
         </router-view>
       </transition>

@@ -1,4 +1,4 @@
-import { mixin } from "@/plugins";
+import { axios, mixin } from "@/plugins";
 import notify from "@/helper/notify";
 export default async function ({ next, from, store }) {
     let token = store.getters['auth/getToken']
@@ -8,7 +8,8 @@ export default async function ({ next, from, store }) {
             try {
                 const { user } = await store.dispatch('auth/fetchUser')
                 if (user) {
-                    store.commit('auth/setUser', user)  
+                    store.commit('auth/setUser', user);
+                   
                     return true
                 } else {
                     throw {
@@ -26,6 +27,7 @@ export default async function ({ next, from, store }) {
                 return false
             }
         } else {
+        
             return true
         }
     }

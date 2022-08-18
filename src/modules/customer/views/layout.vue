@@ -64,9 +64,7 @@ export default {
       this.$router.push({ query: {} });
       this.setIsProgress(true);
 
-      this.fetchCustomersSync({
-        shop: this.user.domain,
-      })
+      this.fetchCustomersSync()
         .then(() => {
           this.setProgress(0);
           notify.showNotify("success", "Success", "Start Sync Customers");
