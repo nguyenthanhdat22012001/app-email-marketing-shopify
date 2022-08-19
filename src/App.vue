@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="relative overflow-hidden">
     <v-notify></v-notify>
-    <vue-extend-layouts loading="default"/>
+    <vue-extend-layouts loading="default" />
     <v-loading-app></v-loading-app>
   </div>
 </template>
@@ -13,6 +13,7 @@ import VLoadingApp from "@/components/VLoadingApp.vue";
 export default {
   name: "App",
   components: { VueExtendLayouts, VNotify, VLoadingApp },
+  
 };
 </script>
 <style lang="scss">
@@ -45,25 +46,25 @@ input[type="number"] {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+  width: 7px;
+  height: 7px;
 }
-  
+
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #ffffff;
-    border-radius: 10px; 
+  background: #ffffff;
+  border-radius: 10px;
 }
-   
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888; 
-    border-radius: 10px;
+  background: #888;
+  border-radius: 10px;
 }
-  
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+  background: #555;
 }
 
 /* input color */
@@ -74,11 +75,11 @@ input[type="color"] {
 }
 input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 0;
-   border-radius: 3px;
+  border-radius: 3px;
 }
 input[type="color"]::-webkit-color-swatch {
   border: none;
-   border-radius: 3px;
-   padding: 0;
+  border-radius: 3px;
+  padding: 0;
 }
 </style>

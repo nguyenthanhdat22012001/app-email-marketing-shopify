@@ -107,7 +107,7 @@ export default {
         this.$emit("emitSetLoading", true);
         let res = await api.CAMPAIGN.filter(payload);
         if (res.status) {
-          this.$emit("emitUpdateListCampaign", res.data);
+          this.$emit("emitUpdateListCampaign", res.data.data);
         }
       } catch (error) {
         console.log(error);
@@ -116,7 +116,7 @@ export default {
     },
   },
   watch: {
-    async sort(value) {
+    async sort(value) {   
       await this.handleFiterCampaign();
     },
     async status(value) {

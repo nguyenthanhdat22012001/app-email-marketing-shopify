@@ -38,14 +38,11 @@ export default {
     handleExportCSV() {
       try {
         if (this.exportAll) {
-          this.exportCSV({
-            shop: this.user.domain,
-          }).then((res) => {
+          this.exportCSV().then((res) => {
             notify.showNotify("success", "Success", res.message);
           });
         } else {
           this.exportCSV({
-            shop: this.user.domain,
             list_customer: this.selectedCustomers,
           }).then((res) => {
             notify.showNotify("success", "Success", res.message);

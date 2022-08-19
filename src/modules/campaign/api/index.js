@@ -1,11 +1,11 @@
 import { api } from "/src/plugins/api";
 
 export default {
-  fetch() {
-    return api.get("api/campaign/get-campaigns-process");
+  fetch(payload) {
+    return api.get("api/campaign/get-campaigns-process",payload);
   },
   filter(payload) {
-    return api.get("api/campaign/filterCampaign", payload);
+    return api.get("api/campaign", payload);
   },
   postTestMail(payload) {
     return api.post("/api/campaign/send-test", payload, {

@@ -14,6 +14,7 @@
             <v-checkbox
               :prop_is_checkbox_custom="true"
               scope="col"
+              v-model="select_any"
               prop_input_value="select_any"
               @input="handleClearCustomers"
             />
@@ -155,7 +156,8 @@ export default {
       let is_check = list_customer_selected.find((item) => item == id);
       return is_check ? true : false;
     },
-    handleClearCustomers() {
+    handleClearCustomers(value) {
+      console.log(value);
       this.setTempDataCustomer({ list_customer_selected: [] });
       this.handleUpdateNumberCustomerSelectTempDataCustomer(
         this.prop_total_customers
@@ -235,16 +237,16 @@ export default {
         }
       },
     },
-    // select_any: {
-    //   get() {
-    //     return this.$store.state.campaignStore.temp_data_customer.select_any;
-    //   },
-    //   set(value) {
-    //     this.$store.commit("campaignStore/setTempDataCustomer", {
-    //       select_any: value,
-    //     });
-    //   },
-    // },
+    select_any: {
+      get() {
+        return this.$store.state.campaignStore.temp_data_customer.select_any;
+      },
+      set(value) {
+        this.$store.commit("campaignStore/setTempDataCustomer", {
+          select_any: value,
+        });
+      },
+    },
   },
 };
 </script>
