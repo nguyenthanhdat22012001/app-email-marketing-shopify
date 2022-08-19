@@ -2,7 +2,7 @@
   <div
     id="loading"
     v-if="isLoading"
-    class="w-screen h-screen absolute bg-white top-0 left-0 bg-opacity-30 flex items-center justify-center"
+    class="w-screen h-screen absolute bg-white top-0 left-0 bg-opacity-30 flex items-center justify-center z-[1000]"
   >
     <span
       id="circle1"
