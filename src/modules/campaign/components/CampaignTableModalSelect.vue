@@ -22,7 +22,7 @@
               scope="col"
               v-model="select_all"
               prop_input_value="all"
-              @input="handleClearCustomerExect"
+              @input="handleClearCustomerExcept"
             />
           </template>
         </div>
@@ -50,7 +50,7 @@
               class="py-[22px] pl-[30px] translate-y-2/4"
               :dataId="customer.id"
               :value="!handleCheckCustomerHasCustomerExect(customer.id)"
-              @input="(value) => hanldeAddCustomerExect(value, customer.id)"
+              @input="(value) => handleAddCustomerEcept(value, customer.id)"
             />
           </template>
           <template v-else>
@@ -110,7 +110,7 @@ export default {
     };
   },
   methods: {
-    hanldeAddCustomerExect(is_check, id) {
+    handleAddCustomerEcept(is_check, id) {
       if (this.select_all) {
         if (!is_check) {
           this.list_customer_exect = [...this.list_customer_exect, id];
@@ -121,7 +121,7 @@ export default {
       }
       this.handleUpdateDataCustomerInModal();
     },
-    handleClearCustomerExect() {
+    handleClearCustomerExcept() {
       if (this.list_customer_exect.length != 0) {
         this.list_customer_exect = [];
       }
@@ -162,7 +162,7 @@ export default {
       this.$emit("emitHandleUpdateDataCustomerInModal", data);
     },
 
-    hanldeReturnBackDataCustomerOld(data) {
+    handleReturnBackDataCustomerOld(data) {
       this.list_customer_selected = data.list_customer_selected;
       this.list_customer_exect = data.list_customer_exect;
       this.number_customer_select = data.number_customer_select;
@@ -205,13 +205,13 @@ export default {
   mounted() {
     this.$eventBus.$on(
       "eventBusReturnBackDataCustomerOld",
-      this.hanldeReturnBackDataCustomerOld
+      this.handleReturnBackDataCustomerOld
     );
   },
   beforeDestroy() {
     this.$eventBus.$off(
       "eventBusReturnBackDataCustomerOld",
-      this.hanldeReturnBackDataCustomerOld
+      this.handleReturnBackDataCustomerOld
     );
   },
 };

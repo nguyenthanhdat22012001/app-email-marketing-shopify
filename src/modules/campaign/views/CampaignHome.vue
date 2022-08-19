@@ -106,7 +106,7 @@ export default {
     },
   },
   async created() {
-    await this.fetchCampaigns();
+    // await this.fetchCampaigns();
   },
   mounted() {
     this.subscribe();

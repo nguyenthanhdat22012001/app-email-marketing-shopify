@@ -64,7 +64,7 @@
             <v-avatar
               :name="getFullName(customer.first_name, customer.last_name)"
               class="mr-3"
-            />{{ getFullName(customer.first_name, customer.last_name) }}
+            /> {{ getFullName(customer.first_name, customer.last_name) }}
           </td>
           <td class="py-5 pr-3.5">{{ customer.phone }}</td>
           <td class="py-5 pr-3.5 text-primary">{{ customer.email }}</td>
