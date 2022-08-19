@@ -14,7 +14,6 @@
             <v-checkbox
               :prop_is_checkbox_custom="true"
               scope="col"
-              v-model="select_any"
               prop_input_value="select_any"
               @input="handleClearCustomers"
             />
@@ -236,16 +235,16 @@ export default {
         }
       },
     },
-    select_any: {
-      get() {
-        return this.$store.state.campaignStore.temp_data_customer.select_any;
-      },
-      set(value) {
-        this.$store.commit("campaignStore/setTempDataCustomer", {
-          select_any: value,
-        });
-      },
-    },
+    // select_any: {
+    //   get() {
+    //     return this.$store.state.campaignStore.temp_data_customer.select_any;
+    //   },
+    //   set(value) {
+    //     this.$store.commit("campaignStore/setTempDataCustomer", {
+    //       select_any: value,
+    //     });
+    //   },
+    // },
   },
 };
 </script>

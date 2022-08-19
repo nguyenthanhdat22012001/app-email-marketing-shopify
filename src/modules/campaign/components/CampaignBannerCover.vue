@@ -73,17 +73,6 @@ export default {
 
       return true;
     },
-    // getBase64FromUrl(file) {
-    //   return new Promise((resolve) => {
-    //     const reader = new FileReader();
-    //     reader.readAsDataURL(file);
-
-    //     reader.onloadend = () => {
-    //       const base64data = reader.result;
-    //       resolve(base64data);
-    //     };
-    //   });
-    // },
   },
 };
 </script>
