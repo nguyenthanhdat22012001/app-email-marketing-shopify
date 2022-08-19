@@ -25,7 +25,7 @@
               scope="col"
               v-model="select_all"
               prop_input_value="all"
-              @input="handleClearCustomerExect"
+              @input="handleClearCustomerExcept"
             />
           </template>
         </div>
@@ -53,7 +53,7 @@
               class="py-[22px] pl-[30px] translate-y-2/4"
               :dataId="customer.id"
               :value="!handleCheckCustomerHasCustomerExect(customer.id)"
-              @input="(value) => hanldeAddCustomerExect(value, customer.id)"
+              @input="(value) => handleAddCustomerEcept(value, customer.id)"
             />
           </template>
           <template v-else>

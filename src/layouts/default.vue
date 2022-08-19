@@ -127,9 +127,13 @@ $time: 0.4s;
   position: absolute;
   top: var(--top);
   width: calc(100vw - var(--width));
+  height: calc(100vh - var(--top));
 }
-.v-enter-active,
-.v-leave-active {
+.v-enter-active {
   animation-duration: 0.6s;
+}
+
+.v-leave-active {
+  animation-duration: 0.5s;
 }
 </style>

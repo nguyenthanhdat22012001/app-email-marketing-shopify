@@ -47,6 +47,7 @@ export default {
       login: "auth/loginStore",
     }),
     handleLogin() {
+      
       this.login({
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })

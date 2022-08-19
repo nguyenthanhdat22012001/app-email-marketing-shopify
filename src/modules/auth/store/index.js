@@ -10,9 +10,6 @@ const state = {
     token: token ? token : '',
 };
 const getters = {
-    isLogged(state) {
-        return state.user ? true : false;
-    },
     getUser(state) {
         return state.user;
     },
