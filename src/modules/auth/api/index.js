@@ -6,6 +6,6 @@ export default {
     },
 
     fetchUser() {
-        return api.get("/api/auth/getUser");
+        return api.get("/api/auth/store");
     },
 }

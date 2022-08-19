@@ -6,8 +6,8 @@ export default async function ({ next, from, store }) {
         let user = store.getters['auth/getUser']
         if (!user) {
             try {
-                const { user } = await store.dispatch('auth/fetchUser')
-                if (user) {
+                const payload = await store.dispatch('auth/fetchUser')
+                if (payload.store) {
                     store.commit('auth/setUser', user)  
                     return true
                 } else {

@@ -179,11 +179,7 @@
       >
       <v-button variant="primary" class="py-1 px-7">Save</v-button>
     </div>
-    <campaign-modal-select-customer
-      v-model="visible_customer_email_modal"
-      @emitCloseModal="handleCloseModal"
-      @emitHandleAddAvatarSendToCustomer="(data) => (data_customer = data)"
-    >
+    <campaign-modal-select-customer v-model="visible_customer_email_modal">
     </campaign-modal-select-customer>
     <v-modal-comfirm
       prop_title="Are you sure cancel. The data can be lost?"
@@ -214,7 +210,7 @@ import CampaignButtonCustomizeEmail from "../components/CampaignButtonCustomizeE
 import CampaignModalSelectCustomer from "../components/CampaignModalSelectCustomer.vue";
 
 import { api } from "@/plugins";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import notify from "@/helper/notify";
 export default {
   components: {
@@ -256,13 +252,6 @@ export default {
         radius: 4,
         label: "TRY FREE NOW",
       },
-      data_customer: {
-        number_customer_select: 0,
-        list_customer_selected: [],
-        list_customer_exect: [],
-        customers_avatar: [],
-        select_all: false,
-      },
       formstate: false,
     };
   },
@@ -271,19 +260,13 @@ export default {
     ...mapMutations({
       setLoading: "setLoading",
     }),
-    handleCloseModal() {
-      this.$eventBus.$emit(
-        "eventBusReturnBackDataCustomerOld",
-        this.data_customer
-      );
-      this.visible_customer_email_modal = false;
-    },
     checkValue(value) {
       if (value > 100) {
         return 100;
       }
       return Number(value);
     },
+    // handle check redirect if user enter form
     hanldeCheckIsHaveData() {
       if (
         this.validation.form.campaign_name.required.valid ||
@@ -303,7 +286,8 @@ export default {
         this.redirect("/campaign");
       }
     },
-    handleGetDataCreateCampaign() {
+    // handle return data create campaign to send api
+    handleReturnDataCreateCampaign() {
       let el_preview_body = this.$refs.ref_preview.$el.children[1];
       let el_preview_content = el_preview_body.children[1];
       const cloneNode = el_preview_content.cloneNode(true);
@@ -334,7 +318,7 @@ export default {
       this.formstate = true;
       this.validateScroll();
       if (this.validation.valid) {
-        let data = this.handleGetDataCreateCampaign();
+        let data = this.handleReturnDataCreateCampaign();
         let newData = {
           ...data,
           all_customer: this.data_customer.select_all,
@@ -366,7 +350,7 @@ export default {
       this.formstate = true;
       this.validateScroll();
       if (this.validation.valid) {
-        let data = this.handleGetDataCreateCampaign();
+        let data = this.handleReturnDataCreateCampaign();
         let newData = { ...data, send_email: email };
         await this.handleSendTestMailApi(newData);
       }
@@ -394,6 +378,9 @@ export default {
     },
   },
   computed: {
+    ...mapState("campaignStore", {
+      data_customer: (state) => state.data_customer,
+    }),
     validation() {
       const campaign_name = {
         required: {
@@ -451,10 +438,11 @@ export default {
     },
   },
   mounted() {
-    this.$eventBus.$on("emitSendTestMail", this.onSendTestMail);
+    // listen from CampaignModalSendMail
+    this.$eventBus.$on("eventBusSendTestMail", this.onSendTestMail);
   },
   beforeDestroy() {
-    this.$eventBus.$off("emitSendTestMail", this.onSendTestMail);
+    this.$eventBus.$off("eventBusSendTestMail", this.onSendTestMail);
   },
 };
 </script>
@@ -465,11 +453,4 @@ export default {
   border-left: 2px solid;
   box-sizing: unset;
 }
-
-/* .v-enter {
-  transform: translate(100%, 0);
-}
-.v-leave-to {
-  transform: translate(100%, 0);
-} */
 </style>

@@ -81,7 +81,7 @@ export default {
     onSendTestMail() {
       this.formstate = true;
       if (this.validation.valid) {
-        this.$eventBus.$emit("emitSendTestMail", this.input_email);
+        this.$eventBus.$emit("eventBusSendTestMail", this.input_email);
         this.visible = false;
       }
     },
