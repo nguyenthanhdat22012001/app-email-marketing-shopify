@@ -105,7 +105,7 @@ export default {
       };
       try {
         this.$emit("emitSetLoading", true);
-        let res = await api.CAMPAIGN.filter(payload);
+        let res = await api.CAMPAIGN.fetch(payload);
         if (res.status) {
           this.$emit("emitUpdateListCampaign", res.data.data);
         }
