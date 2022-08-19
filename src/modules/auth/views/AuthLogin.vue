@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      shopName: "",
+      shopName: "manh-store123",
     };
   },
   methods: {
@@ -51,10 +51,11 @@ export default {
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })
         .then((res) => {
-          window.location.href;
-          const editRedirect = res.split("&");
-          editRedirect[2] = "redirect_uri=" + window.location.href;
-          window.location = editRedirect.join('&');
+          if (res.status == true) {
+            window.location = res.url;
+          } else {
+            throw new Error();
+          }
         })
         .catch((err) => {
           console.log(err);
