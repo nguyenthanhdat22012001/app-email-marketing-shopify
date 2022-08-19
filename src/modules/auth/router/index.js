@@ -1,5 +1,5 @@
 import NoLogin from '@/middleware/NoLogin'
-
+import LoadingComponent from '@/components/VLoadingApp'
 
 const authRouter = [
     {
@@ -9,7 +9,8 @@ const authRouter = [
         meta: {
             layout: 'auth',
             middleware: [NoLogin],
-        }
+        },
+        loading: LoadingComponent
     }
 ]
 export default authRouter

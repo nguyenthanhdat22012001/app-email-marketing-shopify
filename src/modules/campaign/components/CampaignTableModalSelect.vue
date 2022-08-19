@@ -1,5 +1,8 @@
 <!-- EX
-   <campaign-table-modal-select/>
+    <campaign-table-modal-select
+          :prop_list_customer="list_customer"
+          :prop_total_customers="total_customers"
+        />
 -->
 
 <template>
@@ -7,7 +10,7 @@
     <template #table_head_tr>
       <th class="py-5 pl-[30px]">
         <div class="flex gap-2">
-          <template v-if="select_any">
+          <template v-if="store_select_any">
             <v-checkbox
               :prop_is_checkbox_custom="true"
               scope="col"
@@ -82,6 +85,7 @@
 import VTable from "@/components/VTable.vue";
 import VCheckbox from "@/components/VCheckbox.vue";
 import VAvatar from "@/components/VAvatar.vue";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
   components: {
@@ -101,77 +105,63 @@ export default {
       default: 0,
     },
   },
-  data() {
-    return {
-      list_customer_selected: [],
-      list_customer_exect: [],
-      select_all: false,
-      select_any: false,
-    };
-  },
   methods: {
-    handleAddCustomerEcept(is_check, id) {
-      if (this.select_all) {
+    ...mapActions("campaignStore", [
+      "handleUpdateNumberCustomerSelectTempDataCustomer",
+    ]),
+    ...mapMutations("campaignStore", ["setTempDataCustomer"]),
+    hanldeAddCustomerExect(is_check, id) {
+      if (this.$store.state.campaignStore.temp_data_customer.select_all) {
         if (!is_check) {
-          this.list_customer_exect = [...this.list_customer_exect, id];
+          this.setTempDataCustomer({
+            list_customer_exect: [
+              ...this.$store.state.campaignStore.temp_data_customer
+                .list_customer_exect,
+              id,
+            ],
+          });
         } else {
-          let newData = this.list_customer_exect.filter((item) => item != id);
-          this.list_customer_exect = newData;
+          let newData =
+            this.$store.state.campaignStore.temp_data_customer.list_customer_exect.filter(
+              (item) => item != id
+            );
+          this.setTempDataCustomer({ list_customer_exect: newData });
         }
       }
-      this.handleUpdateDataCustomerInModal();
+      this.handleUpdateNumberCustomerSelectTempDataCustomer(
+        this.prop_total_customers
+      );
     },
-    handleClearCustomerExcept() {
-      if (this.list_customer_exect.length != 0) {
-        this.list_customer_exect = [];
+    handleClearCustomerExect() {
+      if (
+        this.$store.state.campaignStore.temp_data_customer.list_customer_exect
+          .length != 0
+      ) {
+        this.setTempDataCustomer({ list_customer_exect: [] });
       }
-      this.handleUpdateDataCustomerInModal();
+      this.handleUpdateNumberCustomerSelectTempDataCustomer(
+        this.prop_total_customers
+      );
     },
     handleCheckCustomerHasCustomerExect(id) {
-      let list_customer_exect = this.list_customer_exect;
+      let list_customer_exect =
+        this.$store.state.campaignStore.temp_data_customer.list_customer_exect;
       let is_check = list_customer_exect.find((item) => item == id);
       return is_check ? true : false;
     },
     handleCheckCustomerHasCustomerSelected(id) {
-      let list_customer_selected = this.list_customer_selected;
+      let list_customer_selected =
+        this.$store.state.campaignStore.temp_data_customer
+          .list_customer_selected;
       let is_check = list_customer_selected.find((item) => item == id);
       return is_check ? true : false;
     },
-    handleClearCustomers() {
-      this.list_customer_selected = [];
-      this.handleUpdateDataCustomerInModal();
-    },
-    handleUpdateDataCustomerInModal() {
-      let total = 0;
-      if (this.select_all) {
-        total = this.prop_total_customers - this.list_customer_exect.length;
-      } else {
-        total = 0;
-      }
-
-      if (this.select_any) {
-        total = this.list_customer_selected.length;
-      }
-      let data = {
-        number_customer_select: total,
-        list_customer_selected: this.list_customer_selected,
-        list_customer_exect: this.list_customer_exect,
-        select_all: this.select_all,
-      };
-
-      this.$emit("emitHandleUpdateDataCustomerInModal", data);
-    },
-
-    handleReturnBackDataCustomerOld(data) {
-      this.list_customer_selected = data.list_customer_selected;
-      this.list_customer_exect = data.list_customer_exect;
-      this.number_customer_select = data.number_customer_select;
-      this.select_all = data.select_all;
-      if (data.number_customer_select.length > 0) {
-        if (!this.select_any) {
-          this.select_any = true;
-        }
-      }
+    handleClearCustomers(value) {
+      console.log(value);
+      this.setTempDataCustomer({ list_customer_selected: [] });
+      this.handleUpdateNumberCustomerSelectTempDataCustomer(
+        this.prop_total_customers
+      );
     },
     handleReturnBackground(id) {
       if (this.select_all) {
@@ -190,31 +180,74 @@ export default {
       }
     },
   },
-  watch: {
-    list_customer_selected(value) {
-      if (value.length > 0) {
-        if (!this.select_any) {
-          this.select_any = true;
+  computed: {
+    ...mapState("campaignStore", {
+      store_select_any: (state) => state.temp_data_customer.select_any,
+    }),
+    list_customer_selected: {
+      get() {
+        return this.$store.state.campaignStore.temp_data_customer
+          .list_customer_selected;
+      },
+      set(value) {
+        this.$store.commit("campaignStore/setTempDataCustomer", {
+          list_customer_selected: value,
+        });
+        
+        if ([...value].length > 0) {
+          if (!this.store_select_any) {
+            this.$store.commit("campaignStore/setTempDataCustomer", {
+              select_any: true,
+            });
+          }
+        } else {
+          this.$store.commit("campaignStore/setTempDataCustomer", {
+            select_any: false,
+          });
         }
-      } else {
-        this.select_any = false;
-      }
-      this.handleUpdateDataCustomerInModal();
+        this.handleUpdateNumberCustomerSelectTempDataCustomer(
+          this.prop_total_customers
+        );
+      },
     },
-  },
-  mounted() {
-    this.$eventBus.$on(
-      "eventBusReturnBackDataCustomerOld",
-      this.handleReturnBackDataCustomerOld
-    );
-  },
-  beforeDestroy() {
-    this.$eventBus.$off(
-      "eventBusReturnBackDataCustomerOld",
-      this.handleReturnBackDataCustomerOld
-    );
+    list_customer_exect: {
+      get() {
+        return this.$store.state.campaignStore.temp_data_customer
+          .list_customer_exect;
+      },
+      set(value) {
+        this.$store.commit("campaignStore/setTempDataCustomer", {
+          list_customer_exect: value,
+        });
+      },
+    },
+    select_all: {
+      get() {
+        return this.$store.state.campaignStore.temp_data_customer.select_all;
+      },
+      set(value) {
+        if (value) {
+          this.$store.commit("campaignStore/setTempDataCustomer", {
+            select_all: true,
+          });
+        } else {
+          this.$store.commit("campaignStore/setTempDataCustomer", {
+            select_all: false,
+          });
+        }
+      },
+    },
+    select_any: {
+      get() {
+        return this.$store.state.campaignStore.temp_data_customer.select_any;
+      },
+      set(value) {
+        this.$store.commit("campaignStore/setTempDataCustomer", {
+          select_any: value,
+        });
+      },
+    },
   },
 };
 </script>
-
 <style lang="scss" scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="relative overflow-hidden">
     <v-notify></v-notify>
-    <vue-extend-layouts loading="default" />
+    <vue-extend-layouts :loading="$route.loading || 'default'" />
     <v-loading-app></v-loading-app>
   </div>
 </template>

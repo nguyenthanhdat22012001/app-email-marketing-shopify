@@ -7,14 +7,14 @@ export default async function ({ next, from, store }) {
         if (!user) {
             try {
                 const payload = await store.dispatch('auth/fetchUser')
-                
+             
                 if (payload.store) {
                     store.commit('auth/setUser', payload.store);
                    
                     return true
                 } else {
                     throw {
-                        message: "Session expired"
+                        message: "Store Invalid!! Try again"
                     }
                 }
             } catch (error) {
