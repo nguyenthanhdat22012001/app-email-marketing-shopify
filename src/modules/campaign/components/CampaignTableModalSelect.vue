@@ -14,7 +14,7 @@
             <v-checkbox
               :prop_is_checkbox_custom="true"
               scope="col"
-              v-model="select_any"
+              :value="store_select_any"
               prop_input_value="select_any"
               @input="handleClearCustomers"
             />
@@ -25,7 +25,6 @@
               scope="col"
               v-model="select_all"
               prop_input_value="all"
-              @input="handleClearCustomerExcept"
             />
           </template>
         </div>
@@ -53,7 +52,7 @@
               class="py-[22px] pl-[30px] translate-y-2/4"
               :dataId="customer.id"
               :value="!handleCheckCustomerHasCustomerExect(customer.id)"
-              @input="(value) => handleAddCustomerEcept(value, customer.id)"
+              @input="(value) => hanldeAddCustomerExect(value, customer.id)"
             />
           </template>
           <template v-else>
@@ -157,8 +156,7 @@ export default {
       return is_check ? true : false;
     },
     handleClearCustomers(value) {
-      console.log(value);
-      this.setTempDataCustomer({ list_customer_selected: [] });
+      this.setTempDataCustomer({ list_customer_selected: [], select_any: value, });
       this.handleUpdateNumberCustomerSelectTempDataCustomer(
         this.prop_total_customers
       );
@@ -193,7 +191,7 @@ export default {
         this.$store.commit("campaignStore/setTempDataCustomer", {
           list_customer_selected: value,
         });
-        
+
         if ([...value].length > 0) {
           if (!this.store_select_any) {
             this.$store.commit("campaignStore/setTempDataCustomer", {
@@ -210,17 +208,6 @@ export default {
         );
       },
     },
-    list_customer_exect: {
-      get() {
-        return this.$store.state.campaignStore.temp_data_customer
-          .list_customer_exect;
-      },
-      set(value) {
-        this.$store.commit("campaignStore/setTempDataCustomer", {
-          list_customer_exect: value,
-        });
-      },
-    },
     select_all: {
       get() {
         return this.$store.state.campaignStore.temp_data_customer.select_all;
@@ -235,16 +222,9 @@ export default {
             select_all: false,
           });
         }
-      },
-    },
-    select_any: {
-      get() {
-        return this.$store.state.campaignStore.temp_data_customer.select_any;
-      },
-      set(value) {
-        this.$store.commit("campaignStore/setTempDataCustomer", {
-          select_any: value,
-        });
+        this.handleUpdateNumberCustomerSelectTempDataCustomer(
+          this.prop_total_customers
+        );
       },
     },
   },

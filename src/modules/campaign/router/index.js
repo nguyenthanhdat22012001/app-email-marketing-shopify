@@ -11,7 +11,7 @@ const campaignRouter = [
                 name: 'campaign',
                 component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignHome.vue"),
                 meta: {
-                    // middleware: [Auth],
+                    middleware: [Auth],
                     enterClass: 'animate__animated animate__fadeInLeft',
                     leaveClass: 'animate__animated animate__fadeOutRight',
                 },
