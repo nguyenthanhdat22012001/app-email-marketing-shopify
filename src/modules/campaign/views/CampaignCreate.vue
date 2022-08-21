@@ -318,7 +318,6 @@ export default {
       this.formstate = true;
       this.validateScroll();
       if (this.validation.valid) {
-        console.log(this.data_customer.list_customer_exect);
         let data = this.handleReturnDataCreateCampaign();
         let newData = {
           ...data,
