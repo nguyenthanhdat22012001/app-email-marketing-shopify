@@ -21,7 +21,10 @@
             :disabled="isProgress"
             :class="{ disabled: isProgress }"
           >
-            <img src="@/assets/icons/async.svg" />
+            <img
+              src="@/assets/icons/async.svg"
+              :class="{ activeAsync: isProgress }"
+            />
             Manual sync
           </v-button>
         </div>
@@ -49,6 +52,7 @@ export default {
   data() {
     return {
       visibleModalExportAll: false,
+      progressTimeOut: null,
     };
   },
   created() {},
@@ -60,18 +64,28 @@ export default {
       setProgress: "customerStore/setProgress",
       setIsProgress: "customerStore/setIsProgress",
     }),
-    handleFetchCustomersSync() {
+   handleFetchCustomersSync() {
       this.$router.push({ query: {} });
       this.setIsProgress(true);
-
       this.fetchCustomersSync()
         .then(() => {
           this.setProgress(0);
           notify.showNotify("success", "Success", "Start Sync Customers");
+          this.progressTimeOut = setTimeout(() => {
+            if (this.progress == 0) {
+              this.toastMessageError({
+                message: "Sync Customers failed!",
+              });
+              this.setProgress(100);
+              this.setIsProgress(false);
+            } else {
+              clearTimeout(this.progressTimeOut);
+            }
+          }, 10000);
         })
         .catch((err) => {
           this.toastMessageError({
-            message: "Server Error!! Try Again",
+            message: "Sync Customers failed!",
           });
           this.setProgress(100);
           this.setIsProgress(false);
@@ -95,4 +109,16 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.activeAsync {
+  animation: rotateIconAsync 2s infinite linear;
+}
+@keyframes rotateIconAsync {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

@@ -1,6 +1,6 @@
 import { default as instance } from "axios";
-import cookie from '@/plugins/cookie'
-import store from '@/store'
+import cookie from "@/plugins/cookie";
+import store from "@/store";
 let axios = instance.create({
   baseURL: process.env.VUE_APP_API,
   timeout: 20 * 1000,
@@ -11,10 +11,9 @@ let axios = instance.create({
 axios.CancelToken = instance.CancelToken;
 axios.isCancel = instance.isCancel;
 axios.interceptors.request.use(function (config) {
-
   let token = cookie.get("access_token");
   config.headers["ngrok-skip-browser-warning"] = 1;
-  config.headers["Content-Type"] = "application/json"
+  config.headers["Content-Type"] = "application/json";
   if (token) {
     config.headers["Authorization"] = "Bearer " + token;
   }
@@ -22,20 +21,29 @@ axios.interceptors.request.use(function (config) {
 });
 axios.interceptors.response.use(
   function (response) {
-    if (response?.data?.status === 401) {
-      store.dispatch("auth/logout");
-      return Promise.reject({
-        message: "Session expired!! Please login again",
-        status: 401
-      });
-    }
+    // if (response?.data?.status === 401) {
+    //   store.dispatch("auth/logout");
+    //   return Promise.reject({
+    //     message: "Session expired!! Please login again",
+    //     status: 401
+    //   });
+    // }
     return response;
   },
-  function (error) {
-    if (error?.response?.status === 401) {
-      store.dispatch("auth/logout");
+  async function (error) {
+    //token expired
+    const originalConfig = error.config;
+    console.log("error.response", error.response.status);
+    console.log("originalConfig", originalConfig);
+    if (originalConfig.url !== "/api/auth/login" && error.response) {
+      if (error.response.status === 401) {
+      let result =  await store.dispatch("auth/refreshToken");
+      if(result){
+        return axios(originalConfig);
+      }
+      }
     }
     return Promise.reject(error.response);
-  },
+  }
 );
 export default axios;

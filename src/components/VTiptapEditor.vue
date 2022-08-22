@@ -368,7 +368,6 @@ export default {
       htmlObject.style = "white-space: pre-wrap;";
       htmlObject.innerHTML = string;
       let newString = htmlObject.outerHTML;
-      console.log(newString.length);
       this.$emit("emitUpdateEmailContent", newString);
     });
   },

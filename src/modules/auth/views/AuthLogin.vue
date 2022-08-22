@@ -47,7 +47,6 @@ export default {
       login: "auth/loginStore",
     }),
     handleLogin() {
-      
       this.login({
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })
@@ -59,10 +58,15 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
-          this.toastMessageError({
-            message: "Server Error!! Try again",
-          });
+          if (err.status == 404) {
+            this.toastMessageError({
+              message: "Store Invalid!! Try again",
+            });
+          } else {
+            this.toastMessageError({
+              message: "Server Error!! Try again",
+            });
+          }
         });
     },
   },
