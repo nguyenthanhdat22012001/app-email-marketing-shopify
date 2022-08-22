@@ -81,8 +81,7 @@ export default {
       try {
         this.is_loading = true;
         let res = await api.CAMPAIGN.fetch();
-        console.log(res);
-        if (res.status == true) {
+        if (res.status == 200) {
           this.list_campaign = res.data.data;
         }
       } catch (error) {

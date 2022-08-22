@@ -100,9 +100,14 @@ export default {
     async handleFiterCampaign() {
       let payload = {
         status: this.status.toString(),
-        sort: this.sort,
         keywords: this.keywords,
       };
+      if (this.sort !== "") {
+        payload = {
+          ...payload,
+          ...this.handleReturnKeySortAndSort(),
+        };
+      }
       try {
         this.$emit("emitSetLoading", true);
         let res = await api.CAMPAIGN.fetch(payload);
@@ -114,9 +119,36 @@ export default {
       }
       this.$emit("emitSetLoading", false);
     },
+    handleReturnKeySortAndSort() {
+      if (this.sort == "A-Z" || this.sort == "Z-A") {
+        if (this.sort == "A-Z") {
+          return {
+            key_sort: "name",
+            sort: "ASC",
+          };
+        } else {
+          return {
+            key_sort: "name",
+            sort: "DESC",
+          };
+        }
+      } else {
+        if (this.sort == "ASC") {
+          return {
+            key_sort: "created_at",
+            sort: "ASC",
+          };
+        } else {
+          return {
+            key_sort: "created_at",
+            sort: "DESC",
+          };
+        }
+      }
+    },
   },
   watch: {
-    async sort(value) {   
+    async sort(value) {
       await this.handleFiterCampaign();
     },
     async status(value) {
