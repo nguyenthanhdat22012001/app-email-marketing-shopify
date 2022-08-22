@@ -1,47 +1,47 @@
 <template>
-    <div
-      class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
-    >
-      <div class="flex flex-1 flex-col overflow-hidden">
-        <div class="flex justify-between w-full items-center">
-          <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
-          <div class="flex gap-[10px]">
-            <v-button
-              variant="primary"
-              @click="$router.push({ name: 'campaign/create' })"
-            >
-              <img src="@/assets/icons/plus.svg" />
-              Create new campaign
-            </v-button>
-          </div>
+  <div
+    class="campaign--home flex flex-col px-[55px] py-[35px] gap-5 flex-1 bg-gray-light"
+  >
+    <div class="flex flex-1 flex-col overflow-hidden">
+      <div class="flex justify-between w-full items-center">
+        <h1 class="font-extrabold text-xl lead-6">Campaign</h1>
+        <div class="flex gap-[10px]">
+          <v-button
+            variant="primary"
+            @click="$router.push({ name: 'campaign/create' })"
+          >
+            <img src="@/assets/icons/plus.svg" />
+            Create new campaign
+          </v-button>
         </div>
-        <div
-          class="overflow-hidden bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5 shadow-content"
-        >
-          <campaign-filter
-            @emitUpdateListCampaign="(value) => (list_campaign = value)"
-            @emitSetLoading="(value) => (is_loading = value)"
-          />
-          <div class="campaign-list h-full overflow-auto">
-            <template v-if="!is_loading">
-              <campaign-table
-                v-if="list_campaign.length > 0"
-                :prop_list_campaign="list_campaign"
-              />
-              <div
-                v-else
-                class="h-[200px] flex justify-center items-center font-medium text-base text-muted"
-              >
-                No records
-              </div>
-            </template>
-            <template v-else>
-              <v-loading />
-            </template>
-          </div>
+      </div>
+      <div
+        class="overflow-hidden bg-secondary rounded h-full w-full flex flex-col gap-6 mt-5 shadow-content"
+      >
+        <campaign-filter
+          @emitUpdateListCampaign="(value) => (list_campaign = value)"
+          @emitSetLoading="(value) => (is_loading = value)"
+        />
+        <div class="campaign-list h-full overflow-auto">
+          <template v-if="!is_loading">
+            <campaign-table
+              v-if="list_campaign.length > 0"
+              :prop_list_campaign="list_campaign"
+            />
+            <div
+              v-else
+              class="h-[200px] flex justify-center items-center font-medium text-base text-muted"
+            >
+              No records
+            </div>
+          </template>
+          <template v-else>
+            <v-loading />
+          </template>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -105,8 +105,8 @@ export default {
       this.list_campaign = list_campaign;
     },
   },
-  async created() {
-    await this.fetchCampaigns();
+  created() {
+    this.fetchCampaigns();
   },
   mounted() {
     this.subscribe();
