@@ -141,14 +141,14 @@ export default {
     async handleClickInsert() {
       this.visible = false;
       let data_customer = {
-          number_customer_select:  this.data_customer.number_customer_select,
-          list_customer_selected:  this.data_customer.list_customer_selected,
-          list_customer_exect:  this.data_customer.list_customer_exect,
-          select_all:  this.data_customer.select_all,
-          select_any:  this.data_customer.select_any,
+        number_customer_select: this.data_customer.number_customer_select,
+        list_customer_selected: this.data_customer.list_customer_selected,
+        list_customer_exect: this.data_customer.list_customer_exect,
+        select_all: this.data_customer.select_all,
+        select_any: this.data_customer.select_any,
       };
       if (
-        JSON.stringify(this.temp_data_customer) ===
+        JSON.stringify(this.temp_data_customer).localeCompare() ==
         JSON.stringify(data_customer)
       ) {
         return;
@@ -287,7 +287,6 @@ export default {
   },
   beforeDestroy() {
     this.resetDataCustomerAndTempDataCustomer();
-    console.log("beforeDestroy");
   },
 };
 </script>

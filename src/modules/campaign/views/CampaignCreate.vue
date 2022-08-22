@@ -321,14 +321,23 @@ export default {
         let data = this.handleReturnDataCreateCampaign();
         let newData = {
           ...data,
-          all_customer: this.data_customer.select_all,
-          list_customer_except: JSON.stringify(
-            this.data_customer.list_customer_except
-          ),
-          list_mail_customers: JSON.stringify(
-            this.data_customer.list_customer_selected
-          ),
         };
+        if (this.data_customer.select_all) {
+          newData = {
+            ...newData,
+            all_customer: this.data_customer.select_all,
+            list_mail_customers_except: JSON.stringify(
+              this.data_customer.list_customer_exect
+            ),
+          };
+        } else {
+          newData = {
+            ...newData,
+            list_mail_customers: JSON.stringify(
+              this.data_customer.list_customer_selected
+            ),
+          };
+        }
         await this.handleSendMailApi(newData);
         // this.$router.push({ name: "campaign" });
       }
@@ -337,6 +346,7 @@ export default {
       this.setLoading(true);
       try {
         let res = await api.CAMPAIGN.postSendMail(data);
+        console.log(res);
         if (res.status) {
           notify.showNotify("success", "Create campaign success !");
         }

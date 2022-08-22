@@ -1,7 +1,7 @@
 <!--   EX
    <v-progress-bar
-            :prop_number="500"
-            :prop_total="1000"
+            :prop_percent="50"
+            :prop_status="running"
           ></v-progress-bar>
 -->
 
