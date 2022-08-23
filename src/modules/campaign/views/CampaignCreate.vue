@@ -177,7 +177,7 @@
         @click="handleShouldRedirectOrShowModalComfirm()"
         >Cancel</v-button
       >
-      <v-button variant="primary" class="py-1 px-7">Save</v-button>
+      <v-button variant="primary" class="py-1 px-7" @click="onSendMail()">Save</v-button>
     </div>
     <campaign-modal-select-customer v-model="visible_customer_email_modal">
     </campaign-modal-select-customer>
@@ -339,7 +339,7 @@ export default {
           };
         }
         await this.handleSendMailApi(newData);
-        // this.$router.push({ name: "campaign" });
+        this.$router.push({ name: "campaign" });
       }
     },
     async handleSendMailApi(data) {
