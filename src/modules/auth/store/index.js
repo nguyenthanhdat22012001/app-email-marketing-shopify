@@ -70,7 +70,7 @@ const actions = {
       let res = await api.AUTH.refreshToken(payload);
       console.log(res);
       if (res.status) {
-        this.commit("setToken", res.access_token);
+        commit("setToken", res.data.original.access_token);
         return true;
       }
     } catch (error) {

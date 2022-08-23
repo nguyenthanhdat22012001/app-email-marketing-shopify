@@ -105,8 +105,8 @@ export default {
       this.list_campaign = list_campaign;
     },
   },
-  created() {
-    this.fetchCampaigns();
+  async created() {
+    await this.fetchCampaigns();
   },
   mounted() {
     this.subscribe();
