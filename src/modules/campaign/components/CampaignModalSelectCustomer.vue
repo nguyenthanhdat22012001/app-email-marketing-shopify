@@ -188,6 +188,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        return [];
       }
     },
     //handle pagination
@@ -235,6 +236,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        return false;
       }
       this.is_loading = false;
     },

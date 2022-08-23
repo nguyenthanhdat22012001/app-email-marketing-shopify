@@ -1,6 +1,8 @@
 import { default as instance } from "axios";
 import cookie from "@/plugins/cookie";
 import store from "@/store";
+import router from "@/router/index";
+
 let axios = instance.create({
   baseURL: process.env.VUE_APP_API,
   timeout: 20 * 1000,
@@ -31,10 +33,12 @@ axios.interceptors.response.use(
         let result = await store.dispatch("auth/refreshToken");
         if (result) {
           return axios(originalConfig);
+        } else {
+          router.push('/login');
         }
       }
     }
-    return Promise.reject(error.response);
+    return Promise.reject(error);
   }
 );
 export default axios;
