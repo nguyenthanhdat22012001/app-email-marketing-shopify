@@ -68,13 +68,13 @@ const actions = {
   async refreshToken({ commit }, payload) {
     try {
       let res = await api.AUTH.refreshToken(payload);
-      console.log(res);
       if (res.status) {
         commit("setToken", res.data.original.access_token);
         return true;
       }
+      return false;
     } catch (error) {
-      return false
+      return false;
     }
   },
   logout({ commit }) {
