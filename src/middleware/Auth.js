@@ -1,5 +1,4 @@
 import { axios, mixin } from "@/plugins";
-import notify from "@/helper/notify";
 export default async function ({ next, from, store }) {
     let token = store.getters['auth/getToken']
     if (token) {
@@ -23,7 +22,6 @@ export default async function ({ next, from, store }) {
                 return false
             }
         } else {
-        
             return true
         }
     }

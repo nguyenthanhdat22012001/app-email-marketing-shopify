@@ -56,20 +56,26 @@ const mutations = {
 const actions = {
     subscribe({ commit, state }) {
         return new Promise((resolve, reject) => {
-            const eventCustomersSync = (res) => {
-                console.log(res);
-                if (state.progress < 100) {
-                    commit('setProgress', Number(res.payload.processing));
+            try {
+                const eventCustomersSync = (res) => {
+                    console.log(res);
+                    if (state.progress < 100) {
+                        commit('setProgress', Number(res.payload.processing));
+                    }
+                    if (res.payload.status) {
+                        commit('setProgress', 100);
+                        pusher.unbind("syncing_customer", eventCustomersSync);
+                        resolve(res.payload.data)
+                    }
                 }
-                if (res.payload.status) {
-                    commit('setProgress', 100);
-                    pusher.unbind("syncing_customer", eventCustomersSync);
-                    resolve(res.payload.data)
-                }
+                commit('setProgress', 0);
+                pusher.subscribe("customers_syncing");
+                pusher.bind("syncing_customer", eventCustomersSync);
+            } catch (err) {
+                console.log(err)
+                reject(err)
             }
-            commit('setProgress', 0);
-            pusher.subscribe("customers_syncing");
-            pusher.bind("syncing_customer", eventCustomersSync);
+
         })
 
     },
@@ -79,6 +85,18 @@ const actions = {
                 console.log(res)
                 if (res.status) {
                     resolve(res.status)
+                    commit('setProgress', 0);
+                    const progressTimeOut = setTimeout(() => {
+                        if (this.progress == 0) {
+                            this.toastMessageError({
+                                message: "Sync Customers failed!",
+                            });
+                            this.setProgress(100);
+                            this.setIsProgress(false);
+                        } else {
+                            clearTimeout(progressTimeOut);
+                        }
+                    }, 10000);
                     dispatch('subscribe').then((data) => {
                         commit('setCustomer', data)
                         notify.showNotify(
@@ -98,17 +116,20 @@ const actions = {
             this.commit('setLoading', false)
         })
     },
-    fetchCustomers({ commit }, payload) {
+    fetchCustomers({ commit, dispatch }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetch(payload).then(res => {
-                if (res.status == 401) {
-                    reject(res)
-                }
                 if (res.status === true) {
-                    commit('setCustomer', res.data);
-                    resolve(res.data);
+                    if (res.data) {
+                        commit('setCustomer', res.data);
+                        resolve(res.data);
+                    } else {
+                        dispatch('fetchCustomersSync')
+                    }
+
                 }
             }).catch(err => {
+                console.log(err)
                 reject(err)
             })
         }).finally(() => {

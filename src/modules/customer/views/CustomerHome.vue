@@ -109,6 +109,7 @@ export default {
       this.isDisabled = true;
       this.fetchCustomers(payload)
         .catch((err) => {
+          console.log(err)
           this.setError(true);
         })
         .finally(() => {

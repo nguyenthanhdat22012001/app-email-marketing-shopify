@@ -52,7 +52,6 @@ export default {
   data() {
     return {
       visibleModalExportAll: false,
-      progressTimeOut: null,
     };
   },
   created() {},
@@ -74,19 +73,9 @@ export default {
       this.setIsProgress(true);
       this.fetchCustomersSync()
         .then(() => {
-          this.setProgress(0);
+          // this.setProgress(0);
           notify.showNotify("success", "Success", "Start Sync Customers");
-          this.progressTimeOut = setTimeout(() => {
-            if (this.progress == 0) {
-              this.toastMessageError({
-                message: "Sync Customers failed!",
-              });
-              this.setProgress(100);
-              this.setIsProgress(false);
-            } else {
-              clearTimeout(this.progressTimeOut);
-            }
-          }, 10000);
+          
         })
         .catch((err) => {
           this.toastMessageError({

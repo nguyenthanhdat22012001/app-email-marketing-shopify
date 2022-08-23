@@ -27,15 +27,18 @@ axios.interceptors.response.use(
   async function (error) {
     //token expired
     const originalConfig = error.config;
+    console.log(error)
     if (originalConfig.url !== "/api/auth/login" && error.response) {
       if (error.response.status === 401) {
         let result = await store.dispatch("auth/refreshToken");
         if (result) {
           return axios(originalConfig);
+        } else {
+          router.push({ name: 'login' })
         }
       }
     }
-    return Promise.reject(error.response);
+    return Promise.reject(error);
   }
 );
 export default axios;
