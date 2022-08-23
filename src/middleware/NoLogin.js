@@ -20,12 +20,7 @@ export default async function ({ next, to, store }) {
       }
     }).catch(err => {
       console.log(err)
-      if (err.status == 401) {
-        mixin.methods.toastMessageError({
-          message: 'Store invalid!! Try again'
-        });
-        return true
-      }
+      
       mixin.methods.toastMessageError({
         message: 'Server Error!! Try again'
       });

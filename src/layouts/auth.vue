@@ -14,18 +14,28 @@
         <router-view></router-view>
       </div>
     </div>
-    <div class="bg-auth relative w-[42%] ">
-      <img src="@/assets/images/bg-auth.png" alt="" class="w-full h-[100vh]" />
+    <div
+      class="bg-auth relative w-[42%] bg-gradient-to-br from-bg-primary to-bg-primary-light"
+    >
+      <!-- <img src="@/assets/images/bg-auth.png" alt="" class="w-full h-[100vh]" /> -->
       <div
         class="absolute top-[50%] right-[50%] translate-y-[-50%] translate-x-[50%] text-center text-white"
       >
-        <img src="@/assets/icons/art-work.svg" alt="" />
+        <img src="@/assets/images/art-work.png" alt="" class="h-[316px] w-[350px]"/>
         <h4 class="font-bold text-[32px] mb-2 mt-5">Welcome back</h4>
         <p class="text-[18px] whitespace-nowrap">
           Shopify customer management system
         </p>
       </div>
-      <div class="w-full absolute bottom-[40px] left-[0] flex justify-center gap-[30px] text-[13px] text-white opacity-60">
+      <img
+        src="@/assets/images/auth-background.png"
+        alt=""
+        style="mix-blend-mode: multiply"
+        class="absolute bottom-0 h-[45%] w-full"
+      />
+      <div
+        class="w-full absolute bottom-[40px] left-[0] flex justify-center gap-[30px] text-[13px] text-white opacity-60"
+      >
         <span>Copyright@Firegroup.vn</span>
         <ul class="flex gap-[10px]">
           <li><a href="">Term of use</a></li>

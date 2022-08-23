@@ -52,6 +52,11 @@ export default {
     };
   },
   created() {},
+  mounted() {
+    if (this.progress >= 100) {
+      this.setIsProgress(false);
+    }
+  },
   methods: {
     ...mapActions({
       fetchCustomersSync: "customerStore/fetchCustomersSync",

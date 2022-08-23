@@ -32,7 +32,6 @@ module.exports = {
       'white': '#ffffff',
       'muted': '#555770',
       'dark': '#28293D',
-
       'blues-light': 'rgba(0, 48, 132, 0.05)'
     },
     boxShadow: {

@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      shopName: "manh-store123",
+      shopName: this.$route.query?.shop?.split(".")[0] || "manh-store123",
     };
   },
   methods: {
@@ -47,22 +47,28 @@ export default {
       login: "auth/loginStore",
     }),
     handleLogin() {
-      
       this.login({
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })
         .then((res) => {
-          if (res.status == true) {
-            window.location = res.url;
+          const { status, url } = res;
+          if (status == true) {
+            window.location = url;
           } else {
             throw new Error();
           }
         })
         .catch((err) => {
           console.log(err);
-          this.toastMessageError({
-            message: "Server Error!! Try again",
-          });
+          if (err.status == 404) {
+            this.toastMessageError({
+              message: "Store not found!! Please input correct",
+            });
+          } else {
+            this.toastMessageError({
+              message: "Server Error!! Try again",
+            });
+          }
         });
     },
   },

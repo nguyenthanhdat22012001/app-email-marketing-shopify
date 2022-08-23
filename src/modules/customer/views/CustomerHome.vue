@@ -105,16 +105,10 @@ export default {
         }).finally(() => this.setLoading(false));
       }
     },
-    fetchCustomer(page) {
+    fetchCustomer(payload) {
       this.isDisabled = true;
-      this.fetchCustomers(page)
-        .then((res) => {})
+      this.fetchCustomers(payload)
         .catch((err) => {
-          if (err.status == 401) {
-            this.toastMessageError(err.message);
-            this.$router.push({ name: "login" });
-          }
-
           this.setError(true);
         })
         .finally(() => {

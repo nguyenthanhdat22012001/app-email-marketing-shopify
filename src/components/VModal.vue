@@ -49,6 +49,7 @@ export default {
     onClickBackdrop() {
       if (this.backdrop) {
         this.hideModal();
+        this.$emit("closeModal")
       }
     },
     onClickClose() {
@@ -59,7 +60,6 @@ export default {
     async onClickVisible() {
       this.visible_footer = true;
       await this.$nextTick();
-      console.log(this.$refs.footer);
     },
   },
   mounted() {

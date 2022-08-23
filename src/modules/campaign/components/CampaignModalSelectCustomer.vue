@@ -5,7 +5,7 @@
     </campaign-modal-select-customer>
 -->
 <template>
-  <v-modal v-model="visible" :backdrop="false">
+  <v-modal v-model="visible" @closeModal="handleClickCancel" >
     <div class="relative w-[960px] pt-[30px] pb-[18px] h-[90vh] flex flex-col">
       <h2 class="pr-[22px] pl-[30px] text-2xl font-semibold text-dark">
         Select customers to send email

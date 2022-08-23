@@ -7,18 +7,13 @@ export default async function ({ next, from, store }) {
         if (!user) {
             try {
                 const payload = await store.dispatch('auth/fetchUser')
-             
                 if (payload.store) {
                     store.commit('auth/setUser', payload.store);
-                   
                     return true
-                } else {
-                    throw {
-                        message: "Store Invalid!! Try again"
-                    }
                 }
             } catch (error) {
                 store.dispatch('auth/logout');
+                console.log(error)
                 mixin.methods.toastMessageError({
                     message: error.message
                 })

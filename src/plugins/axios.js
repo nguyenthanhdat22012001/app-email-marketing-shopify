@@ -1,6 +1,7 @@
 import { default as instance } from "axios";
 import cookie from '@/plugins/cookie'
 import store from '@/store'
+import router from '@/router'
 let axios = instance.create({
   baseURL: process.env.VUE_APP_API,
   timeout: 20 * 1000,
@@ -34,6 +35,7 @@ axios.interceptors.response.use(
   function (error) {
     if (error?.response?.status === 401) {
       store.dispatch("auth/logout");
+      router.push({ name: "login" })
     }
     return Promise.reject(error.response);
   },
