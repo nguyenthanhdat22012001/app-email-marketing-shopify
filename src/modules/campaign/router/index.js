@@ -5,6 +5,10 @@ const campaignRouter = [
     {
         path: "/campaign",
         component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/layout.vue"),
+        meta: {
+            enterClass: 'animate__animated animate__fadeInUp',
+            leaveClass: 'animate__animated animate__fadeOutDown',
+        },
         children: [
             {
                 path: '',
@@ -12,8 +16,8 @@ const campaignRouter = [
                 component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignHome.vue"),
                 meta: {
                     middleware: [Auth],
-                    enterClass: 'animate__animated animate__fadeInLeft',
-                    leaveClass: 'animate__animated animate__fadeOutRight',
+                    enterClass: 'animate__animated animate__fadeInUp',
+                    leaveClass: 'animate__animated animate__fadeOutDown',
                 },
             },
             {

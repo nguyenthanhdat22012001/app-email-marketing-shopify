@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      shopName: "manh-store123",
+      shopName: this.$route.query?.shop?.split(".")[0] || "manh-store123",
     };
   },
   methods: {
@@ -51,8 +51,9 @@ export default {
         myshopify_domain: `${this.shopName}.myshopify.com`,
       })
         .then((res) => {
-          if (res.status == true) {
-            window.location = res.url;
+          const { status, url } = res;
+          if (status == true) {
+            window.location = url;
           } else {
             throw new Error();
           }
@@ -61,7 +62,7 @@ export default {
           console.log(err)
           if (err.status == 404) {
             this.toastMessageError({
-              message: "Store Invalid!! Try again",
+              message: "Store not found!! Please input correct",
             });
           } else {
             this.toastMessageError({

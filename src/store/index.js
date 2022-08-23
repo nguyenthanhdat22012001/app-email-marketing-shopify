@@ -18,7 +18,6 @@ export default new Vuex.Store({
       return state.isToggle;
     },
     getLoading(state) {
-
       return state.isLoading;
     },
    
