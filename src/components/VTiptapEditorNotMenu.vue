@@ -3,7 +3,7 @@
     <div class="flex items-center w-[100%] border border-light rounde">
       <editor-content
         :editor="editor"
-        class="flex-1 editor-field bg-white p-3 border-r border-light"
+        class="flex-1 editor-field max-h-[100px] overflow-auto bg-white p-3 border-r border-light"
       />
       <span class="text-gray-light w-[60px] text-center"
         >{{ editor ? editor.storage.characterCount.characters() : 0 }}/{{
@@ -25,7 +25,7 @@ import Paragraph from "@tiptap/extension-paragraph";
 import CharacterCount from "@tiptap/extension-character-count";
 import Text from "@tiptap/extension-text";
 import Variant from "@/custom_extensions/variant/index";
-import HardBreak from "@tiptap/extension-hard-break";
+import TextStyle from "@tiptap/extension-text-style";
 import VDropdownVariant from "./VDropdownVariant.vue";
 
 export default {
@@ -61,18 +61,28 @@ export default {
         Paragraph,
         Text,
         Variant,
-        HardBreak,
+        TextStyle,
         CharacterCount.configure({
           limit: this.limit,
         }),
       ],
       content: this.prop_email_content,
+      editorProps: {
+        handleDOMEvents: {
+          keydown: (view, event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+            }
+            return false;
+          },
+        },
+      },
     });
 
     this.editor.on("update", ({ editor }) => {
       let string = editor.getHTML();
       let htmlObject = document.createElement("div");
-      htmlObject.style = "white-space: break-spaces;";
+      htmlObject.style = "white-space: pre-wrap;";
       htmlObject.innerHTML = string;
       let newString = htmlObject.outerHTML;
       this.$emit("emitUpdateEmailContent", newString);
