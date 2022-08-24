@@ -67,6 +67,16 @@ export default {
         }),
       ],
       content: this.prop_email_content,
+      editorProps: {
+        handleDOMEvents: {
+          keydown: (view, event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+            }
+            return false;
+          },
+        },
+      },
     });
 
     this.editor.on("update", ({ editor }) => {
