@@ -253,7 +253,8 @@ import TaskList from "@tiptap/extension-task-list";
 import Strike from "@tiptap/extension-strike";
 import NodeView from "@/custom_extensions/variant/index";
 import FontSize from "@/custom_extensions/fontSize/index";
-import HeadingCustom from "@/custom_extensions/heading/index";
+import Heading from "@tiptap/extension-heading";
+import HardBreak from "@tiptap/extension-hard-break";
 import VDropdownVariant from "./VDropdownVariant.vue";
 import VSelectEditor from "./VSelectEditor.vue";
 
@@ -320,7 +321,6 @@ export default {
         return 14;
       },
       set(value) {
-        console.log(value);
         this.hanldeSetFontSize(value);
         this.$emit("input", value);
       },
@@ -330,7 +330,7 @@ export default {
     this.editor = new Editor({
       extensions: [
         StarterKit,
-        HeadingCustom,
+        Heading,
         Paragraph,
         Text,
         Underline,
@@ -358,6 +358,7 @@ export default {
           types: ["heading", "paragraph"],
         }),
         NodeView,
+        HardBreak,
       ],
       content: this.prop_email_content,
     });
@@ -365,7 +366,7 @@ export default {
     this.editor.on("update", ({ editor }) => {
       let string = editor.getHTML();
       let htmlObject = document.createElement("div");
-      htmlObject.style = "white-space: pre-wrap;";
+      htmlObject.style = "white-space: break-spaces;";
       htmlObject.innerHTML = string;
       let newString = htmlObject.outerHTML;
       this.$emit("emitUpdateEmailContent", newString);
@@ -384,6 +385,16 @@ export default {
   min-height: 112px;
   padding: 12px 5px;
   line-break: anywhere;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: revert;
+    font-size: revert;
+  }
 }
 .ProseMirror [contenteditable="false"] {
   white-space: normal;

@@ -26,7 +26,7 @@ export default Mark.create({
           }
 
           return {
-            style: `font-size: ${attributes.size}px; line-height: 1.4`,
+            style: `font-size: ${attributes.size}px;`,
           };
         },
       },

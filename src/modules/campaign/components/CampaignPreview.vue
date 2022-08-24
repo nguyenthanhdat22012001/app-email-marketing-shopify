@@ -262,11 +262,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.email--content {
-  p {
-    color: red;
-    padding: 2px;
-    border-radius: 4px;
+.email--content::v-deep{
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: revert;
+    font-size: revert;
   }
 }
 </style>
