@@ -25,6 +25,7 @@ import Paragraph from "@tiptap/extension-paragraph";
 import CharacterCount from "@tiptap/extension-character-count";
 import Text from "@tiptap/extension-text";
 import Variant from "@/custom_extensions/variant/index";
+import HardBreak from "@tiptap/extension-hard-break";
 import VDropdownVariant from "./VDropdownVariant.vue";
 
 export default {
@@ -60,6 +61,7 @@ export default {
         Paragraph,
         Text,
         Variant,
+        HardBreak,
         CharacterCount.configure({
           limit: this.limit,
         }),
@@ -70,7 +72,7 @@ export default {
     this.editor.on("update", ({ editor }) => {
       let string = editor.getHTML();
       let htmlObject = document.createElement("div");
-      htmlObject.style = "white-space: pre-wrap;";
+      htmlObject.style = "white-space: break-spaces;";
       htmlObject.innerHTML = string;
       let newString = htmlObject.outerHTML;
       this.$emit("emitUpdateEmailContent", newString);

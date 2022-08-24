@@ -24,7 +24,7 @@ const campaignRouter = [
                 name: 'campaign/create',
                 component: () => import(/* webpackChunkName: "campaign" */ "@/modules/campaign/views/CampaignCreate.vue"),
                 meta: {
-                    middleware: [Auth],
+                    // middleware: [Auth],
                     enterClass: 'animate__animated animate__fadeInRight',
                     leaveClass: 'animate__animated animate__fadeOutLeft',
                     enterClassParent: 'animate__animated animate__fadeInLeft',
