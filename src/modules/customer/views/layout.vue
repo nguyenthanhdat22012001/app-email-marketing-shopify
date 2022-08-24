@@ -72,18 +72,6 @@ export default {
       this.$router.push({ query: {} });
       this.setIsProgress(true);
       this.fetchCustomersSync()
-        .then(() => {
-          // this.setProgress(0);
-          notify.showNotify("success", "Success", "Start Sync Customers");
-          
-        })
-        .catch((err) => {
-          this.toastMessageError({
-            message: "Sync Customers failed!",
-          });
-          this.setProgress(100);
-          this.setIsProgress(false);
-        });
     },
   },
   computed: {

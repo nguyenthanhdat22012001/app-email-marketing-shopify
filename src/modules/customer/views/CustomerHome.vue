@@ -69,7 +69,11 @@ export default {
   },
   created() {},
   mounted() {
-    if (!this.customerList?.data?.length) {
+    if (this.isFirstSync) {
+      this.fetchCustomersSync();
+      this.setProgress(0),
+      this.setIsProgress(true);
+    } else if (!this.customerList?.data?.length) {
       this.setLoading(true);
       this.fetchCustomer({
         ...this.$route.query,
@@ -79,12 +83,14 @@ export default {
   methods: {
     ...mapActions({
       fetchCustomers: "customerStore/fetchCustomers",
+      fetchCustomersSync: "customerStore/fetchCustomersSync",
     }),
 
     ...mapMutations({
       setLoading: "customerStore/setLoading",
       setError: "customerStore/setError",
       setProgress: "customerStore/setProgress",
+      setIsProgress: "customerStore/setIsProgress",
     }),
 
     nextPage() {
@@ -93,7 +99,7 @@ export default {
         this.fetchCustomer({
           ...this.$route.query,
           page: this.customerList.current_page + 1,
-        })
+        });
       }
     },
     previousPage() {
@@ -102,14 +108,14 @@ export default {
         this.fetchCustomer({
           ...this.$route.query,
           page: this.customerList.current_page - 1,
-        })
+        });
       }
     },
     fetchCustomer(payload) {
       this.isDisabled = true;
       this.fetchCustomers(payload)
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           this.setError(true);
         })
         .finally(() => {
@@ -124,9 +130,9 @@ export default {
       isError: "customerStore/getError",
       customerCount: "customerStore/getCustomerCount",
       customerList: "customerStore/getCustomers",
+      isFirstSync: "auth/getFirstSync",
     }),
   },
-  
 };
 </script>
 

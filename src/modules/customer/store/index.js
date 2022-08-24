@@ -68,25 +68,27 @@ const actions = {
                         resolve(res.payload.data)
                     }
                 }
-                commit('setProgress', 0);
                 pusher.subscribe("customers_syncing");
                 pusher.bind("syncing_customer", eventCustomersSync);
             } catch (err) {
                 console.log(err)
                 reject(err)
             }
-
         })
 
     },
     fetchCustomersSync({ commit, dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetchSync(payload).then(res => {
-                console.log(res)
                 if (res.status) {
                     resolve(res.status)
                     commit('setProgress', 0);
-                    commit('setIsProgress', true)
+                    commit('setIsProgress', true);
+                    notify.showNotify(
+                        "success",
+                        "Success",
+                        "Start Sync Customers!!"
+                    );
                     const progressTimeOut = setTimeout(() => {
                         if (state.progress == 0) {
                             mixin.methods.toastMessageError({
@@ -94,10 +96,11 @@ const actions = {
                             });
                             commit('setProgress', 100);
                             commit('setIsProgress', false);
+                            commit('setLoading', false);
                         } else {
                             clearTimeout(progressTimeOut);
                         }
-                    }, 10000);
+                    }, 20000);
                     dispatch('subscribe').then((data) => {
                         commit('setCustomer', data)
                         notify.showNotify(
@@ -105,12 +108,14 @@ const actions = {
                             "Success",
                             "Sync Customers Successfully!!"
                         );
+                    }).finally(() => {
+                        commit('setIsProgress', false)
+                        commit('setLoading', false)
                     });
                 } else {
                     throw res
                 }
             }).catch(err => {
-
                 reject(err);
             })
         }).finally(() => {
@@ -121,19 +126,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetch(payload).then(res => {
                 if (res.status === true) {
-                    if (res.data.data.length) {
-                        commit('setCustomer', res.data);
-                        resolve(res.data);
-                    } else {
-                        console.log(!Object.keys(payload).length)
-                        if (!Object.keys(payload).length) {
-                            dispatch('fetchCustomersSync')
-                        } else {
-                            commit('setCustomer', res.data);
-                            resolve(res.data);
-
-                        }
-                    }
+                    commit('setCustomer', res.data);
+                    resolve(res.data);
 
                 }
             }).catch(err => {

@@ -12,6 +12,8 @@ export default async function ({ next, to, store }) {
     }).then(res => {
       if (res.status) {
         store.commit('auth/setToken', res.data.original.access_token);
+        store.commit('auth/setFirstSync', res.first_install || false);
+        console.log(res);
         next({ name: 'customer' })
       } else {
         mixin.methods.toastMessageError({
