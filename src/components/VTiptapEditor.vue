@@ -251,7 +251,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import Strike from "@tiptap/extension-strike";
-import NodeView from "@/custom_extensions/variant/index";
+import Variant from "@/custom_extensions/variant/index";
 import FontSize from "@/custom_extensions/fontSize/index";
 import Heading from "@tiptap/extension-heading";
 import HardBreak from "@tiptap/extension-hard-break";
@@ -357,7 +357,7 @@ export default {
         TextAlign.configure({
           types: ["heading", "paragraph"],
         }),
-        NodeView,
+        Variant,
         HardBreak,
       ],
       content: this.prop_email_content,

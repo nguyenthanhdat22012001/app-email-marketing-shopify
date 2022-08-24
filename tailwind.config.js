@@ -51,7 +51,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  // corePlusgins: {
-  //   preflight: false,
-  // },
 };
