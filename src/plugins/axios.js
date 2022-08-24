@@ -2,6 +2,7 @@ import { default as instance } from "axios";
 import cookie from "@/plugins/cookie";
 import store from "@/store";
 import router from "@/router/index";
+import notify from "@/helper/notify";
 
 let axios = instance.create({
   baseURL: process.env.VUE_APP_API,
@@ -28,14 +29,15 @@ axios.interceptors.response.use(
   async function (error) {
     //token expired
     const originalConfig = error.config;
-    console.log(error)
     if (originalConfig.url !== "/api/auth/login" && error.response) {
       if (error.response.status === 401) {
+       
         let result = await store.dispatch("auth/refreshToken");
         if (result) {
           return axios(originalConfig);
         } else {
           router.push('/login');
+          notify.showNotify("error","Error","Authorize Failed !! Please login again")
         }
       }
     }

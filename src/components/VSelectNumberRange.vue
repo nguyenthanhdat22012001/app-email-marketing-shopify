@@ -98,6 +98,7 @@ export default {
       },
     };
   },
+
   methods: {
     onClose() {
       this.formstate = false;
@@ -106,7 +107,6 @@ export default {
     handEmitDataChange() {
       this.formstate = true;
       if (this.formstate && this.validation.valid) {
-        console.log(this.validation);
         this.$emit("emitVSelectNumberRange", this.data_input);
         this.onClose();
       }

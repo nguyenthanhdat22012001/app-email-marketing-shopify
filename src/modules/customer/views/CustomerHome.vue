@@ -90,19 +90,19 @@ export default {
     nextPage() {
       if (this.customerList.next_page_url) {
         this.setLoading(true);
-        this.fetchCustomers({
+        this.fetchCustomer({
           ...this.$route.query,
           page: this.customerList.current_page + 1,
-        }).finally(() => this.setLoading(false));
+        })
       }
     },
     previousPage() {
       if (this.customerList.prev_page_url) {
         this.setLoading(true);
-        this.fetchCustomers({
+        this.fetchCustomer({
           ...this.$route.query,
           page: this.customerList.current_page - 1,
-        }).finally(() => this.setLoading(false));
+        })
       }
     },
     fetchCustomer(payload) {

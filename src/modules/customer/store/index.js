@@ -79,20 +79,21 @@ const actions = {
         })
 
     },
-    fetchCustomersSync({ commit, dispatch }, payload) {
+    fetchCustomersSync({ commit, dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetchSync(payload).then(res => {
                 console.log(res)
                 if (res.status) {
                     resolve(res.status)
                     commit('setProgress', 0);
+                    commit('setIsProgress', true)
                     const progressTimeOut = setTimeout(() => {
-                        if (this.progress == 0) {
-                            this.toastMessageError({
+                        if (state.progress == 0) {
+                            mixin.methods.toastMessageError({
                                 message: "Sync Customers failed!",
                             });
-                            this.setProgress(100);
-                            this.setIsProgress(false);
+                            commit('setProgress', 100);
+                            commit('setIsProgress', false);
                         } else {
                             clearTimeout(progressTimeOut);
                         }
@@ -120,11 +121,18 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.fetch(payload).then(res => {
                 if (res.status === true) {
-                    if (res.data) {
+                    if (res.data.data.length) {
                         commit('setCustomer', res.data);
                         resolve(res.data);
                     } else {
-                        dispatch('fetchCustomersSync')
+                        console.log(!Object.keys(payload).length)
+                        if (!Object.keys(payload).length) {
+                            dispatch('fetchCustomersSync')
+                        } else {
+                            commit('setCustomer', res.data);
+                            resolve(res.data);
+
+                        }
                     }
 
                 }

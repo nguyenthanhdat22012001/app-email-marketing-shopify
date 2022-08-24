@@ -76,7 +76,9 @@ circle {
   stroke-dasharray: 138;
   stroke-dashoffset: 138;
   animation: progress 1s linear forwards;
+  transition: 1s;
 }
+
 @keyframes progress {
   100% {
     stroke-dashoffset: var(--progress);

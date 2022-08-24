@@ -7,9 +7,7 @@ export default {
     fetchSync(payload) {
         return api.get("/api/customer/sync",payload);
     },
-    filter(payload) {
-        return api.get("/api/customer/filterCustomer", payload);
-    },
+
     getCustomerShowAvatars(payload) {
         return api.get("/api/customer", { ...payload });
     },

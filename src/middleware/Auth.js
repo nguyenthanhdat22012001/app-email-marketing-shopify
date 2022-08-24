@@ -6,6 +6,7 @@ export default async function ({ next, from, store }) {
         if (!user) {
             try {
                 const payload = await store.dispatch('auth/fetchUser')
+                console.log(payload)
                 if (payload.store) {
                     store.commit('auth/setUser', payload.store);
                     return true

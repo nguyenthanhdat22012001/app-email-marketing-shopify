@@ -14,10 +14,8 @@ const customerRouter = [
                 name: 'customer',
                 component: () => import(/* webpackChunkName: "customer" */ "@/modules/customer/views/CustomerHome.vue"),
                 meta: {
-                    middleware: [Auth],
-                    enterClass: "animate__animated animate__fadeInDown",
-                    leaveClass: "animate__animated animate__fadeOutUp"
-                },
+                    middleware: [Auth]
+                }
             },
 
         ]

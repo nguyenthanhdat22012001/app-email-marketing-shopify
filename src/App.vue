@@ -82,4 +82,5 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 3px;
   padding: 0;
 }
+
 </style>
