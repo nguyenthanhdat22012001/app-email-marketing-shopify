@@ -54,25 +54,25 @@ export default {
   watch: {
     $route: {
       handler(newRoute, oldRoute) {
+        this.sidebar = this.elSidebar.offsetWidth;
+        this.top = document.querySelector(".head-block").offsetHeight;
         if (oldRoute.name) {
-          this.sidebar = this.elSidebar.offsetWidth;
-          this.top = document.querySelector(".head-block").offsetHeight;
-
-          this.enterClass = newRoute.meta.enterClass;
+          this.enterClass = newRoute.matched[0].meta.enterClass;
           this.leaveClass = oldRoute.matched[0].meta.leaveClass;
 
           const toDepth = newRoute.name.split("/").length;
           const fromDepth = oldRoute.name.split("/").length;
-
-          if (toDepth > fromDepth) {
-            this.leaveClass = "animate__animated animate__fadeOutLeft";
+          //transition same parent
+          if (toDepth > fromDepth) { 
+            this.enterClass = newRoute.meta.enterClass;
+            this.leaveClass = newRoute.meta.leaveClass;
           }
           if (
             fromDepth > toDepth &&
             newRoute.matched[0].path == oldRoute.matched[0].path
           ) {
-            this.enterClass = "animate__animated animate__fadeInLeft";
-            this.leaveClass = "animate__animated animate__fadeOutRight";
+            this.enterClass = oldRoute.meta.enterClassParent;
+            this.leaveClass = oldRoute.meta.leaveClassParent;
           }
         }
       },

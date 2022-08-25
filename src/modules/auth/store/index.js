@@ -3,9 +3,9 @@ import cookie from "@/plugins/cookie";
 let token = cookie.get("access_token");
 
 const state = {
-  is_logged: false,
   user: null,
   token: token ? token : "",
+  firstSync: false,
 };
 const getters = {
   getUser(state) {
@@ -14,6 +14,9 @@ const getters = {
   getToken(state) {
     return state.token;
   },
+  getFirstSync(state){
+    return state.firstSync
+  }
 };
 
 const mutations = {
@@ -28,6 +31,9 @@ const mutations = {
     cookie.set("access_token", payload, {
       expires: 7,
     });
+  },
+  setFirstSync(state,payload){
+    state.firstSync = payload
   },
   removeToken(state) {
     state.token = "";
