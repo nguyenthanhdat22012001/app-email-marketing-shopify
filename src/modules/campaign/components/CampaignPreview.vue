@@ -262,7 +262,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.email--content::v-deep{
+.email--content::v-deep {
   h1,
   h2,
   h3,

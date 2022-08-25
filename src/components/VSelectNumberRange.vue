@@ -125,7 +125,9 @@ export default {
   },
   computed: {
     validation() {
-      this.handleSetABSInput(this.data_input.from, this.data_input.to);
+      if (this.data_input.from != "" || this.data_input.to != "") {
+        this.handleSetABSInput(this.data_input.from, this.data_input.to);
+      }
       const input_from = {
         required: {
           valid: this.data_input.from ? true : false,

@@ -9,12 +9,14 @@
           class="absolute z-1 w-[1px] h-4 top-[50%] translate-y-[-50%] right-0 bg-[#E5E8EF]"
         ></div>
         <v-select-editor v-model="select_heading" class="font-bold">
-          <option :value="0">Paragraph</option>
+          <option class="font-bold text-sm" :value="0">Paragraph</option>
           <option
+            class="font-bold"
             v-for="n in 6"
             :key="n"
             :value="n"
             :class="{ 'is-active': editor.isActive('heading', { level: n }) }"
+            :style="{ 'font-size': handleReturnFontSizeHeading(n) }"
           >
             Heading {{ n }}
           </option>
@@ -26,6 +28,7 @@
         ></div>
         <v-select-editor v-model="select_font_size">
           <option
+            class="text-sm"
             v-for="n in Array.from({ length: 56 }, (_, i) => i + 1).slice(10)"
             :key="n"
             :value="n"
@@ -292,6 +295,22 @@ export default {
     },
     hanldeSetFontSize(value) {
       this.editor.chain().focus().setFontSize({ size: value }).run();
+    },
+    handleReturnFontSizeHeading(level) {
+      switch (level) {
+        case 1:
+          return "2em";
+        case 2:
+          return "1.5em";
+        case 3:
+          return "1.17em";
+        case 4:
+          return "1em";
+        case 5:
+          return "0.83em";
+        case 6:
+          return "0.67em";
+      }
     },
   },
   computed: {
