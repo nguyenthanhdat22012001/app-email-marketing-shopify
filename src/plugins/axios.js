@@ -13,6 +13,7 @@ let axios = instance.create({
 });
 axios.CancelToken = instance.CancelToken;
 axios.isCancel = instance.isCancel;
+axios.source = axios.CancelToken.source();
 axios.interceptors.request.use(function (config) {
   let token = cookie.get("access_token");
   config.headers["ngrok-skip-browser-warning"] = 1;
@@ -29,19 +30,25 @@ axios.interceptors.response.use(
   async function (error) {
     //token expired
     const originalConfig = error.config;
-    if (originalConfig.url !== "/api/auth/login" && error.response) {
+    if (originalConfig?.url !== "/api/auth/login" && error?.response) {
       if (error.response.status === 401) {
-       
-        let result = await store.dispatch("auth/refreshToken");
-        if (result) {
-          return axios(originalConfig);
+        if (error.response.data.message == "token_absent") {
+          store.dispatch("auth/logout");
+          notify.showNotify("error", "Error", "Authorize Failed !! Please login again")
+
         } else {
-          router.push('/login');
-          notify.showNotify("error","Error","Authorize Failed !! Please login again")
+          let result = await store.dispatch("auth/refreshToken");
+          if (result) {
+            return axios(originalConfig);
+          } else {
+            store.dispatch("auth/logout");
+            notify.showNotify("error", "Error", "Authorize Failed !! Please login again")
+          }
         }
+
       }
     }
-    return Promise.reject(error);
+    return Promise.reject(error.response || error);
   }
 );
 export default axios;

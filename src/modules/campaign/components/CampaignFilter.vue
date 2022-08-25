@@ -93,11 +93,11 @@ export default {
       this.keywords = value.trim();
       clearTimeout(this.debounce);
       this.debounce = setTimeout(async () => {
-        await this.handleFiterCampaign();
+        await this.handleFilterCampaign();
       }, 500);
     },
     // hanlde filter campaign
-    async handleFiterCampaign() {
+    async handleFilterCampaign() {
       let payload = {
         status: this.status.toString(),
         keywords: this.keywords,
@@ -149,10 +149,10 @@ export default {
   },
   watch: {
     async sort(value) {
-      await this.handleFiterCampaign();
+      await this.handleFilterCampaign();
     },
     async status(value) {
-      await this.handleFiterCampaign();
+      await this.handleFilterCampaign();
     },
   },
 };

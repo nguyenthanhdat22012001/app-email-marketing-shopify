@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     showVariants() {
-      console.log(this.isShowDropdownVariant)
       this.isShowDropdownVariant = !this.isShowDropdownVariant;
     },
   },

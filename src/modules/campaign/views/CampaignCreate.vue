@@ -267,7 +267,7 @@ export default {
       return Number(value);
     },
     // handle check redirect if user enter form
-    hanldeCheckIsHaveData() {
+    handleCheckIsHaveData() {
       if (
         this.validation.form.campaign_name.required.valid ||
         this.validation.form.email_subject.required.valid ||
@@ -279,7 +279,7 @@ export default {
       return false;
     },
     handleShouldRedirectOrShowModalComfirm() {
-      let is_check = this.hanldeCheckIsHaveData();
+      let is_check = this.handleCheckIsHaveData();
       if (is_check) {
         this.visible_confirm_modal = true;
       } else {
@@ -346,7 +346,6 @@ export default {
       this.setLoading(true);
       try {
         let res = await api.CAMPAIGN.postSendMail(data);
-        console.log(res);
         if (res.status) {
           notify.showNotify("success", "Create campaign success !");
         }
@@ -441,6 +440,7 @@ export default {
       this.email_background.opacity = this.checkValue(newVal);
     },
     "email_button.backgroundOpacity": function (newVal) {
+
       this.email_button.backgroundOpacity = this.checkValue(newVal);
     },
     "email_button.text_opacity": function (newVal) {

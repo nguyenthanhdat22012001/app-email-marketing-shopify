@@ -3,7 +3,7 @@ import campaignAPI from "../modules/campaign/api"
 import authAPI from "../modules/auth/api"
 import customerAPI from "../modules/customer/api"
 export const api = {
-  get(url, params = {}, cancel_token = null) {
+  get(url, params = {}, cancel_token = axios.source) {
     return new Promise((resolve, reject) => {
       axios
         .get(url, {
@@ -15,7 +15,7 @@ export const api = {
         })
         .catch((err) => {
           if (axios.isCancel(err)) {
-            return reject("canceled");
+            return reject(err);
           }
           reject(err);
         });
