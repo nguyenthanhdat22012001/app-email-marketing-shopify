@@ -17,16 +17,17 @@
         </p>
       </div>
       <div class="mt-4">
-        <v-input
-          class="w-[100%] rounded py-3 px-[13px] border border-[#EBEBF0]"
-          type="text"
-          v-model="input_email"
-          placeholder="Enter your email"
-          @keyup.enter="onSendTestMail"
-        ></v-input>
+        <form @submit.prevent="onSendTestMail">
+          <v-input
+            class="w-[100%] rounded py-3 px-[13px] border border-[#EBEBF0]"
+            type="text"
+            v-model="input_email"
+            placeholder="Enter your email"
+          ></v-input>
+        </form>
         <div class="text-[12px] leading-5 mt-1 text-red" v-if="formstate">
           <template v-if="!validation.form.email.required.valid">
-            <p >
+            <p>
               {{ validation.form.email.required.message }}
             </p>
           </template>
