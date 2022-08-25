@@ -144,7 +144,6 @@ export default {
   beforeDestroy() {
     for (let [key, value] of Object.entries(this.filters)) {
       if (value) {
-        console.log(value)
         this.setCustomer([])
       }
     }

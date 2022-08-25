@@ -41,11 +41,7 @@ export default {
     this.elSidebar = document.querySelector(".vue-sidebar");
     this.top = document.querySelector(".head-block").offsetHeight;
   },
-  methods: {
-    changeSideBar(e) {
-      console.log(e);
-    },
-  },
+
   computed: {
     ...mapGetters({
       isToggle: "getToggle",
@@ -78,9 +74,7 @@ export default {
       },
     },
   },
-  beforeDestroy() {
-    // this.elSidebar.addEventListener("resize", this.changeSideBar);
-  },
+
 };
 </script>
 

@@ -13,7 +13,6 @@ export default async function ({ next, to, store }) {
       if (res.status) {
         store.commit('auth/setToken', res.data.original.access_token);
         store.commit('auth/setFirstSync', res.first_install || false);
-        console.log(res);
         next({ name: 'customer' })
       } else {
         mixin.methods.toastMessageError({
@@ -22,7 +21,7 @@ export default async function ({ next, to, store }) {
       }
     }).catch(err => {
       console.log(err)
-      
+
       mixin.methods.toastMessageError({
         message: 'Server Error!! Try again'
       });

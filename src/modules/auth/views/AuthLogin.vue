@@ -59,7 +59,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err)
           if (err.status == 404) {
             this.toastMessageError({
               message: "Store not found!! Please input correct",

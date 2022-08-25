@@ -71,7 +71,6 @@ const actions = {
                 pusher.subscribe("customers_syncing");
                 pusher.bind("syncing_customer", eventCustomersSync);
             } catch (err) {
-                console.log(err)
                 reject(err)
             }
         })
@@ -108,18 +107,21 @@ const actions = {
                             "Success",
                             "Sync Customers Successfully!!"
                         );
-                    }).finally(() => {
-                        commit('setIsProgress', false)
-                        commit('setLoading', false)
-                    });
+                    })
+                        .catch(error => reject(error))
+                        .finally(() => {
+                            commit('setIsProgress', false)
+                            commit('setLoading', false)
+                        });
                 } else {
                     throw res
                 }
             }).catch(err => {
+                console.log(err)
                 reject(err);
+                commit('setIsProgress', false)
+                commit('setLoading', false)
             })
-        }).finally(() => {
-            this.commit('setLoading', false)
         })
     },
     fetchCustomers({ commit, dispatch }, payload) {
@@ -128,14 +130,12 @@ const actions = {
                 if (res.status === true) {
                     commit('setCustomer', res.data);
                     resolve(res.data);
-
                 }
             }).catch(err => {
-                console.log(err)
                 reject(err)
+            }).finally(() => {
+                this.commit('setLoading', false)
             })
-        }).finally(() => {
-            this.commit('setLoading', false)
         })
     },
 
@@ -143,7 +143,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             api.CUSTOMER.exportCSV(payload)
                 .then((res) => {
-                    console.log(res)
                     resolve(res)
                 })
                 .catch(err => reject(err))
@@ -152,8 +151,6 @@ const actions = {
     }
 
 }
-
-
 export default {
     state,
     mutations,

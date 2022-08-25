@@ -1,5 +1,7 @@
 import api from "@/plugins/api";
-import cookie from "@/plugins/cookie";
+import router from "@/router";
+import { cookie, pusher, axios } from '@/plugins'
+
 let token = cookie.get("access_token");
 
 const state = {
@@ -14,7 +16,7 @@ const getters = {
   getToken(state) {
     return state.token;
   },
-  getFirstSync(state){
+  getFirstSync(state) {
     return state.firstSync
   }
 };
@@ -32,7 +34,7 @@ const mutations = {
       expires: 7,
     });
   },
-  setFirstSync(state,payload){
+  setFirstSync(state, payload) {
     state.firstSync = payload
   },
   removeToken(state) {
@@ -86,6 +88,9 @@ const actions = {
   logout({ commit }) {
     commit("removeUser");
     commit("removeToken");
+    router.push('/login');
+    pusher.unbind()
+    axios.source.cancel()
   },
 };
 

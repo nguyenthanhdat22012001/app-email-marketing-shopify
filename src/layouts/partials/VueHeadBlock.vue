@@ -52,7 +52,7 @@ export default {
     },
     handleLogout() {
       this.logout();
-      this.$router.push({ name: "login" });
+      // this.$router.push({ name: "login" });
     },
     handleToggleSideBar() {
       this.setToggle(!this.toggle);

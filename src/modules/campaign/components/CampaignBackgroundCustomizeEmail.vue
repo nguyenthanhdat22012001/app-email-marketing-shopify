@@ -18,6 +18,7 @@
             <input
               class="text-xs text-black-light outline-none w-full uppercase"
               v-model="background.color"
+               pattern="[A-Za-z]"
               maxlength="7"
             />
           </div>
