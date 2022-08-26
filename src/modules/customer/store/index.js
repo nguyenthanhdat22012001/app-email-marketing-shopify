@@ -58,7 +58,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             try {
                 const eventCustomersSync = (res) => {
-                    console.log(res);
                     if (state.progress < 100) {
                         commit('setProgress', Number(res.payload.processing));
                     }
