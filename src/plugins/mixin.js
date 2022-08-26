@@ -23,7 +23,6 @@ export default {
                 return `${monthConvert[month]} ${day}, ${year}`
             }
             return "Invalid Date"
-
         }
     }
 }

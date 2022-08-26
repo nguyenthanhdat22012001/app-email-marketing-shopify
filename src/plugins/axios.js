@@ -1,7 +1,6 @@
 import { default as instance } from "axios";
 import cookie from "@/plugins/cookie";
 import store from "@/store";
-import router from "@/router/index";
 import notify from "@/helper/notify";
 
 let axios = instance.create({
@@ -35,7 +34,6 @@ axios.interceptors.response.use(
         if (error.response.data.message == "token_absent") {
           store.dispatch("auth/logout");
           notify.showNotify("error", "Error", "Authorize Failed !! Please login again")
-
         } else {
           let result = await store.dispatch("auth/refreshToken");
           if (result) {

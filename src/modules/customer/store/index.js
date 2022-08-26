@@ -58,7 +58,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             try {
                 const eventCustomersSync = (res) => {
-                    console.log(res);
                     if (state.progress < 100) {
                         commit('setProgress', Number(res.payload.processing));
                     }
@@ -108,7 +107,9 @@ const actions = {
                             "Sync Customers Successfully!!"
                         );
                     })
-                        .catch(error => reject(error))
+                        .catch(error => {
+                            throw error
+                        })
                         .finally(() => {
                             commit('setIsProgress', false)
                             commit('setLoading', false)
@@ -117,6 +118,9 @@ const actions = {
                     throw res
                 }
             }).catch(err => {
+                mixin.methods.toastMessageError({
+                    message: "Sync Customers failed!",
+                });
                 console.log(err)
                 reject(err);
                 commit('setIsProgress', false)
