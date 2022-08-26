@@ -43,7 +43,6 @@
 import VButton from "@/components/VButton.vue";
 import CustomerModalExport from "../components/CustomerModalExport.vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import notify from "@/helper/notify";
 export default {
   components: {
     VButton,

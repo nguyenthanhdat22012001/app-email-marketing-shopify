@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     checkValidateNumber(e) {
-      // console.log(this.background.opacity)
       if (e.keyCode != 8 && this.background.opacity > 100) {
         this.background.opacity = 100;
         e.preventDefault();
