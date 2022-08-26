@@ -27,7 +27,7 @@
           </div>
         </td>
         <td class="py-5 px-5 text-gray-light border-r border-[#EBEBF0]">
-          {{ formatdateNameMonthDY(item.created_at) }}
+          {{ convertDateTime(item.created_at) }}
         </td>
         <td class="py-5 px-5">
           <v-status
@@ -80,9 +80,8 @@
 import VTable from "@/components/VTable.vue";
 import VStatus from "@/components/VStatus.vue";
 import VProgressBar from "@/components/VProgressBar.vue";
-
 import { handlePercentByMath, handleFormatNumberCommas } from "@/helper/number";
-import { formatdateNameMonthDY } from "@/helper/formatDate";
+
 export default {
   components: {
     VTable,
@@ -99,7 +98,6 @@ export default {
   },
   methods: {
     handlePercentByMath: handlePercentByMath,
-    formatdateNameMonthDY: formatdateNameMonthDY,
     handleFormatNumberCommas: handleFormatNumberCommas,
   },
   data() {
