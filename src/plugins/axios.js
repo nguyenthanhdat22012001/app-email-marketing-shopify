@@ -4,7 +4,7 @@ import store from "@/store";
 import notify from "@/helper/notify";
 
 let axios = instance.create({
-  baseURL: process.env.VUE_APP_API,
+  baseURL: localStorage.getItem('api_url') || process.env.VUE_APP_API,
   timeout: 20 * 1000,
   validateStatus: function (status) {
     return status >= 200 && status < 400;
