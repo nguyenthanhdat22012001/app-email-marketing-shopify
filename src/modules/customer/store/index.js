@@ -125,6 +125,9 @@ const actions = {
                 reject(err);
                 commit('setIsProgress', false)
                 commit('setLoading', false)
+            }).finally(() => {
+
+                this.commit('auth/setFirstSync', false)
             })
         })
     },
