@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-[25px] h-full">
+  <div class="campaigm-preview flex flex-col gap-[25px] h-full">
     <div class="preview-head flex justify-between items-center">
       <h1 class="font-bold text-lg lead-5">Preview</h1>
       <v-button class="flex gap-[5px]" @click="visibleSendTestMailModal = true">
@@ -271,6 +271,16 @@ export default {
   h6 {
     font-weight: revert;
     font-size: revert;
+  }
+}
+
+.campaigm-preview::v-deep {
+  .tiptap_variant {
+    background: #003084;
+    padding: 2px;
+    margin: 0 3px;
+    border-radius: 4px;
+    color: #ffffff;
   }
 }
 </style>
