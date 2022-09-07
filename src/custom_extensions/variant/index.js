@@ -10,6 +10,8 @@ export default Node.create({
   addOptions() {
     return {
       HTMLAttributes: {
+        style:
+          "background:#003084;padding:2px; margin:0 3px;border-radius:4px;color: #ffffff",
         class: "tiptap_variant",
       },
     };

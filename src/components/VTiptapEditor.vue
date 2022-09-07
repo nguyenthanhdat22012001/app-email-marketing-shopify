@@ -414,13 +414,6 @@ export default {
     font-weight: revert;
     font-size: revert;
   }
-  .tiptap_variant {
-    background: #003084;
-    padding: 2px;
-    margin: 0 3px;
-    border-radius: 4px;
-    color: #ffffff;
-  }
 }
 .ProseMirror [contenteditable="false"] {
   white-space: normal;
